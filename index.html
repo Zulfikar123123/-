@@ -3,217 +3,228 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    
     <title>[واتباد الفقراء]</title>
+    
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <meta name="apple-mobile-web-app-title" content="واتباد الفقراء">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <link rel="apple-touch-icon" href="https://pomf2.lain.la/f/odvlatpw.jpg">
-    <link rel="icon" href="https://pomf2.lain.la/f/odvlatpw.jpg">
-    <meta name="mobile-web-app-capable" content="yes">
     <meta name="theme-color" content="#e63946">
 
     <style>
         :root { 
             --main-red: #e63946; 
-            --bg-page: #f8f9fa; 
-            --card-bg: #ffffff;
-            --text-color: #2b2d42;
-            --shadow: 0 4px 15px rgba(0,0,0,0.08);
-        }
-
-        .dark-mode { 
-            --bg-page: #121212; 
+            --bg-dark: #0f0f0f;
             --card-bg: #1e1e1e;
-            --text-color: #f1f1f1;
-            --shadow: 0 4px 15px rgba(0,0,0,0.4);
+            --text-white: #ffffff;
         }
 
-        body { background-color: var(--bg-page); color: var(--text-color); font-family: sans-serif; margin: 0; padding: 0; transition: 0.3s; overflow-x: hidden; }
-
-        .header { background: var(--card-bg); padding: 15px; text-align: center; box-shadow: var(--shadow); position: sticky; top: 0; z-index: 1000; }
-        .header h1 { margin: 0; font-size: 20px; color: var(--main-red); }
-
-        .controls { padding: 10px 15px; display: flex; gap: 10px; align-items: center; }
-        #searchBar { flex: 1; padding: 12px; border-radius: 25px; border: 1px solid #ddd; outline: none; background: var(--card-bg); color: var(--text-color); }
-        .theme-toggle { background: var(--main-red); color: white; border: none; padding: 10px; border-radius: 50%; width: 40px; height: 40px; cursor: pointer; }
-
-        .tabs-container { display: flex; background: var(--card-bg); margin: 10px 15px; border-radius: 12px; box-shadow: var(--shadow); overflow: hidden; }
-        .tab-btn { flex: 1; padding: 15px; border: none; background: none; color: #888; font-weight: bold; cursor: pointer; font-size: 13px; }
-        .tab-btn.active { background: var(--main-red); color: white; }
-
-        .section-title { padding: 0 20px; font-size: 15px; font-weight: bold; color: var(--main-red); margin-top: 10px; }
-
-        .container { padding: 15px; display: none; grid-template-columns: repeat(2, 1fr); gap: 15px; }
-        .container.active { display: grid; }
-
-        .video-card { background: var(--card-bg); border-radius: 15px; overflow: hidden; box-shadow: var(--shadow); position: relative; transition: 0.3s; }
-        .video-card img { width: 100%; height: 125px; object-fit: cover; }
-        .video-info { padding: 10px; font-size: 12px; text-align: center; font-weight: bold; min-height: 35px; }
-        .badge-new { position: absolute; top: 8px; right: 8px; background: var(--main-red); color: white; font-size: 10px; padding: 3px 8px; border-radius: 5px; font-weight: bold; }
-
-        /* نافذة التثبيت التلقائية */
-        #install-banner {
-            display: none; position: fixed; bottom: 20px; left: 15px; right: 15px;
-            background: var(--card-bg); padding: 15px; border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3); z-index: 99999;
-            border: 2px solid var(--main-red); align-items: center; gap: 12px;
-            animation: slideUp 0.6s ease-out;
+        body { 
+            background-color: var(--bg-dark); 
+            color: var(--text-white); 
+            font-family: 'Segoe UI', sans-serif; 
+            margin: 0; padding: 0; 
+            overflow-x: hidden;
         }
-        #install-banner img { width: 45px; height: 45px; border-radius: 10px; }
-        #install-banner .text { flex: 1; font-size: 12px; font-weight: bold; line-height: 1.4; }
-        #install-banner button { background: var(--main-red); color: white; border: none; padding: 8px 12px; border-radius: 8px; font-weight: bold; cursor: pointer; }
 
-        @keyframes slideUp { from { transform: translateY(100px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        /* الهيدر */
+        .app-header {
+            background: rgba(15, 15, 15, 0.95);
+            padding: 15px;
+            text-align: center;
+            border-bottom: 2px solid var(--main-red);
+            position: sticky; top: 0; z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
 
-        #player-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-page); z-index: 10000; }
-        .close-btn { position: absolute; top: 20px; left: 20px; background: var(--main-red); color: white; border: none; padding: 10px 20px; border-radius: 30px; font-weight: bold; }
-        iframe { width: 100%; height: 100%; border: none; display: none; }
+        /* أزرار الأقسام */
+        .nav-tabs {
+            display: flex; gap: 10px; padding: 15px;
+        }
+        .nav-btn {
+            flex: 1; padding: 12px; border: none; border-radius: 8px;
+            background: var(--card-bg); color: #aaa; font-weight: bold;
+            cursor: pointer; transition: 0.3s;
+        }
+        .nav-btn.active { background: var(--main-red); color: white; }
+
+        /* الشبكة الرئيسية للمحتوى */
+        .content-grid {
+            display: grid; grid-template-columns: repeat(2, 1fr);
+            gap: 15px; padding: 15px;
+        }
+        .content-card {
+            background: var(--card-bg); border-radius: 12px;
+            overflow: hidden; position: relative; transition: 0.3s;
+        }
+        .content-card:active { transform: scale(0.95); }
+        .content-card img { width: 100%; height: 220px; object-fit: cover; }
+        .content-card .title {
+            padding: 10px; font-size: 13px; text-align: center; font-weight: bold;
+        }
+
+        /* صفحة عرض الحلقات */
+        #episodes-overlay {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--bg-dark); z-index: 2000; overflow-y: auto;
+            animation: fadeIn 0.3s ease;
+        }
+        .ep-grid {
+            display: grid; grid-template-columns: repeat(3, 1fr);
+            gap: 10px; padding: 15px;
+        }
+        .ep-card {
+            background: var(--card-bg); border: 1px solid #333;
+            border-radius: 10px; padding: 15px 5px; text-align: center;
+            font-size: 12px; font-weight: bold; cursor: pointer;
+        }
+        .ep-card:active { background: var(--main-red); }
+
+        /* مشغل الفيديو بملء الشاشة */
+        #player-page {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #000; z-index: 3000; flex-direction: column;
+        }
+        .video-box { width: 100%; flex: 1; display: flex; align-items: center; }
+        video { width: 100%; }
+
+        /* منطقة التفاعل (قلب + تعليقات) */
+        .interaction-area {
+            background: #1a1a1a; padding: 20px; border-radius: 25px 25px 0 0;
+            max-height: 40%; overflow-y: auto;
+        }
+        .action-bar { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; }
+        .heart-icon { font-size: 30px; color: #444; transition: 0.3s; cursor: pointer; }
+        .heart-icon.liked { color: var(--main-red); transform: scale(1.2); }
+
+        .comment-box {
+            background: #2a2a2a; border-radius: 10px; padding: 10px;
+            display: flex; gap: 10px;
+        }
+        .comment-box input {
+            flex: 1; background: none; border: none; color: white; outline: none;
+        }
+        .comments-feed { margin-top: 15px; font-size: 13px; color: #ccc; }
+
+        .btn-close {
+            position: absolute; top: 20px; right: 20px;
+            background: var(--main-red); color: white; border: none;
+            padding: 10px 20px; border-radius: 30px; font-weight: bold; z-index: 4000;
+        }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     </style>
 </head>
 <body>
 
-<div id="install-banner">
-    <img src="https://pomf2.lain.la/f/odvlatpw.jpg">
-    <div class="text">ثبّت تطبيق [واتباد الفقراء] لتجربة أسرع وأفضل!</div>
-    <button onclick="presentInstall()">تثبيت الآن</button>
+<div class="app-header">
+    <h1>[واتـبـاد الـفـقـراء]</h1>
 </div>
 
-<div class="header"><h1> [واتـبـاد الـفـقـراء] </h1></div>
-
-<div class="controls">
-    <input type="text" id="searchBar" placeholder="بحث عن قصة أو حلقة..." onkeyup="filterContent()">
-    <button class="theme-toggle" onclick="toggleTheme()">🌓</button>
+<div class="nav-tabs">
+    <button class="nav-btn active" onclick="loadContent('wattpad')">📖 القصص</button>
+    <button class="nav-btn" onclick="loadContent('series')">🎬 المسلسلات</button>
 </div>
 
-<div id="recent-title" class="section-title" style="display: none;">⌚ شاهدته مؤخراً</div>
-<div class="container active" id="recent-section"></div>
+<div id="main-grid" class="content-grid"></div>
 
-<div class="tabs-container">
-    <button class="tab-btn active" onclick="switchTab(event, 'wattpad-section')">📖 قصص واتباد الفقراء</button>
-    <button class="tab-btn" onclick="switchTab(event, 'turkish-section')">🎬 مسلسلات قصة عشق</button>
+<div id="episodes-overlay">
+    <button class="btn-close" onclick="closeOverlay('episodes-overlay')">رجوع</button>
+    <div id="ep-header-img"></div>
+    <h3 id="ep-title" style="padding:15px; margin:0;"></h3>
+    <div class="ep-grid" id="ep-list-container"></div>
 </div>
 
-<div class="container active" id="wattpad-section"></div>
-<div class="container" id="turkish-section"></div>
-
-<div id="player-overlay">
-    <button class="close-btn" onclick="closePlayer()">رجوع</button>
-    <div style="text-align: center; margin-top: 50%; padding: 20px;" id="waiting-screen">
-        <h2 style="color: var(--main-red);">تحقق الأمان</h2>
-        <p>بقي 10 ثوانٍ لفتح المقطع..</p>
-        <button style="background: #28a745; color: white; padding: 15px; border: none; border-radius: 10px; width: 80%; font-weight: bold;" onclick="openAd()">اضغط هنا للفتح</button>
+<div id="player-page">
+    <button class="btn-close" onclick="closePlayer()">إغلاق</button>
+    <div class="video-box" id="video-container"></div>
+    
+    <div class="interaction-area">
+        <div class="action-bar">
+            <span id="heartIcon" class="heart-icon" onclick="hitLike()">❤</span>
+            <span style="font-weight:bold;">أعجبني</span>
+        </div>
+        <div class="comment-box">
+            <input type="text" id="userComment" placeholder="اكتب تعليقك هنا..." onkeypress="postComment(event)">
+            <button style="background:none; border:none; color:var(--main-red); font-weight:bold;">نشر</button>
+        </div>
+        <div class="comments-feed" id="feed"></div>
     </div>
-    <iframe id="video-iframe" allowfullscreen></iframe>
 </div>
 
 <script>
-    const wattpadVideos = [
-        { id: 1, title: "غزالة في عرين الاسد - الأخير", img: "https://pomf2.lain.la/f/odvlatpw.jpg", url: "https://pomf2.lain.la/f/asn9tb0.mp4", isNew: true },
-        { id: 2, title: "خذ بيدي الى احضانك - ج3", img: "https://pomf2.lain.la/f/2njdz3ym.jpg", url: "https://pomf2.lain.la/f/jlyrjnqz.mp4", isNew: false }
-    ];
+    const database = {
+        wattpad: [
+            { id: 101, title: "غزالة في عرين الاسد", img: "https://pomf2.lain.la/f/odvlatpw.jpg", 
+              eps: ["الجزء 1", "الجزء 2", "الجزء 3", "الجزء 4", "الجزء الأخير"] }
+        ],
+        series: [
+            { id: 201, title: "هذا البحر سوف يفيض", img: "https://pomf2.lain.la/f/2njdz3ym.jpg", 
+              eps: ["الحلقة 1", "الحلقة 2", "الحلقة 3", "الحلقة 4", "الحلقة 5", "الحلقة 6"] }
+        ]
+    };
 
-    const turkishVideos = [
-        { id: 4, title: "هذا البحر سوف يفيض - ح1", img: "https://pomf2.lain.la/f/2njdz3ym.jpg", url: "https://pomf2.lain.la/f/pgzui0yw.mp4", isNew: true }
-    ];
+    function loadContent(type) {
+        const container = document.getElementById('main-grid');
+        container.innerHTML = '';
+        document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+        event.target.classList.add('active');
 
-    let deferredPrompt;
-    let currentVideo = null;
-    let startTime = 0;
-    let timerStarted = false;
-    let recentlyWatched = JSON.parse(localStorage.getItem('recent_v3')) || [];
-
-    // إدارة التثبيت التلقائي
-    window.addEventListener('beforeinstallprompt', (e) => {
-        e.preventDefault();
-        deferredPrompt = e;
-        setTimeout(() => { document.getElementById('install-banner').style.display = 'flex'; }, 3000);
-    });
-
-    function presentInstall() {
-        if (deferredPrompt) {
-            deferredPrompt.prompt();
-            document.getElementById('install-banner').style.display = 'none';
-        }
-    }
-
-    function init() {
-        renderVideos(wattpadVideos, 'wattpad-section');
-        renderVideos(turkishVideos, 'turkish-section');
-        renderRecent();
-        if(localStorage.getItem('theme') === 'dark') document.body.classList.add('dark-mode');
-    }
-
-    function renderVideos(data, containerId) {
-        document.getElementById(containerId).innerHTML = data.map(vid => `
-            <div class="video-card" data-title="${vid.title}" onclick="preparePlayer(${JSON.stringify(vid).replace(/"/g, '&quot;')})">
-                ${vid.isNew ? '<div class="badge-new">جديد</div>' : ''}
-                <img src="${vid.img}">
-                <div class="video-info">${vid.title}</div>
-            </div>
-        `).join('');
-    }
-
-    function switchTab(evt, sectionId) {
-        document.querySelectorAll('.container').forEach(c => c.id !== 'recent-section' && (c.style.display = 'none'));
-        document.querySelectorAll('.tab-btn').forEach(t => t.classList.remove('active'));
-        document.getElementById(sectionId).style.display = 'grid';
-        evt.currentTarget.classList.add('active');
-    }
-
-    function filterContent() {
-        let q = document.getElementById('searchBar').value.toLowerCase();
-        document.querySelectorAll('.video-card').forEach(c => {
-            c.style.display = c.getAttribute('data-title').toLowerCase().includes(q) ? 'block' : 'none';
+        database[type].forEach(item => {
+            container.innerHTML += `
+                <div class="content-card" onclick="showEpisodes(${JSON.stringify(item.eps).replace(/"/g, '&quot;')}, '${item.title}', '${item.img}')">
+                    <img src="${item.img}">
+                    <div class="title">${item.title}</div>
+                </div>
+            `;
         });
     }
 
-    function toggleTheme() {
-        document.body.classList.toggle('dark-mode');
-        localStorage.setItem('theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
+    function showEpisodes(eps, title, img) {
+        document.getElementById('episodes-overlay').style.display = 'block';
+        document.getElementById('ep-title').innerText = title;
+        document.getElementById('ep-header-img').innerHTML = `<img src="${img}" style="width:100%; height:200px; object-fit:cover; opacity:0.5;">`;
+        
+        const list = document.getElementById('ep-list-container');
+        list.innerHTML = eps.map(e => `<div class="ep-card" onclick="playFlow()">${e}</div>`).join('');
     }
 
-    function preparePlayer(vid) {
-        currentVideo = vid;
-        saveToRecent(vid);
-        document.getElementById('player-overlay').style.display = 'block';
-        document.getElementById('waiting-screen').style.display = 'block';
-        document.getElementById('video-iframe').style.display = 'none';
-    }
-
-    function saveToRecent(vid) {
-        recentlyWatched = recentlyWatched.filter(v => v.id !== vid.id);
-        recentlyWatched.unshift(vid);
-        if(recentlyWatched.length > 2) recentlyWatched.pop();
-        localStorage.setItem('recent_v3', JSON.stringify(recentlyWatched));
-        renderRecent();
-    }
-
-    function renderRecent() {
-        if(recentlyWatched.length > 0) {
-            document.getElementById('recent-title').style.display = 'block';
-            renderVideos(recentlyWatched, 'recent-section');
-        }
-    }
-
-    function openAd() {
+    function playFlow() {
         window.open("https://twigcrucialpal.com/kvwft44afa?key=cb80200a80e072a4d94407f211fa613c", '_blank');
-        startTime = new Date().getTime();
-        timerStarted = true;
+        alert("انتظر 10 ثوانٍ في صفحة الإعلان ثم عد لتشغيل المقطع");
+        
+        setTimeout(() => {
+            document.getElementById('player-page').style.display = 'flex';
+            document.getElementById('video-container').innerHTML = `
+                <video controls autoplay>
+                    <source src="https://pomf2.lain.la/f/asn9tb0.mp4" type="video/mp4">
+                </video>`;
+        }, 5000);
     }
 
-    window.onfocus = function() {
-        if (timerStarted && Math.floor((new Date().getTime() - startTime) / 1000) >= 10) {
-            document.getElementById('waiting-screen').style.display = 'none';
-            document.getElementById('video-iframe').src = currentVideo.url;
-            document.getElementById('video-iframe').style.display = 'block';
-            timerStarted = false;
+    function hitLike() {
+        document.getElementById('heartIcon').classList.toggle('liked');
+    }
+
+    function postComment(e) {
+        if(e.key === 'Enter') {
+            const input = document.getElementById('userComment');
+            if(input.value.trim() !== "") {
+                const feed = document.getElementById('feed');
+                feed.innerHTML = `<div style="margin-bottom:8px;">👤 <b>زائر:</b> ${input.value}</div>` + feed.innerHTML;
+                input.value = "";
+            }
         }
-    };
+    }
 
-    function closePlayer() { document.getElementById('player-overlay').style.display = 'none'; timerStarted = false; }
+    function closeOverlay(id) { document.getElementById(id).style.display = 'none'; }
+    function closePlayer() { 
+        document.getElementById('player-page').style.display = 'none';
+        document.getElementById('video-container').innerHTML = '';
+    }
 
-    init();
+    // تشغيل القسم الأول عند الفتح
+    loadContent('wattpad');
 </script>
+
 </body>
 </html>
