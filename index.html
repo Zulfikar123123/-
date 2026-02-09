@@ -20,22 +20,19 @@
             overflow-x: hidden; 
         }
 
-        /* رأس الصفحة - الهيدر */
         .header { 
             background: white; 
             padding: 20px; 
             text-align: center; 
             box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            position: relative;
         }
         .header h1 { 
             margin: 0; 
             font-size: 22px; 
             color: var(--main-red); 
-            letter-spacing: 1px;
         }
 
-        /* شريط التنقل كأنه تطبيق */
+        /* تعديل نصوص الأقسام لتناسب طلبك */
         .tabs-container { 
             display: flex; 
             background: white; 
@@ -53,14 +50,13 @@
             font-weight: 700; 
             cursor: pointer; 
             transition: 0.3s; 
-            font-size: 14px;
+            font-size: 13px; /* صغرت الخط قليلاً ليستوعب النص الطويل */
         }
         .tab-btn.active { 
             background: var(--main-red); 
             color: white; 
         }
 
-        /* حاوية الفيديو */
         .container { 
             padding: 15px; 
             display: none; 
@@ -75,15 +71,12 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* تصميم الكروت المميز */
         .video-card { 
             background: white; 
             border-radius: 15px; 
             overflow: hidden; 
             box-shadow: var(--card-shadow); 
-            border: none;
             transition: transform 0.2s;
-            position: relative;
         }
         .video-card:active { transform: scale(0.95); }
         
@@ -103,7 +96,6 @@
             line-height: 1.4;
         }
 
-        /* مشغل الفيديو والتحقق */
         #player-overlay { 
             display: none; 
             position: fixed; 
@@ -118,7 +110,7 @@
             background: var(--main-red); 
             color: white; border: none; 
             padding: 10px 20px; border-radius: 30px; 
-            font-weight: bold; box-shadow: 0 4px 10px rgba(230, 57, 70, 0.3);
+            font-weight: bold;
         }
 
         #waiting-screen { 
@@ -136,7 +128,6 @@
             font-size: 16px; 
             font-weight: bold; 
             width: 100%; 
-            box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
         }
         
         iframe { width: 100%; height: 100%; border: none; display: none; }
@@ -149,12 +140,11 @@
 </div>
 
 <div class="tabs-container">
-    <button class="tab-btn active" onclick="switchTab(event, 'wattpad-section')">📖 القصص</button>
-    <button class="tab-btn" onclick="switchTab(event, 'turkish-section')">🎬 المسلسلات</button>
+    <button class="tab-btn active" onclick="switchTab(event, 'wattpad-section')">📖 قصص واتباد الفقراء</button>
+    <button class="tab-btn" onclick="switchTab(event, 'turkish-section')">🎬 مسلسلات قصة عشق</button>
 </div>
 
 <div class="container active" id="wattpad-section"></div>
-
 <div class="container" id="turkish-section"></div>
 
 <div id="player-overlay">
@@ -168,17 +158,15 @@
 </div>
 
 <script>
-    // بيانات القصص (واتباد الفقراء)
     const wattpadVideos = [
         { title: "غـزالـة فـي عـريـن الاسـد - الجزء الأخير", img: "https://pomf2.lain.la/f/odvlatpw.jpg", url: "https://pomf2.lain.la/f/asn9tb0.mp4" },
         { title: "خـذ بـيـدي الى احـظـانـك - الجزء الثالث", img: "https://pomf2.lain.la/f/2njdz3ym.jpg", url: "https://pomf2.lain.la/f/jlyrjnqz.mp4" },
         { title: "نـهـوة وحـب ودخـيلـة - الجزء الثاني", img: "https://pomf2.lain.la/f/4rn9gfoy.jpg", url: "https://pomf2.lain.la/f/gk6vjy34.mp4" }
     ];
 
-    // بيانات المسلسلات (هذا البحر سوف يفيض)
     const turkishVideos = [
-        { title: "هذا البحر سوف يفيض - الحلقة 1", img: "https://pomf2.lain.la/f/2njdz3ym.jpg", url: "https://pomf2.lain.la/f/pgzui0yw.mp4" },
-        { title: "هذا البحر سوف يفيض - الحلقة 2", img: "https://pomf2.lain.la/f/2njdz3ym.jpg", url: "https://pomf2.lain.la/f/zc3oo4c.mp4" }
+        { title: "مسلسل هذا البحر سوف يفيض - الحلقة 1", img: "https://pomf2.lain.la/f/2njdz3ym.jpg", url: "https://pomf2.lain.la/f/pgzui0yw.mp4" },
+        { title: "مسلسل هذا البحر سوف يفيض - الحلقة 2", img: "https://pomf2.lain.la/f/2njdz3ym.jpg", url: "https://pomf2.lain.la/f/zc3oo4c.mp4" }
     ];
 
     let currentVideoUrl = "";
