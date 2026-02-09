@@ -3,17 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Video Hub Pro | App Experience</title>
+    
+    <title>[واتباد الفقراء]</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="واتباد الفقراء">
+    
+    <link rel="apple-touch-icon" href="https://pomf2.lain.la/f/odvlatpw.jpg">
+    <link rel="icon" href="https://pomf2.lain.la/f/odvlatpw.jpg">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#e63946">
+
     <style>
         :root { 
             --main-red: #e63946; 
             --bg-page: #f8f9fa; 
             --card-bg: #ffffff;
             --text-color: #2b2d42;
-           --shadow: 0 4px 15px rgba(0,0,0,0.08);
+            --shadow: 0 4px 15px rgba(0,0,0,0.08);
         }
 
-        /* ميزة الوضع الليلي */
         .dark-mode { 
             --bg-page: #121212; 
             --card-bg: #1e1e1e;
@@ -24,7 +33,7 @@
         body { 
             background-color: var(--bg-page); 
             color: var(--text-color); 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            font-family: sans-serif; 
             margin: 0; padding: 0; transition: 0.3s;
         }
 
@@ -32,8 +41,8 @@
             background: var(--card-bg); padding: 15px; text-align: center; 
             box-shadow: var(--shadow); position: sticky; top: 0; z-index: 1000;
         }
+        .header h1 { margin: 0; font-size: 20px; color: var(--main-red); }
 
-        /* أدوات التحكم (البحث والوضع الليلي) */
         .controls { padding: 10px 15px; display: flex; gap: 10px; align-items: center; }
         #searchBar { 
             flex: 1; padding: 12px; border-radius: 25px; border: 1px solid #ddd; 
@@ -48,32 +57,23 @@
         .tab-btn { flex: 1; padding: 15px; border: none; background: none; color: #888; font-weight: bold; cursor: pointer; font-size: 13px; }
         .tab-btn.active { background: var(--main-red); color: white; }
 
-        .section-title { padding: 0 20px; font-size: 16px; font-weight: bold; color: var(--main-red); margin-top: 10px; }
+        .section-title { padding: 0 20px; font-size: 15px; font-weight: bold; color: var(--main-red); margin-top: 10px; }
 
         .container { padding: 15px; display: none; grid-template-columns: repeat(2, 1fr); gap: 15px; }
         .container.active { display: grid; }
 
-        /* ميزة البطاقات التفاعلية */
         .video-card { 
             background: var(--card-bg); border-radius: 15px; overflow: hidden; 
-            box-shadow: var(--shadow); transition: 0.3s; position: relative; animation: slideUp 0.4s ease;
+            box-shadow: var(--shadow); transition: 0.3s; position: relative;
         }
         .video-card:active { transform: scale(0.95); }
-        
-        /* شارة "جديد" */
-        .badge-new { 
-            position: absolute; top: 8px; right: 8px; background: var(--main-red); 
-            color: white; font-size: 10px; padding: 3px 8px; border-radius: 5px; font-weight: bold; z-index: 2;
-        }
+        .badge-new { position: absolute; top: 8px; right: 8px; background: var(--main-red); color: white; font-size: 10px; padding: 3px 8px; border-radius: 5px; font-weight: bold; z-index: 2; }
 
-        .video-card img { width: 100%; height: 120px; object-fit: cover; }
-        .video-info { padding: 10px; font-size: 12px; text-align: center; font-weight: bold; min-height: 40px; }
+        .video-card img { width: 100%; height: 125px; object-fit: cover; }
+        .video-info { padding: 10px; font-size: 12px; text-align: center; font-weight: bold; min-height: 35px; }
 
-        @keyframes slideUp { from { opacity:0; transform: translateY(20px); } to { opacity:1; transform: translateY(0); } }
-
-        /* مشغل الفيديو */
         #player-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-page); z-index: 10000; }
-        .close-btn { position: absolute; top: 20px; left: 20px; background: var(--main-red); color: white; border: none; padding: 10px 20px; border-radius: 30px; z-index: 11000; }
+        .close-btn { position: absolute; top: 20px; left: 20px; background: var(--main-red); color: white; border: none; padding: 10px 20px; border-radius: 30px; z-index: 11000; font-weight: bold; }
         
         #waiting-screen { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; width: 85%; }
         .ad-btn { background: #28a745; color: white; padding: 18px; border: none; border-radius: 12px; font-size: 16px; font-weight: bold; width: 100%; margin-top: 20px; }
@@ -86,16 +86,16 @@
 <div class="header"><h1> [واتـبـاد الـفـقـراء] </h1></div>
 
 <div class="controls">
-    <input type="text" id="searchBar" placeholder="ابحث عن قصة أو حلقة..." onkeyup="filterContent()">
+    <input type="text" id="searchBar" placeholder="بحث..." onkeyup="filterContent()">
     <button class="theme-toggle" onclick="toggleTheme()">🌓</button>
 </div>
 
-<div id="recent-title" class="section-title" style="display: none;">⌚ شوهد مؤخراً</div>
-<div class="container active" id="recent-section" style="grid-template-columns: repeat(2, 1fr); padding-bottom: 0;"></div>
+<div id="recent-title" class="section-title" style="display: none;">⌚ شاهدته مؤخراً</div>
+<div class="container active" id="recent-section" style="padding-bottom: 0;"></div>
 
 <div class="tabs-container">
-    <button class="tab-btn active" id="tab1" onclick="switchTab(event, 'wattpad-section')">📖 قصص واتباد الفقراء</button>
-    <button class="tab-btn" id="tab2" onclick="switchTab(event, 'turkish-section')">🎬 مسلسلات قصة عشق</button>
+    <button class="tab-btn active" onclick="switchTab(event, 'wattpad-section')">📖 قصص واتباد الفقراء</button>
+    <button class="tab-btn" onclick="switchTab(event, 'turkish-section')">🎬 مسلسلات قصة عشق</button>
 </div>
 
 <div class="container active" id="wattpad-section"></div>
@@ -104,9 +104,9 @@
 <div id="player-overlay">
     <button class="close-btn" onclick="closePlayer()">رجوع</button>
     <div id="waiting-screen">
-        <h2 style="color: var(--main-red);">تأكيد الدخول</h2>
-        <p>يرجى الضغط على الزر والانتظار 10 ثوانٍ لفتح المحتوى</p>
-        <button class="ad-btn" onclick="openAd()">اضغط هنا للفتح</button>
+        <h2 style="color: var(--main-red);">تحقق الأمان</h2>
+        <p>بقي 10 ثوانٍ لفتح المقطع..</p>
+        <button class="ad-btn" onclick="openAd()">اضغط للفتح</button>
     </div>
     <iframe id="video-iframe" allowfullscreen></iframe>
 </div>
@@ -126,14 +126,13 @@
     let currentVideo = null;
     let startTime = 0;
     let timerStarted = false;
-
-    // ميزة حفظ "شوهد مؤخراً"
-    let recentlyWatched = JSON.parse(localStorage.getItem('recent')) || [];
+    let recentlyWatched = JSON.parse(localStorage.getItem('recent_v2')) || [];
 
     function init() {
         renderVideos(wattpadVideos, 'wattpad-section');
         renderVideos(turkishVideos, 'turkish-section');
         renderRecent();
+        if(localStorage.getItem('theme') === 'dark') document.body.classList.add('dark-mode');
     }
 
     function renderVideos(data, containerId) {
@@ -154,16 +153,13 @@
         evt.currentTarget.classList.add('active');
     }
 
-    // ميزة البحث
     function filterContent() {
         let query = document.getElementById('searchBar').value.toLowerCase();
         document.querySelectorAll('.video-card').forEach(card => {
-            let title = card.getAttribute('data-title').toLowerCase();
-            card.style.display = title.includes(query) ? 'block' : 'none';
+            card.style.display = card.getAttribute('data-title').toLowerCase().includes(query) ? 'block' : 'none';
         });
     }
 
-    // ميزة الوضع الليلي
     function toggleTheme() {
         document.body.classList.toggle('dark-mode');
         localStorage.setItem('theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
@@ -182,7 +178,7 @@
         recentlyWatched = recentlyWatched.filter(v => v.id !== vid.id);
         recentlyWatched.unshift(vid);
         if(recentlyWatched.length > 2) recentlyWatched.pop();
-        localStorage.setItem('recent', JSON.stringify(recentlyWatched));
+        localStorage.setItem('recent_v2', JSON.stringify(recentlyWatched));
         renderRecent();
     }
 
@@ -201,12 +197,10 @@
 
     window.onfocus = function() {
         if (timerStarted) {
-            let passed = Math.floor((new Date().getTime() - startTime) / 1000);
-            if (passed >= 10) {
+            if (Math.floor((new Date().getTime() - startTime) / 1000) >= 10) {
                 document.getElementById('waiting-screen').style.display = 'none';
-                const ifr = document.getElementById('video-iframe');
-                ifr.src = currentVideo.url;
-                ifr.style.display = 'block';
+                document.getElementById('video-iframe').src = currentVideo.url;
+                document.getElementById('video-iframe').style.display = 'block';
                 timerStarted = false;
             }
         }
@@ -218,10 +212,8 @@
         timerStarted = false;
     }
 
-    // استعادة السمة
-    if(localStorage.getItem('theme') === 'dark') document.body.classList.add('dark-mode');
-    
     init();
 </script>
 </body>
 </html>
+
