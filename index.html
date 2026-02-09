@@ -5,14 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Video Hub Pro</title>
     <style>
-        :root { --main-red: #ff0000; --bg-black: #0a0a0a; --card-bg: #111; --btn-green: #28a745; }
+        :root { --main-red: #ff0000; --bg-black: #0a0a0a; --card-bg: #111; --btn-green: #28a745; --tab-gray: #222; }
         body { background-color: var(--bg-black); color: white; font-family: sans-serif; margin: 0; padding: 0; overflow-x: hidden; }
+        
         .header { background: #1a1a1a; padding: 15px; text-align: center; border-bottom: 2px solid var(--main-red); }
         .header h1 { margin: 0; font-size: 18px; color: var(--main-red); }
-        .container { padding: 12px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+
+        /* شريط الأقسام */
+        .tabs-container { display: flex; background: #1a1a1a; border-bottom: 1px solid #333; position: sticky; top: 0; z-index: 999; }
+        .tab-btn { flex: 1; padding: 15px; border: none; background: none; color: #888; font-weight: bold; cursor: pointer; transition: 0.3s; border-bottom: 3px solid transparent; font-size: 14px; }
+        .tab-btn.active { color: var(--main-red); border-bottom-color: var(--main-red); background: #222; }
+
+        .container { padding: 12px; display: none; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+        .container.active { display: grid; }
+
         .video-card { background: var(--card-bg); border-radius: 8px; overflow: hidden; border: 1px solid #222; cursor: pointer; position: relative; }
         .video-card img { width: 100%; height: 110px; object-fit: cover; display: block; }
-        .video-info { padding: 8px; font-size: 11px; text-align: center; font-weight: bold; background: #161616; }
+        .video-info { padding: 8px; font-size: 11px; text-align: center; font-weight: bold; background: #161616; min-height: 35px; display: flex; align-items: center; justify-content: center; }
         
         #player-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 10000; }
         .close-btn { position: absolute; top: 15px; right: 15px; background: var(--main-red); color: white; border: none; padding: 8px 15px; border-radius: 4px; z-index: 10001; font-weight: bold; cursor: pointer; }
@@ -34,7 +43,15 @@
 <body>
 
 <div class="header"><h1> [واتـبـاد الـفـقـراء] 🔥</h1></div>
-<div class="container" id="video-grid"></div>
+
+<div class="tabs-container">
+    <button class="tab-btn active" onclick="switchTab(event, 'wattpad-section')">قصص واتباد الفقراء</button>
+    <button class="tab-btn" onclick="switchTab(event, 'turkish-section')">قصة عشق (مسلسلات)</button>
+</div>
+
+<div class="container active" id="wattpad-section"></div>
+
+<div class="container" id="turkish-section"></div>
 
 <div id="player-overlay">
     <button class="close-btn" onclick="closePlayer()">إغلاق X</button>
@@ -47,38 +64,22 @@
 </div>
 
 <script>
-const myVideos = [
-{
-                title: " غـزالـة فـي عـريـن الاسـد + جـريـئـة روعـة || الـجـزء الرابع الاخير",
-                img: "https://pomf2.lain.la/f/odvlatpw.jpg",
-                url: "https://pomf2.lain.la/f/asn9tb0.mp4"
-            },
-    {
-                title: " غـزالـة فـي عـريـن الاسـد + جـريـئـة روعـة || الـجـزء الثالث",
-                img: "https://pomf2.lain.la/f/odvlatpw.jpg",
-                url: "https://pomf2.lain.la/f/pgzui0yw.mp4"
-            },
-    {
-                title: " غـزالـة فـي عـريـن الاسـد + جـريـئـة روعـة || الـجـزء الثاني",
-                img: "https://pomf2.lain.la/f/odvlatpw.jpg",
-                url: "https://pomf2.lain.la/f/zc3oo4c.mp4"
-            },
-        {
-                title: " خـذ بـيـدي الى احـظـانـك + جريئة الجزء الثالث الاخير",
-                img: "https://pomf2.lain.la/f/2njdz3ym.jpg",
-                url: "https://pomf2.lain.la/f/jlyrjnqz.mp4"
-            },
-        {
-                title: "   خـذ بـيـدي الى احـظـانـك + جريئة ||الجزء الثاني",
-                img: "https://pomf2.lain.la/f/2njdz3ym.jpg",
-                url: "https://pomf2.lain.la/f/htkrfc1j.mp4"
-            },
-        { 
-            title: "نـهـوة وحـب ودخـيلـة + جـريـئـة روعـة || الجزء الثاني  ", 
-            img: "https://pomf2.lain.la/f/4rn9gfoy.jpg", 
-            url: "https://pomf2.lain.la/f/gk6vjy34.mp4" 
-        },
-        { title: " نـهـوة وحـب ودخـيلـة + جـريـئـة روعـة || الجزء الثالث الاخير ", img: "https://pomf2.lain.la/f/4rn9gfoy.jpg", url: "https://pomf2.lain.la/f/pf98t6l7.mp4" },
+    // فيديوهات واتباد الفقراء (كما هي)
+    const wattpadVideos = [
+        { title: "غـزالـة فـي عـريـن الاسـد + جـريـئـة روعـة || الـجـزء الرابع الاخير", img: "https://pomf2.lain.la/f/odvlatpw.jpg", url: "https://pomf2.lain.la/f/asn9tb0.mp4" },
+        { title: "غـزالـة فـي عـريـن الاسـد + جـريـئـة روعـة || الـجـزء الثالث", img: "https://pomf2.lain.la/f/odvlatpw.jpg", url: "https://pomf2.lain.la/f/pgzui0yw.mp4" },
+        { title: "غـزالـة فـي عـريـن الاسـد + جـريـئـة روعـة || الـجـزء الثاني", img: "https://pomf2.lain.la/f/odvlatpw.jpg", url: "https://pomf2.lain.la/f/zc3oo4c.mp4" },
+        { title: "خـذ بـيـدي الى احـظـانـك + جريئة الجزء الثالث الاخير", img: "https://pomf2.lain.la/f/2njdz3ym.jpg", url: "https://pomf2.lain.la/f/jlyrjnqz.mp4" },
+        { title: "خـذ بـيـدي الى احـظـانـك + جريئة ||الجزء الثاني", img: "https://pomf2.lain.la/f/2njdz3ym.jpg", url: "https://pomf2.lain.la/f/htkrfc1j.mp4" },
+        { title: "نـهـوة وحـب ودخـيلـة + جـريـئـة روعـة || الجزء الثاني", img: "https://pomf2.lain.la/f/4rn9gfoy.jpg", url: "https://pomf2.lain.la/f/gk6vjy34.mp4" },
+        { title: "نـهـوة وحـب ودخـيلـة + جـريـئـة روعـة || الجزء الثالث الاخير", img: "https://pomf2.lain.la/f/4rn9gfoy.jpg", url: "https://pomf2.lain.la/f/pf98t6l7.mp4" }
+    ];
+
+    // فيديوهات قصة عشق (تمت إضافة المسلسل)
+    const turkishVideos = [
+        { title: "مسلسل هذا البحر سوف يفيض - الحلقة 1", img: "https://pomf2.lain.la/f/2njdz3ym.jpg", url: "رابط_الحلقة_1_هنا" },
+        { title: "مسلسل هذا البحر سوف يفيض - الحلقة 2", img: "https://pomf2.lain.la/f/2njdz3ym.jpg", url: "رابط_الحلقة_2_هنا" },
+        { title: "مسلسل هذا البحر سوف يفيض - الحلقة 3", img: "https://pomf2.lain.la/f/2njdz3ym.jpg", url: "رابط_الحلقة_3_هنا" }
     ];
 
     let currentVideoUrl = "";
@@ -86,14 +87,28 @@ const myVideos = [
     let timerStarted = false;
     let popUnderExecuted = false;
 
-    const grid = document.getElementById('video-grid');
-    myVideos.forEach(vid => {
-        grid.innerHTML += `
-            <div class="video-card" onclick="preparePlayer('${vid.url}')">
-                <img src="${vid.img || 'https://via.placeholder.com/150'}">
-                <div class="video-info">${vid.title}</div>
-            </div>`;
-    });
+    function displayVideos(videoArray, containerId) {
+        const container = document.getElementById(containerId);
+        videoArray.forEach(vid => {
+            container.innerHTML += `
+                <div class="video-card" onclick="preparePlayer('${vid.url}')">
+                    <img src="${vid.img || 'https://via.placeholder.com/150'}">
+                    <div class="video-info">${vid.title}</div>
+                </div>`;
+        });
+    }
+
+    displayVideos(wattpadVideos, 'wattpad-section');
+    displayVideos(turkishVideos, 'turkish-section');
+
+    function switchTab(evt, sectionId) {
+        const containers = document.getElementsByClassName("container");
+        for (let i = 0; i < containers.length; i++) { containers[i].classList.remove("active"); }
+        const tabs = document.getElementsByClassName("tab-btn");
+        for (let i = 0; i < tabs.length; i++) { tabs[i].classList.remove("active"); }
+        document.getElementById(sectionId).classList.add("active");
+        evt.currentTarget.classList.add("active");
+    }
 
     function loadPopUnder() {
         if (!popUnderExecuted) {
@@ -131,7 +146,6 @@ const myVideos = [
         if (timerStarted) {
             let currentTime = new Date().getTime();
             let secondsPassed = Math.floor((currentTime - startTime) / 1000);
-
             if (secondsPassed >= 10) {
                 document.getElementById('waiting-screen').style.display = 'none';
                 const ifr = document.getElementById('video-iframe');
@@ -150,11 +164,7 @@ const myVideos = [
         document.getElementById('wait-msg').innerText = msg;
         const btn = document.getElementById('trigger-ad-btn');
         btn.innerText = btnText;
-        if (isFail) {
-            btn.classList.add('btn-fail');
-        } else {
-            btn.classList.remove('btn-fail');
-        }
+        if (isFail) { btn.classList.add('btn-fail'); } else { btn.classList.remove('btn-fail'); }
     }
 
     function closePlayer() {
