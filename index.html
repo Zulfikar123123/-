@@ -34,15 +34,16 @@
 
         /* الهيدر والبحث */
         .app-header { background: var(--card-bg); padding: 15px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 1000; }
-        .header-icons { display: flex; gap: 18px; align-items: center; }
         .app-title { font-size: 19px; font-weight: bold; color: var(--main-red); margin: 0; }
         .search-wrapper { padding: 5px 15px 15px 15px; background: var(--card-bg); }
         .search-input { width: 100%; padding: 12px 20px; border-radius: 25px; border: none; background: var(--search-bg); color: var(--text-main); outline: none; box-sizing: border-box; font-size: 14px; }
 
-        /* التبويبات والشبكة */
+        /* التبويبات */
         .tabs { display: flex; background: var(--card-bg); margin: 15px; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
         .tab-btn { flex: 1; padding: 15px; border: none; background: none; color: var(--gray); font-weight: bold; cursor: pointer; }
         .tab-btn.active { background: var(--main-red); color: white; }
+
+        /* الشبكة */
         .grid { display: none; padding: 0 15px 15px 15px; grid-template-columns: repeat(2, 1fr); gap: 15px; }
         .grid.active { display: grid; }
         .card { background: var(--card-bg); border-radius: 15px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.08); transition: 0.2s; }
@@ -50,37 +51,31 @@
         .card img { width: 100%; height: 135px; object-fit: cover; border-bottom: 3px solid var(--main-red); }
         .card-info { padding: 10px; font-size: 12px; text-align: center; font-weight: bold; }
 
-        /* مشغل الفيديو والتعليقات */
+        /* واجهة حلقات المسلسلات (Netflix Style) */
+        #series-overlay {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--bg-page); z-index: 2000; overflow-y: auto;
+        }
+        .series-banner { width: 100%; height: 220px; object-fit: cover; filter: brightness(0.7); }
+        .series-details { padding: 20px; position: relative; margin-top: -50px; background: var(--bg-page); border-radius: 30px 30px 0 0; }
+        .ep-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 15px; }
+        .ep-card { background: var(--card-bg); border: 2px solid var(--search-bg); border-radius: 10px; padding: 15px 5px; text-align: center; font-weight: bold; font-size: 13px; }
+
+        /* المشغل */
         #player { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-page); z-index: 3000; flex-direction: column; overflow-y: auto; }
-        .video-box { width: 100%; background: #000; position: sticky; top: 0; z-index: 3001; }
-        .video-details { padding: 15px; background: var(--card-bg); }
-        .v-title { font-size: 16px; font-weight: bold; margin-bottom: 5px; }
-        .v-stats { font-size: 12px; color: var(--gray); margin-bottom: 15px; display: flex; gap: 10px; }
-        
-        .interaction { display: flex; gap: 20px; border-top: 1px solid #eee; padding-top: 15px; }
-        .stat-item { display: flex; flex-direction: column; align-items: center; font-size: 11px; color: var(--gray); cursor: pointer; }
-        .stat-item span:first-child { font-size: 20px; color: var(--text-main); margin-bottom: 4px; }
-        .heart.liked { color: var(--main-red) !important; }
+        .video-box { width: 100%; background: #000; position: sticky; top: 0; }
+        .close-btn { position: absolute; top: 10px; left: 10px; background: rgba(0,0,0,0.5); color: white; border: none; padding: 8px 15px; border-radius: 20px; z-index: 4000; }
 
-        .comments-section { padding: 15px; background: var(--card-bg); margin-top: 10px; }
-        .comment-box { display: flex; gap: 10px; margin-bottom: 20px; }
-        .avatar { width: 35px; height: 35px; border-radius: 50%; background: #ddd; }
-        .comment-input { flex: 1; border: none; background: var(--search-bg); padding: 10px 15px; border-radius: 20px; font-size: 13px; color: var(--text-main); }
-        .comment-item { display: flex; gap: 12px; margin-bottom: 15px; animation: fadeIn 0.5s; }
-        .c-body { font-size: 13px; }
-        .c-name { font-weight: bold; font-size: 12px; margin-bottom: 2px; }
-
-        .close-btn { position: absolute; top: 10px; left: 10px; background: rgba(0,0,0,0.5); color: white; border: none; padding: 8px 15px; border-radius: 20px; z-index: 4000; font-weight: bold; }
-
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+        .v-details { padding: 15px; background: var(--card-bg); }
+        .interaction { display: flex; gap: 20px; border-top: 1px solid #eee; padding-top: 15px; margin-top: 10px; }
+        .stat-item { display: flex; flex-direction: column; align-items: center; font-size: 11px; color: var(--gray); }
     </style>
 </head>
 <body id="main-body">
 
 <div class="app-header">
     <div class="header-icons">
-        <span id="theme-btn" onclick="toggleDarkMode()">🌙</span>
-        <span onclick="document.getElementById('mainSearch').focus()">🔍</span>
+        <span onclick="toggleDarkMode()">🌙</span>
     </div>
     <div class="app-title">[واتـبـاد الـفـقـراء]</div>
 </div>
@@ -95,87 +90,67 @@
 </div>
 
 <div class="grid active" id="watt-grid">
-    <div class="card" data-title="غزالة في عرين الاسد" onclick="playMedia('ghazala_1', 'غزالة في عرين الاسد', 'https://pomf2.lain.la/f/asn9tb0.mp4')">
+    <div class="card" data-title="غزالة في عرين الاسد" onclick="playMedia('gh_1', 'غزالة في عرين الاسد', 'https://pomf2.lain.la/f/asn9tb0.mp4')">
         <img src="https://pomf2.lain.la/f/odvlatpw.jpg">
         <div class="card-info">قصة غزالة في عرين الاسد</div>
     </div>
 </div>
 
 <div class="grid" id="ser-grid">
-    <div class="card" data-title="مسلسل هذا البحر" onclick="playMedia('series_sea_1', 'مسلسل هذا البحر - الحلقة 1', 'https://pomf2.lain.la/f/pgzui0yw.mp4')">
+    <div class="card" data-title="هذا البحر سوف يفيض" onclick="openSeries('series_sea', 'هذا البحر سوف يفيض', 'https://pomf2.lain.la/f/2njdz3ym.jpg', ['حلقة 1', 'حلقة 2', 'حلقة 3'])">
         <img src="https://pomf2.lain.la/f/2njdz3ym.jpg">
         <div class="card-info">مسلسل هذا البحر سوف يفيض</div>
     </div>
 </div>
 
+<div id="series-overlay">
+    <button class="close-btn" onclick="document.getElementById('series-overlay').style.display='none'">رجوع</button>
+    <img id="ser-img" class="series-banner">
+    <div class="series-details">
+        <h2 id="ser-title" style="margin:0;"></h2>
+        <p style="color:var(--gray); font-size:13px;">اختر الحلقة للمشاهدة</p>
+    </div>
+    <div class="ep-grid" id="ep-list"></div>
+</div>
+
 <div id="player">
     <button class="close-btn" onclick="closeVideo()">إغلاق</button>
     <div class="video-box" id="video-root"></div>
-    
-    <div class="video-details">
-        <div class="v-title" id="v-display-title">عنوان الفيديو</div>
-        <div class="v-stats">
-            <span id="v-views">1,000 مشاهدة</span> • <span id="v-date">تم النشر مؤخراً</span>
-        </div>
-        
+    <div class="v-details">
+        <div id="v-title" style="font-weight:bold; font-size:16px;"></div>
+        <div id="v-views" style="color:var(--gray); font-size:12px; margin-top:5px;"></div>
         <div class="interaction">
-            <div class="stat-item" onclick="toggleLike(this)">
-                <span class="heart">❤</span>
-                <span>إعجاب</span>
-            </div>
-            <div class="stat-item">
-                <span>👁</span>
-                <span id="v-watching">154 يتابعون الآن</span>
-            </div>
-            <div class="stat-item">
-                <span>🔄</span>
-                <span>مشاركة</span>
-            </div>
-        </div>
-    </div>
-
-    <div class="comments-section">
-        <div style="font-weight: bold; margin-bottom: 15px; font-size: 14px;">التعليقات</div>
-        <div class="comment-box">
-            <div class="avatar" style="background: var(--main-red);"></div>
-            <input type="text" id="c-input" class="comment-input" placeholder="أضف تعليقاً..." onkeypress="addComment(event)">
-        </div>
-        <div id="comments-list">
-            <div class="comment-item"><div class="avatar"></div><div class="c-body"><div class="c-name">أحمد علي</div>قصه روعه استمر يا بطل 🔥</div></div>
+            <div class="stat-item"><span>❤</span><span>إعجاب</span></div>
+            <div class="stat-item"><span>👁</span><span id="v-watch"></span></div>
         </div>
     </div>
 </div>
 
 <script>
-    // نظام المشاهدات الهجين (وهمي + حقيقي)
-    function updateViews(videoId) {
-        let realViews = localStorage.getItem('views_' + videoId) || 0;
-        realViews = parseInt(realViews) + 1;
-        localStorage.setItem('views_' + videoId, realViews);
-        
-        // 1000 وهمي + الحقيقي من المتصفح
-        let totalViews = 1000 + realViews;
-        document.getElementById('v-views').innerText = totalViews.toLocaleString() + " مشاهدة";
+    function openSeries(id, title, img, eps) {
+        document.getElementById('series-overlay').style.display = 'block';
+        document.getElementById('ser-img').src = img;
+        document.getElementById('ser-title').innerText = title;
+        const list = document.getElementById('ep-list');
+        list.innerHTML = eps.map((e, index) => 
+            `<div class="ep-card" onclick="playMedia('${id}_${index}', '${title} - ${e}', 'https://pomf2.lain.la/f/pgzui0yw.mp4')">${e}</div>`
+        ).join('');
     }
 
     function playMedia(id, title, url) {
         window.open("https://twigcrucialpal.com/kvwft44afa?key=cb80200a80e072a4d94407f211fa613c", '_blank');
         setTimeout(() => {
             document.getElementById('player').style.display = 'flex';
-            document.getElementById('v-display-title').innerText = title;
-            updateViews(id); // تحديث العداد عند الفتح
+            document.getElementById('v-title').innerText = title;
             
-            // مشاهدات وهمية لـ "يتابعون الآن"
-            document.getElementById('v-watching').innerText = Math.floor(Math.random() * 100 + 40) + " يتابعون الآن";
-            
+            // نظام مشاهدات: 1000 وهمي + حقيقي
+            let real = parseInt(localStorage.getItem('v_'+id) || 0) + 1;
+            localStorage.setItem('v_'+id, real);
+            document.getElementById('v-views').innerText = (1000 + real).toLocaleString() + " مشاهدة";
+            document.getElementById('v-watch').innerText = Math.floor(Math.random()*100+50) + " يتابعون الآن";
+
             document.getElementById('video-root').innerHTML = `<video controls autoplay style="width:100%;"><source src="${url}" type="video/mp4"></video>`;
         }, 3000);
-    }
-
-    function toggleDarkMode() {
-        const body = document.getElementById('main-body');
-        body.classList.toggle('dark-theme');
-        document.getElementById('theme-btn').innerText = body.classList.contains('dark-theme') ? '☀️' : '🌙';
     }
 
     function closeVideo() {
@@ -190,21 +165,15 @@
         evt.currentTarget.classList.add('active');
     }
 
+    function toggleDarkMode() {
+        document.getElementById('main-body').classList.toggle('dark-theme');
+    }
+
     function filterNow() {
         let val = document.getElementById('mainSearch').value.toLowerCase();
         document.querySelectorAll('.card').forEach(c => {
             c.style.display = c.getAttribute('data-title').toLowerCase().includes(val) ? 'block' : 'none';
         });
-    }
-
-    function toggleLike(el) { el.querySelector('.heart').classList.toggle('liked'); }
-
-    function addComment(e) {
-        if(e.key === 'Enter' && e.target.value) {
-            const list = document.getElementById('comments-list');
-            list.innerHTML = `<div class="comment-item"><div class="avatar" style="background:#666"></div><div class="c-body"><div class="c-name">زائر</div>${e.target.value}</div></div>` + list.innerHTML;
-            e.target.value = '';
-        }
     }
 </script>
 </body>
