@@ -61,14 +61,25 @@
         .ep-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 15px; }
         .ep-card { background: var(--card-bg); border: 2px solid var(--search-bg); border-radius: 10px; padding: 15px 5px; text-align: center; font-weight: bold; font-size: 13px; }
 
-        /* المشغل */
+        /* المشغل والتعليقات */
         #player { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-page); z-index: 3000; flex-direction: column; overflow-y: auto; }
-        .video-box { width: 100%; background: #000; position: sticky; top: 0; }
-        .close-btn { position: absolute; top: 10px; left: 10px; background: rgba(0,0,0,0.5); color: white; border: none; padding: 8px 15px; border-radius: 20px; z-index: 4000; }
+        .video-box { width: 100%; background: #000; position: sticky; top: 0; z-index: 3001; }
+        .close-btn { position: absolute; top: 10px; left: 10px; background: rgba(0,0,0,0.5); color: white; border: none; padding: 8px 15px; border-radius: 20px; z-index: 4000; font-weight: bold; }
 
         .v-details { padding: 15px; background: var(--card-bg); }
         .interaction { display: flex; gap: 20px; border-top: 1px solid #eee; padding-top: 15px; margin-top: 10px; }
-        .stat-item { display: flex; flex-direction: column; align-items: center; font-size: 11px; color: var(--gray); }
+        .stat-item { display: flex; flex-direction: column; align-items: center; font-size: 11px; color: var(--gray); cursor: pointer; }
+        .heart-icon { font-size: 20px; transition: 0.3s; }
+        .heart-icon.liked { color: var(--main-red); transform: scale(1.2); }
+
+        /* قسم التعليقات */
+        .comments-container { padding: 15px; background: var(--card-bg); margin-top: 10px; }
+        .comment-input-area { display: flex; gap: 10px; margin-bottom: 20px; }
+        .comment-input { flex: 1; background: var(--search-bg); border: none; padding: 10px 15px; border-radius: 20px; font-size: 13px; color: var(--text-main); outline: none; }
+        .comment-item { display: flex; gap: 10px; margin-bottom: 15px; border-bottom: 1px solid rgba(0,0,0,0.05); padding-bottom: 10px; }
+        .user-avatar { width: 35px; height: 35px; border-radius: 50%; background: var(--main-red); color: white; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 12px; }
+        .comment-text { font-size: 13px; line-height: 1.4; }
+        .user-name { font-weight: bold; font-size: 12px; display: block; margin-bottom: 2px; }
     </style>
 </head>
 <body id="main-body">
@@ -116,12 +127,36 @@
 <div id="player">
     <button class="close-btn" onclick="closeVideo()">إغلاق</button>
     <div class="video-box" id="video-root"></div>
+    
     <div class="v-details">
         <div id="v-title" style="font-weight:bold; font-size:16px;"></div>
         <div id="v-views" style="color:var(--gray); font-size:12px; margin-top:5px;"></div>
+        
         <div class="interaction">
-            <div class="stat-item"><span>❤</span><span>إعجاب</span></div>
-            <div class="stat-item"><span>👁</span><span id="v-watch"></span></div>
+            <div class="stat-item" onclick="toggleLike(this)">
+                <span class="heart-icon">❤</span>
+                <span>إعجاب</span>
+            </div>
+            <div class="stat-item">
+                <span>👁</span>
+                <span id="v-watch"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="comments-container">
+        <h3 style="font-size: 15px; margin-bottom: 15px;">التعليقات</h3>
+        <div class="comment-input-area">
+            <input type="text" id="commentInput" class="comment-input" placeholder="أضف تعليقاً..." onkeypress="handleComment(event)">
+        </div>
+        <div id="comments-list">
+            <div class="comment-item">
+                <div class="user-avatar" style="background: #4a90e2;">M</div>
+                <div class="comment-text">
+                    <span class="user-name">محمد العراقي</span>
+                    المسلسل بجنن كالعادة، استمروا!
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -143,7 +178,6 @@
             document.getElementById('player').style.display = 'flex';
             document.getElementById('v-title').innerText = title;
             
-            // نظام مشاهدات: 1000 وهمي + حقيقي
             let real = parseInt(localStorage.getItem('v_'+id) || 0) + 1;
             localStorage.setItem('v_'+id, real);
             document.getElementById('v-views').innerText = (1000 + real).toLocaleString() + " مشاهدة";
@@ -151,6 +185,26 @@
 
             document.getElementById('video-root').innerHTML = `<video controls autoplay style="width:100%;"><source src="${url}" type="video/mp4"></video>`;
         }, 3000);
+    }
+
+    function toggleLike(el) {
+        el.querySelector('.heart-icon').classList.toggle('liked');
+    }
+
+    function handleComment(e) {
+        if(e.key === 'Enter' && e.target.value.trim() !== "") {
+            const list = document.getElementById('comments-list');
+            const newComment = `
+                <div class="comment-item">
+                    <div class="user-avatar">أنت</div>
+                    <div class="comment-text">
+                        <span class="user-name">زائر محب</span>
+                        ${e.target.value}
+                    </div>
+                </div>`;
+            list.innerHTML = newComment + list.innerHTML;
+            e.target.value = "";
+        }
     }
 
     function closeVideo() {
