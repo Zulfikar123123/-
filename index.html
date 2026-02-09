@@ -3,68 +3,182 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Video Hub Pro</title>
+    <title>Video Hub Pro | White Edition</title>
     <style>
-        :root { --main-red: #ff0000; --bg-black: #0a0a0a; --card-bg: #111; --btn-green: #28a745; }
-        body { background-color: var(--bg-black); color: white; font-family: sans-serif; margin: 0; padding: 0; overflow-x: hidden; }
-        
-        .header { background: #1a1a1a; padding: 15px; text-align: center; border-bottom: 2px solid var(--main-red); }
-        .header h1 { margin: 0; font-size: 18px; color: var(--main-red); }
+        :root { 
+            --main-red: #e63946; 
+            --bg-white: #f8f9fa; 
+            --card-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            --text-dark: #2b2d42;
+        }
 
-        /* الأقسام */
-        .tabs-container { display: flex; background: #1a1a1a; border-bottom: 1px solid #333; position: sticky; top: 0; z-index: 999; }
-        .tab-btn { flex: 1; padding: 15px; border: none; background: none; color: #888; font-weight: bold; cursor: pointer; border-bottom: 3px solid transparent; }
-        .tab-btn.active { color: var(--main-red); border-bottom-color: var(--main-red); background: #222; }
+        body { 
+            background-color: var(--bg-white); 
+            color: var(--text-dark); 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            margin: 0; padding: 0; 
+            overflow-x: hidden; 
+        }
 
-        .container { padding: 12px; display: none; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+        /* رأس الصفحة - الهيدر */
+        .header { 
+            background: white; 
+            padding: 20px; 
+            text-align: center; 
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            position: relative;
+        }
+        .header h1 { 
+            margin: 0; 
+            font-size: 22px; 
+            color: var(--main-red); 
+            letter-spacing: 1px;
+        }
+
+        /* شريط التنقل كأنه تطبيق */
+        .tabs-container { 
+            display: flex; 
+            background: white; 
+            margin: 15px; 
+            border-radius: 12px; 
+            overflow: hidden; 
+            box-shadow: var(--card-shadow);
+        }
+        .tab-btn { 
+            flex: 1; 
+            padding: 15px; 
+            border: none; 
+            background: white; 
+            color: #666; 
+            font-weight: 700; 
+            cursor: pointer; 
+            transition: 0.3s; 
+            font-size: 14px;
+        }
+        .tab-btn.active { 
+            background: var(--main-red); 
+            color: white; 
+        }
+
+        /* حاوية الفيديو */
+        .container { 
+            padding: 15px; 
+            display: none; 
+            grid-template-columns: repeat(2, 1fr); 
+            gap: 15px; 
+            animation: fadeIn 0.5s ease;
+        }
         .container.active { display: grid; }
 
-        .video-card { background: var(--card-bg); border-radius: 8px; overflow: hidden; border: 1px solid #222; cursor: pointer; }
-        .video-card img { width: 100%; height: 110px; object-fit: cover; display: block; }
-        .video-info { padding: 8px; font-size: 11px; text-align: center; font-weight: bold; background: #161616; min-height: 35px; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* تصميم الكروت المميز */
+        .video-card { 
+            background: white; 
+            border-radius: 15px; 
+            overflow: hidden; 
+            box-shadow: var(--card-shadow); 
+            border: none;
+            transition: transform 0.2s;
+            position: relative;
+        }
+        .video-card:active { transform: scale(0.95); }
         
-        #player-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 10000; }
-        .close-btn { position: absolute; top: 15px; right: 15px; background: var(--main-red); color: white; border: none; padding: 8px 15px; border-radius: 4px; z-index: 10001; font-weight: bold; }
+        .video-card img { 
+            width: 100%; 
+            height: 130px; 
+            object-fit: cover; 
+            border-bottom: 3px solid var(--main-red);
+        }
         
-        #waiting-screen { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; width: 90%; }
-        .ad-btn { background: var(--btn-green); color: white; padding: 20px; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; width: 100%; margin-top: 20px; }
+        .video-info { 
+            padding: 10px; 
+            font-size: 12px; 
+            text-align: center; 
+            font-weight: bold; 
+            color: var(--text-dark);
+            line-height: 1.4;
+        }
+
+        /* مشغل الفيديو والتحقق */
+        #player-overlay { 
+            display: none; 
+            position: fixed; 
+            top: 0; left: 0; 
+            width: 100%; height: 100%; 
+            background: white; 
+            z-index: 10000; 
+        }
+        .close-btn { 
+            position: absolute; 
+            top: 20px; left: 20px; 
+            background: var(--main-red); 
+            color: white; border: none; 
+            padding: 10px 20px; border-radius: 30px; 
+            font-weight: bold; box-shadow: 0 4px 10px rgba(230, 57, 70, 0.3);
+        }
+
+        #waiting-screen { 
+            position: absolute; 
+            top: 50%; left: 50%; 
+            transform: translate(-50%, -50%); 
+            text-align: center; width: 85%; 
+        }
+        .ad-btn { 
+            background: #28a745; 
+            color: white; 
+            padding: 18px; 
+            border: none; 
+            border-radius: 12px; 
+            font-size: 16px; 
+            font-weight: bold; 
+            width: 100%; 
+            box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+        }
         
         iframe { width: 100%; height: 100%; border: none; display: none; }
     </style>
 </head>
 <body>
 
-<div class="header"><h1> [واتـبـاد الـفـقـراء]</h1></div>
+<div class="header">
+    <h1> [واتـبـاد الـفـقـراء] </h1>
+</div>
 
 <div class="tabs-container">
-    <button class="tab-btn active" onclick="switchTab(event, 'wattpad-section')">قصص واتباد الفقراء</button>
-    <button class="tab-btn" onclick="switchTab(event, 'turkish-section')">قصة عشق</button>
+    <button class="tab-btn active" onclick="switchTab(event, 'wattpad-section')">📖 القصص</button>
+    <button class="tab-btn" onclick="switchTab(event, 'turkish-section')">🎬 المسلسلات</button>
 </div>
 
 <div class="container active" id="wattpad-section"></div>
+
 <div class="container" id="turkish-section"></div>
 
 <div id="player-overlay">
-    <button class="close-btn" onclick="closePlayer()">إغلاق X</button>
+    <button class="close-btn" onclick="closePlayer()">رجوع</button>
     <div id="waiting-screen">
-        <h2 id="wait-title" style="color: var(--main-red);">تأكيد المشاهدة</h2>
-        <p id="wait-msg">اضغط على الزر وانتظر 10 ثوانٍ في صفحة الإعلان</p>
-        <button id="trigger-ad-btn" class="ad-btn" onclick="openAd()">فتح المقطع (10 ثوانٍ)</button>
+        <h2 style="color: var(--main-red);">تحقق الأمان</h2>
+        <p>باقي خطوة واحدة لمشاهدة المقطع، يرجى الضغط على الزر والانتظار 10 ثوانٍ</p>
+        <button id="trigger-ad-btn" class="ad-btn" onclick="openAd()">فتح المقطع الآن</button>
     </div>
     <iframe id="video-iframe" src="" allowfullscreen></iframe>
 </div>
 
 <script>
-    // بيانات واتباد
+    // بيانات القصص (واتباد الفقراء)
     const wattpadVideos = [
-        { title: "غـزالـة فـي عـريـن الاسـد - الجزء 4", img: "https://pomf2.lain.la/f/odvlatpw.jpg", url: "https://pomf2.lain.la/f/asn9tb0.mp4" },
-        { title: "نـهـوة وحـب ودخـيلـة - الجزء 3", img: "https://pomf2.lain.la/f/4rn9gfoy.jpg", url: "https://pomf2.lain.la/f/pf98t6l7.mp4" }
+        { title: "غـزالـة فـي عـريـن الاسـد - الجزء الأخير", img: "https://pomf2.lain.la/f/odvlatpw.jpg", url: "https://pomf2.lain.la/f/asn9tb0.mp4" },
+        { title: "خـذ بـيـدي الى احـظـانـك - الجزء الثالث", img: "https://pomf2.lain.la/f/2njdz3ym.jpg", url: "https://pomf2.lain.la/f/jlyrjnqz.mp4" },
+        { title: "نـهـوة وحـب ودخـيلـة - الجزء الثاني", img: "https://pomf2.lain.la/f/4rn9gfoy.jpg", url: "https://pomf2.lain.la/f/gk6vjy34.mp4" }
     ];
 
-    // بيانات قصة عشق - هنا قمت بوضع روابط عشوائية للتجربة فقط
+    // بيانات المسلسلات (هذا البحر سوف يفيض)
     const turkishVideos = [
-        { title: "مسلسل هذا البحر سوف يفيض - الحلقة 1", img: "https://pomf2.lain.la/f/2njdz3ym.jpg", url: "https://pomf2.lain.la/f/jlyrjnqz.mp4" },
-        { title: "مسلسل هذا البحر سوف يفيض - الحلقة 2", img: "https://pomf2.lain.la/f/2njdz3ym.jpg", url: "https://pomf2.lain.la/f/htkrfc1j.mp4" }
+        { title: "هذا البحر سوف يفيض - الحلقة 1", img: "https://pomf2.lain.la/f/2njdz3ym.jpg", url: "https://pomf2.lain.la/f/pgzui0yw.mp4" },
+        { title: "هذا البحر سوف يفيض - الحلقة 2", img: "https://pomf2.lain.la/f/2njdz3ym.jpg", url: "https://pomf2.lain.la/f/zc3oo4c.mp4" }
     ];
 
     let currentVideoUrl = "";
@@ -116,8 +230,6 @@
                 ifr.src = currentVideoUrl;
                 ifr.style.display = 'block';
                 timerStarted = false;
-            } else {
-                alert("يجب البقاء في صفحة الإعلان 10 ثوانٍ!");
             }
         }
     };
@@ -128,5 +240,6 @@
         timerStarted = false;
     }
 </script>
+
 </body>
 </html>
