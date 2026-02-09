@@ -15,10 +15,10 @@
             --bg-page: #f8f9fa; 
             --card-bg: #ffffff;
             --text-main: #2b2d42;
-            --search-bg: #eeeeee;
+            --search-bg: #f1f3f4;
+            --gray: #888;
         }
 
-        /* تنسيقات الوضع الليلي الاحترافي */
         body.dark-theme { 
             --bg-page: #121212; 
             --card-bg: #1e1e1e;
@@ -29,162 +29,198 @@
         body { 
             background-color: var(--bg-page); color: var(--text-main); 
             font-family: 'Segoe UI', sans-serif; margin: 0; padding: 0; 
-            transition: background 0.3s, color 0.3s; overflow-x: hidden;
+            transition: 0.3s; overflow-x: hidden;
         }
 
-        /* الهيدر المطور */
-        .app-bar { 
-            background: var(--card-bg); padding: 10px 15px; 
-            display: flex; align-items: center; justify-content: space-between;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05); position: sticky; top: 0; z-index: 1000;
-        }
-        .app-bar h1 { margin: 0; font-size: 18px; color: var(--main-red); flex: 1; }
-        
-        .header-tools { display: flex; gap: 15px; align-items: center; }
-        .tool-icon { font-size: 20px; cursor: pointer; color: var(--text-main); }
+        /* الهيدر والبحث */
+        .app-header { background: var(--card-bg); padding: 15px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 1000; }
+        .header-icons { display: flex; gap: 18px; align-items: center; }
+        .app-title { font-size: 19px; font-weight: bold; color: var(--main-red); margin: 0; }
+        .search-wrapper { padding: 5px 15px 15px 15px; background: var(--card-bg); }
+        .search-input { width: 100%; padding: 12px 20px; border-radius: 25px; border: none; background: var(--search-bg); color: var(--text-main); outline: none; box-sizing: border-box; font-size: 14px; }
 
-        /* شريط البحث */
-        .search-container {
-            display: none; padding: 10px 15px; background: var(--card-bg);
-            animation: slideDown 0.3s ease;
-        }
-        .search-input {
-            width: 100%; padding: 10px 15px; border-radius: 25px; border: none;
-            background: var(--search-bg); color: var(--text-main); outline: none; box-sizing: border-box;
-        }
-
-        /* الأقسام */
+        /* التبويبات والشبكة */
         .tabs { display: flex; background: var(--card-bg); margin: 15px; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
-        .tab-btn { flex: 1; padding: 14px; border: none; background: none; color: #888; font-weight: bold; cursor: pointer; font-size: 13px; }
+        .tab-btn { flex: 1; padding: 15px; border: none; background: none; color: var(--gray); font-weight: bold; cursor: pointer; }
         .tab-btn.active { background: var(--main-red); color: white; }
-
-        /* الكروت */
-        .grid { display: none; padding: 15px; grid-template-columns: repeat(2, 1fr); gap: 15px; }
+        .grid { display: none; padding: 0 15px 15px 15px; grid-template-columns: repeat(2, 1fr); gap: 15px; }
         .grid.active { display: grid; }
         .card { background: var(--card-bg); border-radius: 15px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.08); transition: 0.2s; }
         .card:active { transform: scale(0.96); }
         .card img { width: 100%; height: 135px; object-fit: cover; border-bottom: 3px solid var(--main-red); }
         .card-info { padding: 10px; font-size: 12px; text-align: center; font-weight: bold; }
 
-        /* واجهة الحلقات (Netflix Style) */
-        #episodes-page {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: var(--bg-page); z-index: 2000; overflow-y: auto;
-        }
-        .ep-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 15px; }
-        .ep-item { background: var(--card-bg); border: 2px solid var(--search-bg); border-radius: 10px; padding: 15px 5px; text-align: center; font-weight: bold; }
+        /* مشغل الفيديو والتعليقات */
+        #player { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-page); z-index: 3000; flex-direction: column; overflow-y: auto; }
+        .video-box { width: 100%; background: #000; position: sticky; top: 0; z-index: 3001; }
+        .video-details { padding: 15px; background: var(--card-bg); }
+        .v-title { font-size: 16px; font-weight: bold; margin-bottom: 5px; }
+        .v-stats { font-size: 12px; color: var(--gray); margin-bottom: 15px; display: flex; gap: 10px; }
+        
+        .interaction { display: flex; gap: 20px; border-top: 1px solid #eee; padding-top: 15px; }
+        .stat-item { display: flex; flex-direction: column; align-items: center; font-size: 11px; color: var(--gray); }
+        .stat-item span:first-child { font-size: 20px; color: var(--text-main); margin-bottom: 4px; }
+        .heart.liked { color: var(--main-red) !important; }
 
-        /* المشغل */
-        #player { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 3000; flex-direction: column; }
-        .video-area { width: 100%; flex: 1; display: flex; align-items: center; }
-        .close-btn { position: absolute; top: 20px; left: 20px; background: var(--main-red); color: white; border: none; padding: 10px 20px; border-radius: 30px; font-weight: bold; z-index: 4000; }
+        /* قسم التعليقات */
+        .comments-section { padding: 15px; background: var(--card-bg); margin-top: 10px; }
+        .comment-box { display: flex; gap: 10px; margin-bottom: 20px; }
+        .avatar { width: 35px; height: 35px; border-radius: 50%; background: #ddd; }
+        .comment-input { flex: 1; border: none; background: var(--search-bg); padding: 10px 15px; border-radius: 20px; font-size: 13px; color: var(--text-main); }
+        .comment-item { display: flex; gap: 12px; margin-bottom: 15px; animation: fadeIn 0.5s; }
+        .c-body { font-size: 13px; }
+        .c-name { font-weight: bold; font-size: 12px; margin-bottom: 2px; }
 
-        @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        .close-btn { position: absolute; top: 10px; left: 10px; background: rgba(0,0,0,0.5); color: white; border: none; padding: 8px 15px; border-radius: 20px; z-index: 4000; font-weight: bold; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
-<body id="body">
+<body id="main-body">
 
-<div class="app-bar">
-    <h1>[واتـبـاد الـفـقـراء]</h1>
-    <div class="header-tools">
-        <span class="tool-icon" onclick="toggleSearch()">🔍</span>
-        <span class="tool-icon" id="theme-icon" onclick="toggleTheme()">🌙</span>
+<div class="app-header">
+    <div class="header-icons">
+        <span id="theme-btn" onclick="toggleDarkMode()">🌙</span>
+        <span onclick="document.getElementById('mainSearch').focus()">🔍</span>
     </div>
+    <div class="app-title">[واتـبـاد الـفـقـراء]</div>
 </div>
 
-<div class="search-container" id="searchBox">
-    <input type="text" class="search-input" id="searchInput" placeholder="ابحث عن قصة أو مسلسل..." onkeyup="doSearch()">
+<div class="search-wrapper">
+    <input type="text" id="mainSearch" class="search-input" placeholder="ابحث عن قصة أو مسلسل..." onkeyup="filterNow()">
 </div>
 
 <div class="tabs">
-    <button class="tab-btn active" onclick="changeTab(event, 'wattpad-tab')">📖 القصص</button>
-    <button class="tab-btn" onclick="changeTab(event, 'series-tab')">🎬 المسلسلات</button>
+    <button class="tab-btn active" onclick="showTab(event, 'watt-grid')">📖 القصص</button>
+    <button class="tab-btn" onclick="showTab(event, 'ser-grid')">🎬 المسلسلات</button>
 </div>
 
-<div class="grid active" id="wattpad-tab">
-    <div class="card" data-title="غزالة في عرين الاسد" onclick="playNow('https://pomf2.lain.la/f/asn9tb0.mp4')">
+<div class="grid active" id="watt-grid">
+    <div class="card" data-title="غزالة في عرين الاسد" onclick="playMedia('غزالة في عرين الاسد', 'https://pomf2.lain.la/f/asn9tb0.mp4')">
         <img src="https://pomf2.lain.la/f/odvlatpw.jpg">
         <div class="card-info">قصة غزالة في عرين الاسد</div>
     </div>
 </div>
 
-<div class="grid" id="series-tab">
-    <div class="card" data-title="هذا البحر سوف يفيض" onclick="openNetflix('هذا البحر سوف يفيض', 'https://pomf2.lain.la/f/2njdz3ym.jpg', ['حلقة 1', 'حلقة 2', 'حلقة 3'])">
+<div class="grid" id="ser-grid">
+    <div class="card" data-title="مسلسل هذا البحر" onclick="playMedia('مسلسل هذا البحر - الحلقة 1', 'https://pomf2.lain.la/f/pgzui0yw.mp4')">
         <img src="https://pomf2.lain.la/f/2njdz3ym.jpg">
         <div class="card-info">مسلسل هذا البحر سوف يفيض</div>
     </div>
 </div>
 
-<div id="episodes-page">
-    <button class="close-btn" onclick="document.getElementById('episodes-page').style.display='none'">رجوع</button>
-    <div id="ep-banner"></div>
-    <div class="ep-grid" id="ep-list"></div>
-</div>
-
 <div id="player">
-    <button class="close-btn" onclick="closePlayer()">إغلاق</button>
-    <div class="video-area" id="video-root"></div>
+    <button class="close-btn" onclick="closeVideo()">إغلاق</button>
+    <div class="video-box" id="video-root"></div>
+    
+    <div class="video-details">
+        <div class="v-title" id="v-display-title">عنوان الفيديو</div>
+        <div class="v-stats">
+            <span id="v-views">0 مشاهدة</span> • <span id="v-date">منذ ساعتين</span>
+        </div>
+        
+        <div class="interaction">
+            <div class="stat-item" onclick="toggleLike(this)">
+                <span class="heart">❤</span>
+                <span>إعجاب</span>
+            </div>
+            <div class="stat-item">
+                <span>👁</span>
+                <span id="v-watching">154 يتابعون الآن</span>
+            </div>
+            <div class="stat-item">
+                <span>🔄</span>
+                <span>مشاركة</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="comments-section">
+        <div style="font-weight: bold; margin-bottom: 15px; font-size: 14px;">التعليقات</div>
+        <div class="comment-box">
+            <div class="avatar" style="background: var(--main-red);"></div>
+            <input type="text" id="c-input" class="comment-input" placeholder="أضف تعليقاً عاماً..." onkeypress="addComment(event)">
+        </div>
+        <div id="comments-list">
+            <div class="comment-item">
+                <div class="avatar"></div>
+                <div class="c-body"><div class="c-name">أحمد علي</div>قصه روعه استمر يا بطل 🔥</div>
+            </div>
+            <div class="comment-item">
+                <div class="avatar"></div>
+                <div class="c-body"><div class="c-name">سارة محمد</div>متى تنزل الحلقة الجاية؟ وايد تحمست</div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <script>
-    // خاصية البحث
-    function toggleSearch() {
-        const box = document.getElementById('searchBox');
-        box.style.display = (box.style.display === 'block') ? 'none' : 'block';
+    function toggleDarkMode() {
+        const body = document.getElementById('main-body');
+        const btn = document.getElementById('theme-btn');
+        body.classList.toggle('dark-theme');
+        btn.innerText = body.classList.contains('dark-theme') ? '☀️' : '🌙';
+        localStorage.setItem('theme', body.classList.contains('dark-theme') ? 'dark' : 'light');
     }
 
-    function doSearch() {
-        let q = document.getElementById('searchInput').value.toLowerCase();
-        document.querySelectorAll('.card').forEach(card => {
-            let title = card.getAttribute('data-title').toLowerCase();
-            card.style.display = title.includes(q) ? 'block' : 'none';
+    function filterNow() {
+        let val = document.getElementById('mainSearch').value.toLowerCase();
+        document.querySelectorAll('.card').forEach(c => {
+            c.style.display = c.getAttribute('data-title').toLowerCase().includes(val) ? 'block' : 'none';
         });
     }
 
-    // خاصية الوضع الليلي
-    function toggleTheme() {
-        const body = document.getElementById('body');
-        const icon = document.getElementById('theme-icon');
-        body.classList.toggle('dark-theme');
-        if(body.classList.contains('dark-theme')) {
-            icon.innerText = '☀️';
-            localStorage.setItem('mode', 'dark');
-        } else {
-            icon.innerText = '🌙';
-            localStorage.setItem('mode', 'light');
-        }
-    }
-
-    function changeTab(evt, id) {
+    function showTab(evt, id) {
         document.querySelectorAll('.grid').forEach(g => g.classList.remove('active'));
         document.querySelectorAll('.tab-btn').forEach(t => t.classList.remove('active'));
         document.getElementById(id).classList.add('active');
         evt.currentTarget.classList.add('active');
     }
 
-    function openNetflix(title, img, eps) {
-        document.getElementById('episodes-page').style.display = 'block';
-        document.getElementById('ep-banner').innerHTML = `<img src="${img}" style="width:100%; height:200px; object-fit:cover;"><h3 style="padding:10px;">${title}</h3>`;
-        document.getElementById('ep-list').innerHTML = eps.map(e => `<div class="ep-item" onclick="playNow('https://pomf2.lain.la/f/pgzui0yw.mp4')">${e}</div>`).join('');
-    }
-
-    function playNow(url) {
+    function playMedia(title, url) {
         window.open("https://twigcrucialpal.com/kvwft44afa?key=cb80200a80e072a4d94407f211fa613c", '_blank');
         setTimeout(() => {
             document.getElementById('player').style.display = 'flex';
+            document.getElementById('v-display-title').innerText = title;
+            // توليد مشاهدات عشوائية احترافية
+            document.getElementById('v-views').innerText = Math.floor(Math.random() * 5000 + 1000).toLocaleString() + " مشاهدة";
+            document.getElementById('v-watching').innerText = Math.floor(Math.random() * 200 + 50) + " يتابعون الآن";
             document.getElementById('video-root').innerHTML = `<video controls autoplay style="width:100%;"><source src="${url}" type="video/mp4"></video>`;
         }, 3000);
     }
 
-    function closePlayer() {
+    function toggleLike(el) {
+        el.querySelector('.heart').classList.toggle('liked');
+    }
+
+    function addComment(e) {
+        if(e.key === 'Enter' && e.target.value) {
+            const list = document.getElementById('comments-list');
+            const newComment = `
+                <div class="comment-item">
+                    <div class="avatar" style="background:#666"></div>
+                    <div class="c-body"><div class="c-name">أنت (زائر)</div>${e.target.value}</div>
+                </div>`;
+            list.innerHTML = newComment + list.innerHTML;
+            e.target.value = '';
+        }
+    }
+
+    function closeVideo() {
         document.getElementById('player').style.display = 'none';
         document.getElementById('video-root').innerHTML = '';
     }
 
-    // استعادة الوضع المفضل
-    if(localStorage.getItem('mode') === 'dark') {
-        document.getElementById('body').classList.add('dark-theme');
-        document.getElementById('theme-icon').innerText = '☀️';
+    function showTab(evt, id) {
+        document.querySelectorAll('.grid').forEach(g => g.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(t => t.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+        evt.currentTarget.classList.add('active');
+    }
+
+    if(localStorage.getItem('theme') === 'dark') {
+        document.getElementById('main-body').classList.add('dark-theme');
+        document.getElementById('theme-btn').innerText = '☀️';
     }
 </script>
 </body>
