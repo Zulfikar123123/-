@@ -8,7 +8,6 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="واتباد الفقراء">
-    
     <link rel="apple-touch-icon" href="https://pomf2.lain.la/f/odvlatpw.jpg">
     <link rel="icon" href="https://pomf2.lain.la/f/odvlatpw.jpg">
     <meta name="mobile-web-app-capable" content="yes">
@@ -30,28 +29,14 @@
             --shadow: 0 4px 15px rgba(0,0,0,0.4);
         }
 
-        body { 
-            background-color: var(--bg-page); 
-            color: var(--text-color); 
-            font-family: sans-serif; 
-            margin: 0; padding: 0; transition: 0.3s;
-        }
+        body { background-color: var(--bg-page); color: var(--text-color); font-family: sans-serif; margin: 0; padding: 0; transition: 0.3s; overflow-x: hidden; }
 
-        .header { 
-            background: var(--card-bg); padding: 15px; text-align: center; 
-            box-shadow: var(--shadow); position: sticky; top: 0; z-index: 1000;
-        }
+        .header { background: var(--card-bg); padding: 15px; text-align: center; box-shadow: var(--shadow); position: sticky; top: 0; z-index: 1000; }
         .header h1 { margin: 0; font-size: 20px; color: var(--main-red); }
 
         .controls { padding: 10px 15px; display: flex; gap: 10px; align-items: center; }
-        #searchBar { 
-            flex: 1; padding: 12px; border-radius: 25px; border: 1px solid #ddd; 
-            outline: none; background: var(--card-bg); color: var(--text-color);
-        }
-        .theme-toggle { 
-            background: var(--main-red); color: white; border: none; 
-            padding: 10px; border-radius: 50%; cursor: pointer; width: 40px; height: 40px;
-        }
+        #searchBar { flex: 1; padding: 12px; border-radius: 25px; border: 1px solid #ddd; outline: none; background: var(--card-bg); color: var(--text-color); }
+        .theme-toggle { background: var(--main-red); color: white; border: none; padding: 10px; border-radius: 50%; width: 40px; height: 40px; cursor: pointer; }
 
         .tabs-container { display: flex; background: var(--card-bg); margin: 10px 15px; border-radius: 12px; box-shadow: var(--shadow); overflow: hidden; }
         .tab-btn { flex: 1; padding: 15px; border: none; background: none; color: #888; font-weight: bold; cursor: pointer; font-size: 13px; }
@@ -62,36 +47,47 @@
         .container { padding: 15px; display: none; grid-template-columns: repeat(2, 1fr); gap: 15px; }
         .container.active { display: grid; }
 
-        .video-card { 
-            background: var(--card-bg); border-radius: 15px; overflow: hidden; 
-            box-shadow: var(--shadow); transition: 0.3s; position: relative;
-        }
-        .video-card:active { transform: scale(0.95); }
-        .badge-new { position: absolute; top: 8px; right: 8px; background: var(--main-red); color: white; font-size: 10px; padding: 3px 8px; border-radius: 5px; font-weight: bold; z-index: 2; }
-
+        .video-card { background: var(--card-bg); border-radius: 15px; overflow: hidden; box-shadow: var(--shadow); position: relative; transition: 0.3s; }
         .video-card img { width: 100%; height: 125px; object-fit: cover; }
         .video-info { padding: 10px; font-size: 12px; text-align: center; font-weight: bold; min-height: 35px; }
+        .badge-new { position: absolute; top: 8px; right: 8px; background: var(--main-red); color: white; font-size: 10px; padding: 3px 8px; border-radius: 5px; font-weight: bold; }
+
+        /* نافذة التثبيت التلقائية */
+        #install-banner {
+            display: none; position: fixed; bottom: 20px; left: 15px; right: 15px;
+            background: var(--card-bg); padding: 15px; border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3); z-index: 99999;
+            border: 2px solid var(--main-red); align-items: center; gap: 12px;
+            animation: slideUp 0.6s ease-out;
+        }
+        #install-banner img { width: 45px; height: 45px; border-radius: 10px; }
+        #install-banner .text { flex: 1; font-size: 12px; font-weight: bold; line-height: 1.4; }
+        #install-banner button { background: var(--main-red); color: white; border: none; padding: 8px 12px; border-radius: 8px; font-weight: bold; cursor: pointer; }
+
+        @keyframes slideUp { from { transform: translateY(100px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
 
         #player-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-page); z-index: 10000; }
-        .close-btn { position: absolute; top: 20px; left: 20px; background: var(--main-red); color: white; border: none; padding: 10px 20px; border-radius: 30px; z-index: 11000; font-weight: bold; }
-        
-        #waiting-screen { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; width: 85%; }
-        .ad-btn { background: #28a745; color: white; padding: 18px; border: none; border-radius: 12px; font-size: 16px; font-weight: bold; width: 100%; margin-top: 20px; }
-
+        .close-btn { position: absolute; top: 20px; left: 20px; background: var(--main-red); color: white; border: none; padding: 10px 20px; border-radius: 30px; font-weight: bold; }
         iframe { width: 100%; height: 100%; border: none; display: none; }
     </style>
 </head>
 <body>
 
+<div id="install-banner">
+    <img src="https://pomf2.lain.la/f/odvlatpw.jpg">
+    <div class="text">ثبّت تطبيق [واتباد الفقراء] لتجربة أسرع وأفضل!</div>
+    <button onclick="presentInstall()">تثبيت الآن</button>
+</div>
+
 <div class="header"><h1> [واتـبـاد الـفـقـراء] </h1></div>
 
 <div class="controls">
-    <input type="text" id="searchBar" placeholder="بحث..." onkeyup="filterContent()">
+    <input type="text" id="searchBar" placeholder="بحث عن قصة أو حلقة..." onkeyup="filterContent()">
     <button class="theme-toggle" onclick="toggleTheme()">🌓</button>
 </div>
 
 <div id="recent-title" class="section-title" style="display: none;">⌚ شاهدته مؤخراً</div>
-<div class="container active" id="recent-section" style="padding-bottom: 0;"></div>
+<div class="container active" id="recent-section"></div>
 
 <div class="tabs-container">
     <button class="tab-btn active" onclick="switchTab(event, 'wattpad-section')">📖 قصص واتباد الفقراء</button>
@@ -103,10 +99,10 @@
 
 <div id="player-overlay">
     <button class="close-btn" onclick="closePlayer()">رجوع</button>
-    <div id="waiting-screen">
+    <div style="text-align: center; margin-top: 50%; padding: 20px;" id="waiting-screen">
         <h2 style="color: var(--main-red);">تحقق الأمان</h2>
         <p>بقي 10 ثوانٍ لفتح المقطع..</p>
-        <button class="ad-btn" onclick="openAd()">اضغط للفتح</button>
+        <button style="background: #28a745; color: white; padding: 15px; border: none; border-radius: 10px; width: 80%; font-weight: bold;" onclick="openAd()">اضغط هنا للفتح</button>
     </div>
     <iframe id="video-iframe" allowfullscreen></iframe>
 </div>
@@ -114,19 +110,32 @@
 <script>
     const wattpadVideos = [
         { id: 1, title: "غزالة في عرين الاسد - الأخير", img: "https://pomf2.lain.la/f/odvlatpw.jpg", url: "https://pomf2.lain.la/f/asn9tb0.mp4", isNew: true },
-        { id: 2, title: "خذ بيدي الى احضانك - ج3", img: "https://pomf2.lain.la/f/2njdz3ym.jpg", url: "https://pomf2.lain.la/f/jlyrjnqz.mp4", isNew: false },
-        { id: 3, title: "نهوة وحب ودخيلة - ج2", img: "https://pomf2.lain.la/f/4rn9gfoy.jpg", url: "https://pomf2.lain.la/f/gk6vjy34.mp4", isNew: false }
+        { id: 2, title: "خذ بيدي الى احضانك - ج3", img: "https://pomf2.lain.la/f/2njdz3ym.jpg", url: "https://pomf2.lain.la/f/jlyrjnqz.mp4", isNew: false }
     ];
 
     const turkishVideos = [
-        { id: 4, title: "هذا البحر سوف يفيض - ح1", img: "https://pomf2.lain.la/f/2njdz3ym.jpg", url: "https://pomf2.lain.la/f/pgzui0yw.mp4", isNew: true },
-        { id: 5, title: "هذا البحر سوف يفيض - ح2", img: "https://pomf2.lain.la/f/2njdz3ym.jpg", url: "https://pomf2.lain.la/f/zc3oo4c.mp4", isNew: true }
+        { id: 4, title: "هذا البحر سوف يفيض - ح1", img: "https://pomf2.lain.la/f/2njdz3ym.jpg", url: "https://pomf2.lain.la/f/pgzui0yw.mp4", isNew: true }
     ];
 
+    let deferredPrompt;
     let currentVideo = null;
     let startTime = 0;
     let timerStarted = false;
-    let recentlyWatched = JSON.parse(localStorage.getItem('recent_v2')) || [];
+    let recentlyWatched = JSON.parse(localStorage.getItem('recent_v3')) || [];
+
+    // إدارة التثبيت التلقائي
+    window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        setTimeout(() => { document.getElementById('install-banner').style.display = 'flex'; }, 3000);
+    });
+
+    function presentInstall() {
+        if (deferredPrompt) {
+            deferredPrompt.prompt();
+            document.getElementById('install-banner').style.display = 'none';
+        }
+    }
 
     function init() {
         renderVideos(wattpadVideos, 'wattpad-section');
@@ -136,8 +145,7 @@
     }
 
     function renderVideos(data, containerId) {
-        const container = document.getElementById(containerId);
-        container.innerHTML = data.map(vid => `
+        document.getElementById(containerId).innerHTML = data.map(vid => `
             <div class="video-card" data-title="${vid.title}" onclick="preparePlayer(${JSON.stringify(vid).replace(/"/g, '&quot;')})">
                 ${vid.isNew ? '<div class="badge-new">جديد</div>' : ''}
                 <img src="${vid.img}">
@@ -154,9 +162,9 @@
     }
 
     function filterContent() {
-        let query = document.getElementById('searchBar').value.toLowerCase();
-        document.querySelectorAll('.video-card').forEach(card => {
-            card.style.display = card.getAttribute('data-title').toLowerCase().includes(query) ? 'block' : 'none';
+        let q = document.getElementById('searchBar').value.toLowerCase();
+        document.querySelectorAll('.video-card').forEach(c => {
+            c.style.display = c.getAttribute('data-title').toLowerCase().includes(q) ? 'block' : 'none';
         });
     }
 
@@ -171,14 +179,13 @@
         document.getElementById('player-overlay').style.display = 'block';
         document.getElementById('waiting-screen').style.display = 'block';
         document.getElementById('video-iframe').style.display = 'none';
-        document.getElementById('video-iframe').src = "";
     }
 
     function saveToRecent(vid) {
         recentlyWatched = recentlyWatched.filter(v => v.id !== vid.id);
         recentlyWatched.unshift(vid);
         if(recentlyWatched.length > 2) recentlyWatched.pop();
-        localStorage.setItem('recent_v2', JSON.stringify(recentlyWatched));
+        localStorage.setItem('recent_v3', JSON.stringify(recentlyWatched));
         renderRecent();
     }
 
@@ -196,21 +203,15 @@
     }
 
     window.onfocus = function() {
-        if (timerStarted) {
-            if (Math.floor((new Date().getTime() - startTime) / 1000) >= 10) {
-                document.getElementById('waiting-screen').style.display = 'none';
-                document.getElementById('video-iframe').src = currentVideo.url;
-                document.getElementById('video-iframe').style.display = 'block';
-                timerStarted = false;
-            }
+        if (timerStarted && Math.floor((new Date().getTime() - startTime) / 1000) >= 10) {
+            document.getElementById('waiting-screen').style.display = 'none';
+            document.getElementById('video-iframe').src = currentVideo.url;
+            document.getElementById('video-iframe').style.display = 'block';
+            timerStarted = false;
         }
     };
 
-    function closePlayer() {
-        document.getElementById('player-overlay').style.display = 'none';
-        document.getElementById('video-iframe').src = "";
-        timerStarted = false;
-    }
+    function closePlayer() { document.getElementById('player-overlay').style.display = 'none'; timerStarted = false; }
 
     init();
 </script>
