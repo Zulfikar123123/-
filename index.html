@@ -5,37 +5,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Video Hub Pro</title>
     <style>
-        :root { --main-red: #ff0000; --bg-black: #0a0a0a; --card-bg: #111; --btn-green: #28a745; --tab-gray: #222; }
+        :root { --main-red: #ff0000; --bg-black: #0a0a0a; --card-bg: #111; --btn-green: #28a745; }
         body { background-color: var(--bg-black); color: white; font-family: sans-serif; margin: 0; padding: 0; overflow-x: hidden; }
         
         .header { background: #1a1a1a; padding: 15px; text-align: center; border-bottom: 2px solid var(--main-red); }
         .header h1 { margin: 0; font-size: 18px; color: var(--main-red); }
 
-        /* شريط الأقسام */
+        /* الأقسام */
         .tabs-container { display: flex; background: #1a1a1a; border-bottom: 1px solid #333; position: sticky; top: 0; z-index: 999; }
-        .tab-btn { flex: 1; padding: 15px; border: none; background: none; color: #888; font-weight: bold; cursor: pointer; transition: 0.3s; border-bottom: 3px solid transparent; font-size: 14px; }
+        .tab-btn { flex: 1; padding: 15px; border: none; background: none; color: #888; font-weight: bold; cursor: pointer; border-bottom: 3px solid transparent; }
         .tab-btn.active { color: var(--main-red); border-bottom-color: var(--main-red); background: #222; }
 
         .container { padding: 12px; display: none; grid-template-columns: repeat(2, 1fr); gap: 10px; }
         .container.active { display: grid; }
 
-        .video-card { background: var(--card-bg); border-radius: 8px; overflow: hidden; border: 1px solid #222; cursor: pointer; position: relative; }
+        .video-card { background: var(--card-bg); border-radius: 8px; overflow: hidden; border: 1px solid #222; cursor: pointer; }
         .video-card img { width: 100%; height: 110px; object-fit: cover; display: block; }
-        .video-info { padding: 8px; font-size: 11px; text-align: center; font-weight: bold; background: #161616; min-height: 35px; display: flex; align-items: center; justify-content: center; }
+        .video-info { padding: 8px; font-size: 11px; text-align: center; font-weight: bold; background: #161616; min-height: 35px; }
         
         #player-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 10000; }
-        .close-btn { position: absolute; top: 15px; right: 15px; background: var(--main-red); color: white; border: none; padding: 8px 15px; border-radius: 4px; z-index: 10001; font-weight: bold; cursor: pointer; }
+        .close-btn { position: absolute; top: 15px; right: 15px; background: var(--main-red); color: white; border: none; padding: 8px 15px; border-radius: 4px; z-index: 10001; font-weight: bold; }
         
         #waiting-screen { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; width: 90%; }
-        .ad-btn { background: var(--btn-green); color: white; padding: 20px; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; width: 100%; margin-top: 20px; }
-        .btn-fail { background: var(--main-red) !important; animation: shake 0.5s; }
-        
-        @keyframes shake {
-            0% { transform: translateX(0); }
-            25% { transform: translateX(-5px); }
-            50% { transform: translateX(5px); }
-            100% { transform: translateX(0); }
-        }
+        .ad-btn { background: var(--btn-green); color: white; padding: 20px; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; width: 100%; margin-top: 20px; }
         
         iframe { width: 100%; height: 100%; border: none; display: none; }
     </style>
@@ -46,53 +38,45 @@
 
 <div class="tabs-container">
     <button class="tab-btn active" onclick="switchTab(event, 'wattpad-section')">قصص واتباد الفقراء</button>
-    <button class="tab-btn" onclick="switchTab(event, 'turkish-section')">قصة عشق (مسلسلات)</button>
+    <button class="tab-btn" onclick="switchTab(event, 'turkish-section')">قصة عشق</button>
 </div>
 
 <div class="container active" id="wattpad-section"></div>
-
 <div class="container" id="turkish-section"></div>
 
 <div id="player-overlay">
     <button class="close-btn" onclick="closePlayer()">إغلاق X</button>
     <div id="waiting-screen">
         <h2 id="wait-title" style="color: var(--main-red);">تأكيد المشاهدة</h2>
-        <p id="wait-msg">يجب الضغط على الزر أدناه والبقاء في صفحة الإعلان لمدة 10 ثوانٍ</p>
-        <button id="trigger-ad-btn" class="ad-btn" onclick="openAd()">شاهد الاعلان لمدة 10 ثواني</button>
+        <p id="wait-msg">اضغط على الزر وانتظر 10 ثوانٍ في صفحة الإعلان</p>
+        <button id="trigger-ad-btn" class="ad-btn" onclick="openAd()">فتح المقطع (10 ثوانٍ)</button>
     </div>
     <iframe id="video-iframe" src="" allowfullscreen></iframe>
 </div>
 
 <script>
-    // فيديوهات واتباد الفقراء (كما هي)
+    // بيانات واتباد
     const wattpadVideos = [
-        { title: "غـزالـة فـي عـريـن الاسـد + جـريـئـة روعـة || الـجـزء الرابع الاخير", img: "https://pomf2.lain.la/f/odvlatpw.jpg", url: "https://pomf2.lain.la/f/asn9tb0.mp4" },
-        { title: "غـزالـة فـي عـريـن الاسـد + جـريـئـة روعـة || الـجـزء الثالث", img: "https://pomf2.lain.la/f/odvlatpw.jpg", url: "https://pomf2.lain.la/f/pgzui0yw.mp4" },
-        { title: "غـزالـة فـي عـريـن الاسـد + جـريـئـة روعـة || الـجـزء الثاني", img: "https://pomf2.lain.la/f/odvlatpw.jpg", url: "https://pomf2.lain.la/f/zc3oo4c.mp4" },
-        { title: "خـذ بـيـدي الى احـظـانـك + جريئة الجزء الثالث الاخير", img: "https://pomf2.lain.la/f/2njdz3ym.jpg", url: "https://pomf2.lain.la/f/jlyrjnqz.mp4" },
-        { title: "خـذ بـيـدي الى احـظـانـك + جريئة ||الجزء الثاني", img: "https://pomf2.lain.la/f/2njdz3ym.jpg", url: "https://pomf2.lain.la/f/htkrfc1j.mp4" },
-        { title: "نـهـوة وحـب ودخـيلـة + جـريـئـة روعـة || الجزء الثاني", img: "https://pomf2.lain.la/f/4rn9gfoy.jpg", url: "https://pomf2.lain.la/f/gk6vjy34.mp4" },
-        { title: "نـهـوة وحـب ودخـيلـة + جـريـئـة روعـة || الجزء الثالث الاخير", img: "https://pomf2.lain.la/f/4rn9gfoy.jpg", url: "https://pomf2.lain.la/f/pf98t6l7.mp4" }
+        { title: "غـزالـة فـي عـريـن الاسـد - الجزء 4", img: "https://pomf2.lain.la/f/odvlatpw.jpg", url: "https://pomf2.lain.la/f/asn9tb0.mp4" },
+        { title: "نـهـوة وحـب ودخـيلـة - الجزء 3", img: "https://pomf2.lain.la/f/4rn9gfoy.jpg", url: "https://pomf2.lain.la/f/pf98t6l7.mp4" }
     ];
 
-    // فيديوهات قصة عشق (تمت إضافة المسلسل)
+    // بيانات قصة عشق - هنا قمت بوضع روابط عشوائية للتجربة فقط
     const turkishVideos = [
-        { title: "مسلسل هذا البحر سوف يفيض - الحلقة 1", img: "https://pomf2.lain.la/f/2njdz3ym.jpg", url: "رابط_الحلقة_1_هنا" },
-        { title: "مسلسل هذا البحر سوف يفيض - الحلقة 2", img: "https://pomf2.lain.la/f/2njdz3ym.jpg", url: "رابط_الحلقة_2_هنا" },
-        { title: "مسلسل هذا البحر سوف يفيض - الحلقة 3", img: "https://pomf2.lain.la/f/2njdz3ym.jpg", url: "رابط_الحلقة_3_هنا" }
+        { title: "مسلسل هذا البحر سوف يفيض - الحلقة 1", img: "https://pomf2.lain.la/f/2njdz3ym.jpg", url: "https://pomf2.lain.la/f/jlyrjnqz.mp4" },
+        { title: "مسلسل هذا البحر سوف يفيض - الحلقة 2", img: "https://pomf2.lain.la/f/2njdz3ym.jpg", url: "https://pomf2.lain.la/f/htkrfc1j.mp4" }
     ];
 
     let currentVideoUrl = "";
     let startTime = 0;
     let timerStarted = false;
-    let popUnderExecuted = false;
 
     function displayVideos(videoArray, containerId) {
         const container = document.getElementById(containerId);
         videoArray.forEach(vid => {
             container.innerHTML += `
                 <div class="video-card" onclick="preparePlayer('${vid.url}')">
-                    <img src="${vid.img || 'https://via.placeholder.com/150'}">
+                    <img src="${vid.img}">
                     <div class="video-info">${vid.title}</div>
                 </div>`;
         });
@@ -102,50 +86,30 @@
     displayVideos(turkishVideos, 'turkish-section');
 
     function switchTab(evt, sectionId) {
-        const containers = document.getElementsByClassName("container");
-        for (let i = 0; i < containers.length; i++) { containers[i].classList.remove("active"); }
-        const tabs = document.getElementsByClassName("tab-btn");
-        for (let i = 0; i < tabs.length; i++) { tabs[i].classList.remove("active"); }
-        document.getElementById(sectionId).classList.add("active");
-        evt.currentTarget.classList.add("active");
-    }
-
-    function loadPopUnder() {
-        if (!popUnderExecuted) {
-            const script = document.createElement('script');
-            script.src = "https://twigcrucialpal.com/a8/03/68/a80368812dec3f6d3f22da29616fb388.js";
-            document.body.appendChild(script);
-            popUnderExecuted = true;
-        }
+        document.querySelectorAll('.container').forEach(c => c.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(t => t.classList.remove('active'));
+        document.getElementById(sectionId).classList.add('active');
+        evt.currentTarget.classList.add('active');
     }
 
     function preparePlayer(videoUrl) {
-        loadPopUnder();
         currentVideoUrl = videoUrl;
         timerStarted = false;
         document.getElementById('player-overlay').style.display = 'block';
-        resetUI();
-    }
-
-    function resetUI() {
         document.getElementById('waiting-screen').style.display = 'block';
         document.getElementById('video-iframe').style.display = 'none';
         document.getElementById('video-iframe').src = "";
-        updateUI("تأكيد المشاهدة", "يجب الضغط على الزر أدناه والبقاء في صفحة الإعلان لمدة 10 ثوانٍ", "شاهد الاعلان لمدة 10 ثواني");
     }
 
     function openAd() {
-        const smartLink = "https://twigcrucialpal.com/kvwft44afa?key=cb80200a80e072a4d94407f211fa613c"; 
-        window.open(smartLink, '_blank');
+        window.open("https://twigcrucialpal.com/kvwft44afa?key=cb80200a80e072a4d94407f211fa613c", '_blank');
         startTime = new Date().getTime(); 
         timerStarted = true;
-        updateUI("جاري التحقق...", "الرجاء البقاء في صفحة الإعلان 10 ثوانٍ لفتح المقطع", "انتظر ثواني...");
     }
 
     window.onfocus = function() {
         if (timerStarted) {
-            let currentTime = new Date().getTime();
-            let secondsPassed = Math.floor((currentTime - startTime) / 1000);
+            let secondsPassed = Math.floor((new Date().getTime() - startTime) / 1000);
             if (secondsPassed >= 10) {
                 document.getElementById('waiting-screen').style.display = 'none';
                 const ifr = document.getElementById('video-iframe');
@@ -153,19 +117,10 @@
                 ifr.style.display = 'block';
                 timerStarted = false;
             } else {
-                let remaining = 10 - secondsPassed;
-                updateUI("فشل التأكيد!", `لقد عدت مبكراً جداً (متبقي ${remaining} ثانية)`, "إعادة المحاولة والبقاء في الاعلان", true);
+                alert("يجب البقاء في صفحة الإعلان 10 ثوانٍ!");
             }
         }
     };
-
-    function updateUI(title, msg, btnText, isFail = false) {
-        document.getElementById('wait-title').innerText = title;
-        document.getElementById('wait-msg').innerText = msg;
-        const btn = document.getElementById('trigger-ad-btn');
-        btn.innerText = btnText;
-        if (isFail) { btn.classList.add('btn-fail'); } else { btn.classList.remove('btn-fail'); }
-    }
 
     function closePlayer() {
         document.getElementById('player-overlay').style.display = 'none';
@@ -173,6 +128,5 @@
         timerStarted = false;
     }
 </script>
-
 </body>
 </html>
