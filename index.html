@@ -51,61 +51,39 @@
         .card img { width: 100%; height: 135px; object-fit: cover; border-bottom: 3px solid var(--main-red); }
         .card-info { padding: 10px; font-size: 12px; text-align: center; font-weight: bold; }
 
-        /* ميزة علامة جديد */
         .card.new::after {
             content: "جديد";
             position: absolute;
-            top: 10px;
-            right: 10px;
-            background: var(--main-red);
-            color: white;
-            font-size: 10px;
-            font-weight: bold;
-            padding: 3px 10px;
-            border-radius: 20px;
-            z-index: 5;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            top: 10px; right: 10px;
+            background: var(--main-red); color: white;
+            font-size: 10px; font-weight: bold; padding: 3px 10px;
+            border-radius: 20px; z-index: 5; box-shadow: 0 2px 5px rgba(0,0,0,0.2);
         }
 
         /* واجهات العرض */
         #series-overlay, #product-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-page); z-index: 2000; overflow-y: auto; }
-        .series-banner { width: 100%; height: 220px; object-fit: cover; filter: brightness(0.7); }
-        .series-details, .product-details { padding: 20px; position: relative; margin-top: -50px; background: var(--bg-page); border-radius: 30px 30px 0 0; }
-        .ep-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 15px; }
-        .ep-card { background: var(--card-bg); border: 2px solid var(--search-bg); border-radius: 10px; padding: 15px 5px; text-align: center; font-weight: bold; font-size: 13px; }
+        
+        /* سلايدر الصور الاحترافي */
+        .slider-container { width: 100%; height: 300px; position: relative; overflow: hidden; background: #eee; }
+        .slider-wrapper { display: flex; transition: transform 0.4s ease-in-out; height: 100%; }
+        .slider-wrapper img { width: 100%; height: 100%; object-fit: contain; flex-shrink: 0; }
+        .slider-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.3); color: white; border: none; padding: 10px; cursor: pointer; z-index: 10; border-radius: 50%; width: 40px; height: 40px; }
+        .prev-btn { left: 10px; }
+        .next-btn { right: 10px; }
 
-        /* واجهة المنتج */
-        .contact-btn { display: block; text-align: center; padding: 15px; margin-top: 15px; border-radius: 10px; text-decoration: none; color: white; font-weight: bold; }
+        .series-banner { width: 100%; height: 220px; object-fit: cover; filter: brightness(0.7); }
+        .series-details, .product-details { padding: 20px; position: relative; margin-top: -30px; background: var(--bg-page); border-radius: 30px 30px 0 0; }
+        .price-tag { color: var(--main-red); font-size: 18px; font-weight: bold; display: block; margin: 10px 0; }
+        
+        .contact-btn { display: block; text-align: center; padding: 15px; margin-top: 10px; border-radius: 10px; text-decoration: none; color: white; font-weight: bold; }
         .whatsapp { background: #25D366; }
         .telegram { background: #0088cc; }
 
-        /* المشغل الاحترافي */
+        /* المشغل والسجل */
         #player { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-page); z-index: 3000; flex-direction: column; overflow-y: auto; }
         .video-box { width: 100%; background: #000; position: sticky; top: 0; z-index: 3001; }
         .close-btn { position: absolute; top: 10px; left: 10px; background: rgba(0,0,0,0.5); color: white; border: none; padding: 8px 15px; border-radius: 20px; z-index: 4000; font-weight: bold; cursor: pointer; }
-
-        .v-details { padding: 15px; background: var(--card-bg); }
-        .interaction { display: flex; gap: 20px; border-top: 1px solid #eee; padding-top: 15px; margin-top: 10px; }
-        .stat-item { display: flex; flex-direction: column; align-items: center; font-size: 11px; color: var(--gray); cursor: pointer; }
-        .heart-icon.liked { color: var(--main-red); }
-
-        /* التعليقات والمقترحات */
-        .comments-section { padding: 15px; background: var(--card-bg); margin-top: 10px; border-bottom: 1px solid #eee; }
-        .comment-header { font-weight: bold; font-size: 14px; margin-bottom: 15px; display: flex; align-items: center; gap: 8px; }
-        .comment-box { display: flex; gap: 10px; margin-bottom: 20px; }
-        .comment-input { flex: 1; border: none; background: var(--search-bg); padding: 10px 15px; border-radius: 20px; font-size: 13px; outline: none; color: var(--text-main); }
-        .comment-item { display: flex; gap: 12px; margin-bottom: 15px; }
-        .avatar-circle { width: 32px; height: 32px; border-radius: 50%; background: #666; color: white; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 11px; flex-shrink: 0; }
-        .comment-text-wrap { background: var(--search-bg); padding: 8px 12px; border-radius: 12px; font-size: 13px; flex: 1; }
-        .suggested-section { padding: 15px; background: var(--card-bg); margin-top: 2px; }
-        .suggested-title-head { font-weight: bold; font-size: 14px; margin-bottom: 15px; color: var(--gray); }
-        .suggested-card { display: flex; gap: 12px; margin-bottom: 15px; cursor: pointer; }
-        .suggested-thumb { width: 140px; height: 80px; border-radius: 8px; object-fit: cover; flex-shrink: 0; }
-        .suggested-info { display: flex; flex-direction: column; gap: 4px; overflow: hidden; }
-        .suggested-title { font-size: 13px; font-weight: bold; color: var(--text-main); line-height: 1.3; }
-        .suggested-meta { font-size: 11px; color: var(--gray); }
-        
-        .empty-msg { grid-column: 1 / span 2; text-align: center; padding: 40px; color: var(--gray); font-size: 14px; }
+        .empty-msg { grid-column: 1 / span 2; text-align: center; padding: 40px; color: var(--gray); }
     </style>
 </head>
 <body id="main-body">
@@ -119,7 +97,7 @@
 </div>
 
 <div class="search-wrapper">
-    <input type="text" id="mainSearch" class="search-input" placeholder="ابحث عن قصة أو مسلسل..." onkeyup="filterNow()">
+    <input type="text" id="mainSearch" class="search-input" placeholder="ابحث..." onkeyup="filterNow()">
 </div>
 
 <div class="tabs">
@@ -144,137 +122,97 @@
 </div>
 
 <div class="grid" id="prod-grid">
-    <div class="card" data-title="المنتج الأول" onclick="openProduct('المنتج الأول', 'هنا وصف تفصيلي للمنتج الأول الخاص بك وفوائده.', 'https://pomf2.lain.la/f/odvlatpw.jpg')">
-        <img src="https://pomf2.lain.la/f/odvlatpw.jpg">
-        <div class="card-info">المنتج الأول</div>
+    <div class="card" data-title="كابسة صاج LIBRONC" onclick="openProduct('كابسة صاج ماركة LIBRONC', 'كابسة صاج أصلية ماركة ليبرونك، جودة عالية وسهلة التنظيف. \n\n سعر التوصيل لجميع المحافظات: 5 الاف فقط.', '22,000 د.ع', ['https://pomf2.lain.la/f/czxdmilv.png', 'https://pomf2.lain.la/f/vnd67vz.png', 'https://pomf2.lain.la/f/rywgy0r7.png'])">
+        <img src="https://pomf2.lain.la/f/czxdmilv.png">
+        <div class="card-info">كابسة صاج LIBRONC</div>
     </div>
 </div>
 
-<div class="grid" id="history-grid">
-    </div>
+<div class="grid" id="history-grid"></div>
 
 <div id="product-overlay">
     <button class="close-btn" onclick="backToMain('product-overlay')">رجوع</button>
-    <img id="p-img" class="series-banner">
+    <div class="slider-container">
+        <button class="slider-btn prev-btn" onclick="moveSlider(-1)">&#10094;</button>
+        <div class="slider-wrapper" id="slider-wrap"></div>
+        <button class="slider-btn next-btn" onclick="moveSlider(1)">&#10095;</button>
+    </div>
     <div class="product-details">
         <h2 id="p-title" style="margin:0;"></h2>
-        <p id="p-desc" style="color:var(--gray); font-size:14px; margin-top:15px; line-height:1.6;"></p>
-        <a id="p-wa" href="#" class="contact-btn whatsapp">تواصل عبر واتساب</a>
-        <a id="p-tg" href="#" class="contact-btn telegram">تواصل عبر تليجرام</a>
+        <span id="p-price" class="price-tag"></span>
+        <p id="p-desc" style="color:var(--gray); font-size:14px; line-height:1.6; white-space: pre-line;"></p>
+        <a href="https://wa.me/9647860526345" class="contact-btn whatsapp">اطلب عبر واتساب</a>
+        <a href="https://t.me/Z_U_L_f_I_Q_A" class="contact-btn telegram">اطلب عبر تليجرام</a>
     </div>
 </div>
 
 <div id="series-overlay">
     <button class="close-btn" onclick="backToMain('series-overlay')">رجوع</button>
     <img id="ser-img" class="series-banner">
-    <div class="series-details">
-        <h2 id="ser-title" style="margin:0;"></h2>
-        <p style="color:var(--gray); font-size:13px;">اختر الحلقة للمشاهدة</p>
-    </div>
+    <div class="series-details"><h2 id="ser-title" style="margin:0;"></h2><p>اختر الحلقة</p></div>
     <div class="ep-grid" id="ep-list"></div>
 </div>
 
 <div id="player">
     <button class="close-btn" onclick="backToMain('player')">إغلاق</button>
     <div class="video-box" id="video-root"></div>
-    <div class="v-details">
-        <div id="v-title" style="font-weight:bold; font-size:16px;"></div>
-        <div id="v-views" style="color:var(--gray); font-size:12px; margin-top:5px;"></div>
-        <div class="interaction">
-            <div class="stat-item" onclick="this.querySelector('.heart-icon').classList.toggle('liked')">
-                <span class="heart-icon">❤</span><span>إعجاب</span>
-            </div>
-            <div class="stat-item"><span>👁</span><span id="v-watch"></span></div>
-        </div>
-    </div>
-    <div class="comments-section">
-        <div class="comment-header">💬 التعليقات</div>
-        <div id="comments-list"></div>
-    </div>
-    <div class="suggested-section">
-        <div class="suggested-title-head">الأجزاء التالية (مقترح لك)</div>
-        <div id="suggested-list"></div>
-    </div>
+    <div class="v-details"><div id="v-title" style="font-weight:bold;"></div></div>
 </div>
 
 <script>
-    // وظيفة السجل
-    function saveToHistory(id, title, url, thumb) {
-        let history = JSON.parse(localStorage.getItem('user_history') || '[]');
-        // حذف الفيديو إذا كان موجوداً مسبقاً لمنع التكرار
-        history = history.filter(item => item.id !== id);
-        // إضافة الفيديو في بداية القائمة
-        history.unshift({id, title, url, thumb});
-        // حفظ آخر 10 فيديوهات فقط
-        if(history.length > 10) history.pop();
-        localStorage.setItem('user_history', JSON.stringify(history));
-    }
+    let currentSlide = 0;
+    let totalSlides = 0;
 
-    function updateHistoryUI() {
-        const grid = document.getElementById('history-grid');
-        const history = JSON.parse(localStorage.getItem('user_history') || '[]');
-        if(history.length === 0) {
-            grid.innerHTML = '<div class="empty-msg">لا يوجد فيديوهات في السجل حالياً</div>';
-            return;
-        }
-        grid.innerHTML = history.map(item => `
-            <div class="card" onclick="playMedia('${item.id}', '${item.title}', '${item.url}', '${item.thumb}')">
-                <img src="${item.thumb}">
-                <div class="card-info">${item.title}</div>
-            </div>
-        `).join('');
-    }
-
-    function backToMain(overlayId) {
-        document.getElementById(overlayId).style.display = 'none';
-        if (overlayId === 'player') document.getElementById('video-root').innerHTML = '';
-    }
-
-    function openProduct(title, desc, img) {
+    function openProduct(title, desc, price, images) {
         document.getElementById('product-overlay').style.display = 'block';
-        document.getElementById('p-img').src = img;
         document.getElementById('p-title').innerText = title;
         document.getElementById('p-desc').innerText = desc;
-        document.getElementById('p-wa').href = "https://wa.me/9647860526345";
-        document.getElementById('p-tg').href = "https://t.me/Z_U_L_f_I_Q_A";
+        document.getElementById('p-price').innerText = "السعر: " + price;
+        
+        const wrap = document.getElementById('slider-wrap');
+        wrap.innerHTML = images.map(img => `<img src="${img}">`).join('');
+        currentSlide = 0;
+        totalSlides = images.length;
+        updateSlider();
     }
+
+    function moveSlider(step) {
+        currentSlide = (currentSlide + step + totalSlides) % totalSlides;
+        updateSlider();
+    }
+
+    function updateSlider() {
+        const wrap = document.getElementById('slider-wrap');
+        wrap.style.transform = `translateX(${currentSlide * 100}%)`;
+    }
+
+    function backToMain(id) { document.getElementById(id).style.display = 'none'; if(id==='player') document.getElementById('video-root').innerHTML=''; }
 
     function openSeries(id, title, img, eps) {
         document.getElementById('series-overlay').style.display = 'block';
         document.getElementById('ser-img').src = img;
         document.getElementById('ser-title').innerText = title;
-        document.getElementById('ep-list').innerHTML = eps.map((e, i) => 
-            `<div class="ep-card" onclick="playMedia('${id}_${i}', '${title} - ${e}', 'https://pomf2.lain.la/f/pgzui0yw.mp4', '${img}')">${e}</div>`
-        ).join('');
+        document.getElementById('ep-list').innerHTML = eps.map((e, i) => `<div class="ep-card" onclick="playMedia('${id}_${i}', '${title} - ${e}', '#', '${img}')">${e}</div>`).join('');
     }
 
     function playMedia(id, title, url, thumb) {
-        // حفظ في السجل
         saveToHistory(id, title, url, thumb);
-        
-        window.open("https://twigcrucialpal.com/kvwft44afa?key=cb80200a80e072a4d94407f211fa613c", '_blank');
-        setTimeout(() => {
-            document.getElementById('player').style.display = 'flex';
-            document.getElementById('v-title').innerText = title;
-            let real = parseInt(localStorage.getItem('v_'+id) || 0) + 1;
-            localStorage.setItem('v_'+id, real);
-            document.getElementById('v-views').innerText = (1000 + real).toLocaleString() + " مشاهدة";
-            document.getElementById('v-watch').innerText = Math.floor(Math.random()*100+50) + " يتابعون الآن";
-            document.getElementById('video-root').innerHTML = `<video id="mainVid" controls autoplay style="width:100%;"><source src="${url}" type="video/mp4"></video>`;
-            loadComments();
-            loadSuggestions();
-        }, 3000);
+        document.getElementById('player').style.display = 'flex';
+        document.getElementById('v-title').innerText = title;
+        document.getElementById('video-root').innerHTML = `<video controls autoplay style="width:100%;"><source src="${url}" type="video/mp4"></video>`;
     }
 
-    function loadComments() {
-        const list = document.getElementById('comments-list');
-        list.innerHTML = `<div class="comment-item"><div class="avatar-circle">M</div><div class="comment-text-wrap"><div style="font-weight:bold; font-size:11px; margin-bottom:2px;">محمد العراقي</div><div>عاشت ايدك على هذا الترتيب!</div></div></div>`;
+    function saveToHistory(id, title, url, thumb) {
+        let history = JSON.parse(localStorage.getItem('user_history') || '[]');
+        history = history.filter(item => item.id !== id);
+        history.unshift({id, title, url, thumb});
+        localStorage.setItem('user_history', JSON.stringify(history.slice(0, 10)));
     }
 
-    function loadSuggestions() {
-        const list = document.getElementById('suggested-list');
-        const items = [{t: "غزالة في عرين الاسد - الجزء 2", img: "https://pomf2.lain.la/f/odvlatpw.jpg", v: "2.4K"}];
-        list.innerHTML = items.map(item => `<div class="suggested-card" onclick="playMedia('s_id', '${item.t}', '#', '${item.img}')"><img src="${item.img}" class="suggested-thumb"><div class="suggested-info"><div class="suggested-title">${item.t}</div><div class="suggested-meta">${item.v} مشاهدة</div></div></div>`).join('');
+    function updateHistoryUI() {
+        const grid = document.getElementById('history-grid');
+        const history = JSON.parse(localStorage.getItem('user_history') || '[]');
+        grid.innerHTML = history.length ? history.map(item => `<div class="card" onclick="playMedia('${item.id}', '${item.title}', '${item.url}', '${item.thumb}')"><img src="${item.thumb}"><div class="card-info">${item.title}</div></div>`).join('') : '<div class="empty-msg">السجل فارغ</div>';
     }
 
     function showTab(evt, id) { 
@@ -290,3 +228,4 @@
 </script>
 </body>
 </html>
+
