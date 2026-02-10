@@ -32,7 +32,7 @@
             transition: 0.3s; overflow-x: hidden;
         }
 
-        /* الهيدر والبحث (مطابق للصور) */
+        /* الهيدر والبحث */
         .app-header { background: var(--card-bg); padding: 15px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 1000; }
         .header-icons { display: flex; gap: 18px; align-items: center; }
         .app-title { font-size: 19px; font-weight: bold; color: var(--main-red); margin: 0; }
@@ -48,7 +48,6 @@
         .grid { display: none; padding: 0 15px 15px 15px; grid-template-columns: repeat(2, 1fr); gap: 15px; }
         .grid.active { display: grid; }
         .card { background: var(--card-bg); border-radius: 15px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.08); transition: 0.2s; }
-        .card:active { transform: scale(0.96); }
         .card img { width: 100%; height: 135px; object-fit: cover; border-bottom: 3px solid var(--main-red); }
         .card-info { padding: 10px; font-size: 12px; text-align: center; font-weight: bold; }
 
@@ -59,30 +58,27 @@
         .ep-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 15px; }
         .ep-card { background: var(--card-bg); border: 2px solid var(--search-bg); border-radius: 10px; padding: 15px 5px; text-align: center; font-weight: bold; font-size: 13px; }
 
-        /* المشغل والتعليقات والمقترحات (YouTube Style) */
+        /* المشغل والتعليقات والمقترحات */
         #player { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-page); z-index: 3000; flex-direction: column; overflow-y: auto; }
         .video-box { width: 100%; background: #000; position: sticky; top: 0; z-index: 3001; }
-        .close-btn { position: absolute; top: 10px; left: 10px; background: rgba(0,0,0,0.5); color: white; border: none; padding: 8px 15px; border-radius: 20px; z-index: 4000; font-weight: bold; }
+        .close-btn { position: absolute; top: 10px; left: 10px; background: rgba(0,0,0,0.5); color: white; border: none; padding: 8px 15px; border-radius: 20px; z-index: 4000; font-weight: bold; cursor: pointer; }
 
         .v-details { padding: 15px; background: var(--card-bg); }
         .interaction { display: flex; gap: 20px; border-top: 1px solid #eee; padding-top: 15px; margin-top: 10px; }
         .stat-item { display: flex; flex-direction: column; align-items: center; font-size: 11px; color: var(--gray); cursor: pointer; }
         .heart-icon.liked { color: var(--main-red); }
 
-        /* قسم التعليقات (مطابق للصورة 8) */
         .comments-section { padding: 15px; background: var(--card-bg); margin-top: 10px; }
         .comment-box { display: flex; gap: 10px; margin-bottom: 20px; }
         .comment-input { flex: 1; border: none; background: var(--search-bg); padding: 12px 15px; border-radius: 25px; font-size: 13px; outline: none; }
         .comment-item { display: flex; gap: 12px; margin-bottom: 15px; }
         .avatar-circle { width: 35px; height: 35px; border-radius: 50%; background: #4a90e2; color: white; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 12px; }
 
-        /* قسم الأجزاء الباقية (YouTube Style) */
         .suggested-section { padding: 15px; background: var(--bg-page); }
-        .suggested-card { display: flex; gap: 10px; background: var(--card-bg); margin-bottom: 12px; border-radius: 10px; overflow: hidden; padding: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .suggested-card { display: flex; gap: 10px; background: var(--card-bg); margin-bottom: 12px; border-radius: 10px; overflow: hidden; padding: 8px; }
         .suggested-thumb { width: 120px; height: 70px; border-radius: 6px; object-fit: cover; }
         .suggested-info { flex: 1; display: flex; flex-direction: column; justify-content: center; }
-        .suggested-title { font-size: 13px; font-weight: bold; margin-bottom: 4px; }
-        .suggested-meta { font-size: 11px; color: var(--gray); }
+        .suggested-title { font-size: 13px; font-weight: bold; }
     </style>
 </head>
 <body id="main-body">
@@ -119,7 +115,7 @@
 </div>
 
 <div id="series-overlay">
-    <button class="close-btn" onclick="document.getElementById('series-overlay').style.display='none'">رجوع</button>
+    <button class="close-btn" onclick="backToMain('series-overlay')">رجوع</button>
     <img id="ser-img" class="series-banner">
     <div class="series-details">
         <h2 id="ser-title" style="margin:0;"></h2>
@@ -129,7 +125,7 @@
 </div>
 
 <div id="player">
-    <button class="close-btn" onclick="closeVideo()">إغلاق</button>
+    <button class="close-btn" onclick="backToMain('player')">إغلاق</button>
     <div class="video-box" id="video-root"></div>
     
     <div class="v-details">
@@ -159,12 +155,19 @@
 
     <div class="suggested-section">
         <div style="font-weight: bold; margin-bottom: 12px; font-size: 14px;">الأجزاء التالية</div>
-        <div id="suggested-list">
-            </div>
+        <div id="suggested-list"></div>
     </div>
 </div>
 
 <script>
+    // تعديل وظيفة الرجوع لإغلاق النافذة فقط
+    function backToMain(overlayId) {
+        document.getElementById(overlayId).style.display = 'none';
+        if (overlayId === 'player') {
+            document.getElementById('video-root').innerHTML = ''; // إيقاف الفيديو
+        }
+    }
+
     function openSeries(id, title, img, eps) {
         document.getElementById('series-overlay').style.display = 'block';
         document.getElementById('ser-img').src = img;
@@ -186,26 +189,21 @@
             document.getElementById('v-watch').innerText = Math.floor(Math.random()*100+50) + " يتابعون الآن";
             document.getElementById('video-root').innerHTML = `<video controls autoplay style="width:100%;"><source src="${url}" type="video/mp4"></video>`;
             
-            loadSuggestions(title);
+            loadSuggestions();
         }, 3000);
     }
 
-    function loadSuggestions(currentTitle) {
+    function loadSuggestions() {
         const list = document.getElementById('suggested-list');
-        // محاكاة لأجزاء أخرى (يمكنك استبدالها ببيانات حقيقية)
-        const items = [
-            {t: "غزالة في عرين الاسد - الجزء الثاني", img: "https://pomf2.lain.la/f/odvlatpw.jpg"},
-            {t: "غزالة في عرين الاسد - الجزء الثالث", img: "https://pomf2.lain.la/f/odvlatpw.jpg"}
-        ];
+        const items = [{t: "الجزء الثاني", img: "https://pomf2.lain.la/f/odvlatpw.jpg"}, {t: "الجزء الثالث", img: "https://pomf2.lain.la/f/odvlatpw.jpg"}];
         list.innerHTML = items.map(item => `
-            <div class="suggested-card" onclick="playMedia('suggested_id', '${item.t}', 'https://pomf2.lain.la/f/asn9tb0.mp4')">
+            <div class="suggested-card" onclick="playMedia('s_id', '${item.t}', 'https://pomf2.lain.la/f/asn9tb0.mp4')">
                 <img src="${item.img}" class="suggested-thumb">
                 <div class="suggested-info">
                     <div class="suggested-title">${item.t}</div>
-                    <div class="suggested-meta">1.5K مشاهدة • منذ يومين</div>
+                    <div class="suggested-meta">1.5K مشاهدة</div>
                 </div>
-            </div>
-        `).join('');
+            </div>`).join('');
     }
 
     function addComment(e) {
@@ -218,7 +216,6 @@
         }
     }
 
-    function closeVideo() { document.getElementById('player').style.display = 'none'; document.getElementById('video-root').innerHTML = ''; }
     function showTab(evt, id) { 
         document.querySelectorAll('.grid').forEach(g => g.classList.remove('active')); 
         document.querySelectorAll('.tab-btn').forEach(t => t.classList.remove('active'));
