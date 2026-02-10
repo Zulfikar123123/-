@@ -126,6 +126,11 @@
         <img src="https://pomf2.lain.la/f/czxdmilv.png">
         <div class="card-info">كابسة صاج LIBRONC</div>
     </div>
+
+    <div class="card" data-title="قدر ضغط احترافي" onclick="openProduct('قدر ضغط أصلي', 'قدر ضغط عالي الجودة لطهي الطعام بسرعة فائقة وسهولة تامة. \n\n سعر التوصيل لجميع المحافظات: 5 الاف فقط.', '32,000 د.ع', ['https://pomf2.lain.la/f/9pu8smcg.png', 'https://pomf2.lain.la/f/74pdzad.png', 'https://pomf2.lain.la/f/kv7x8x9x.png'])">
+        <img src="https://pomf2.lain.la/f/9pu8smcg.png">
+        <div class="card-info">قدر ضغط</div>
+    </div>
 </div>
 
 <div class="grid" id="history-grid"></div>
@@ -183,6 +188,7 @@
 
     function updateSlider() {
         const wrap = document.getElementById('slider-wrap');
+        // التحكم في الإزاحة بناءً على اتجاه RTL
         wrap.style.transform = `translateX(${currentSlide * 100}%)`;
     }
 
@@ -228,4 +234,3 @@
 </script>
 </body>
 </html>
-
