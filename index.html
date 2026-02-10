@@ -72,10 +72,10 @@
             padding: 5px;
         }
 
-        /* قسم الإعلانات المتحرك */
+        /* قسم الإعلانات المتحرك المطور للفيديو */
         .ads-slider {
             width: calc(100% - 30px);
-            height: 60px; /* نفس حجم الهيدر المحذوف تقريباً */
+            height: 80px; 
             margin: 0 auto 15px auto;
             background: var(--card-bg);
             border-radius: 12px;
@@ -85,25 +85,38 @@
         }
         .ads-track {
             display: flex;
-            width: 300%; /* عدد الإعلانات */
+            width: 300%; 
             height: 100%;
             animation: slideAds 12s infinite ease-in-out;
         }
         .ad-slide {
+            width: 33.333%;
+            height: 100%;
+            display: block;
+            position: relative;
+            text-decoration: none;
+            overflow: hidden;
+        }
+        .ad-slide video, .ad-slide img {
             width: 100%;
             height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
+            object-fit: cover;
+        }
+        .ad-tag {
+            position: absolute;
+            top: 5px;
+            left: 10px;
+            background: rgba(0,0,0,0.6);
             color: white;
-            text-decoration: none;
-            font-size: 14px;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 10px;
+            z-index: 2;
         }
         @keyframes slideAds {
-            0%, 20% { transform: translateX(0); }
-            33%, 53% { transform: translateX(33.33%); }
-            66%, 86% { transform: translateX(66.66%); }
+            0%, 25% { transform: translateX(0); }
+            33%, 58% { transform: translateX(33.33%); }
+            66%, 91% { transform: translateX(66.66%); }
             100% { transform: translateX(0); }
         }
 
@@ -155,9 +168,18 @@
 
 <div class="ads-slider">
     <div class="ads-track">
-        <a href="#" class="ad-slide" style="background: linear-gradient(45deg, #e63946, #b91c1c);">مرحباً بك في واتباد الفقراء - إعلان 1</a>
-        <a href="#" class="ad-slide" style="background: linear-gradient(45deg, #1e3a8a, #3b82f6);">أقوى القصص والمسلسلات الحصرية - إعلان 2</a>
-        <a href="#" class="ad-slide" style="background: linear-gradient(45deg, #065f46, #10b981);">تابعنا ليصلك كل جديد - إعلان 3</a>
+        <a href="#" class="ad-slide">
+            <span class="ad-tag">AD</span>
+            <video src="https://pomf2.lain.la/f/asn9tb0.mp4" autoplay loop muted playsinline></video>
+        </a>
+        <a href="#" class="ad-slide">
+            <span class="ad-tag">AD</span>
+            <img src="https://pomf2.lain.la/f/2njdz3ym.jpg" alt="إعلان">
+        </a>
+        <a href="#" class="ad-slide">
+            <span class="ad-tag">AD</span>
+            <video src="https://pomf2.lain.la/f/pgzui0yw.mp4" autoplay loop muted playsinline></video>
+        </a>
     </div>
 </div>
 
