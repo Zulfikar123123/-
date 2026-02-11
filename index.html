@@ -10,14 +10,21 @@
     <meta name="theme-color" content="#e63946">
 
     <script>
-        if (!localStorage.getItem('popunder_shown')) {
-            const script = document.createElement('script');
-            script.src = "https://twigcrucialpal.com/a8/03/68/a80368812dec3f6d3f22da29616fb388.js";
-            document.head.appendChild(script);
-            localStorage.setItem('popunder_shown', 'true');
-        }
-    </script>
+        (function() {
+            const AD_INTERVAL = 30 * 60 * 1000; // مدة نصف ساعة بالملي ثانية
+            const now = new Date().getTime();
+            const lastShown = localStorage.getItem('popunder_last_time');
 
+            if (!lastShown || (now - lastShown) > AD_INTERVAL) {
+                const script = document.createElement('script');
+                script.src = "https://twigcrucialpal.com/a8/03/68/a80368812dec3f6d3f22da29616fb388.js";
+                document.head.appendChild(script);
+                
+                // تحديث التوقيت لضمان عدم الظهور مرة أخرى إلا بعد 30 دقيقة
+                localStorage.setItem('popunder_last_time', now);
+            }
+        })();
+    </script>
     <style>
         :root { 
             --main-red: #e63946; 
