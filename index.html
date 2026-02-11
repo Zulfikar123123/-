@@ -174,10 +174,10 @@
     function startStrictCheck() {
         startTime = Date.now();
         isWatchingAd = true;
-        document.getElementById('smart-link-btn').innerText = "جاري التحقق من المشاهدة...";
+        document.getElementById('smart-link-btn').innerText = "جاري تتبع المشاهدة...";
     }
 
-    // مراقبة عودة المستخدم للصفحة
+    // تم تعديل هذا الجزء لمراقبة وقت البقاء الفعلي ومنع العد التنازلي التلقائي
     window.onfocus = function() {
         if (isWatchingAd) {
             let duration = (Date.now() - startTime) / 1000;
@@ -186,11 +186,11 @@
             const msg = document.getElementById('locker-message');
 
             if (duration >= 10) {
-                // نجاح
-                status.innerText = "تم التحقق بنجاح";
+                // حالة النجاح: أكمل الوقت فعلياً
+                status.innerText = "تم التحقق بنجاح ✅";
                 status.style.color = "#28a745";
-                msg.innerText = "يمكنك الآن مشاهدة الفيديو بكل حرية";
-                btn.innerText = "✅ اضغط هنا لفتح الفيديو";
+                msg.innerText = "لقد أكملت وقت المشاهدة المطلوب، اضغط على الزر أدناه لفتح الفيديو الآن.";
+                btn.innerText = "فتح الفيديو الآن";
                 btn.style.background = "#28a745";
                 btn.onclick = function(e) {
                     e.preventDefault();
@@ -198,12 +198,12 @@
                     playMedia(videoQueue.id, videoQueue.title, videoQueue.url, videoQueue.thumb);
                 };
             } else {
-                // فشل
+                // حالة الفشل: عاد قبل انتهاء الوقت
                 isWatchingAd = false;
-                status.innerText = "فشل فتح الفيديو";
+                status.innerText = "فشل التحقق ❌";
                 status.style.color = "#ff0000";
-                msg.innerText = "لم تقم بمشاهدة الإعلان لمدة 10 ثوانٍ كاملة. يرجى المحاولة مرة أخرى والبقاء داخل صفحة الإعلان.";
-                btn.innerText = "إعادة محاولة المشاهدة";
+                msg.innerText = "لقد خرجت من الإعلان بسرعة كبيرة! يجب البقاء في صفحة الإعلان لمدة 10 ثوانٍ كاملة لفتح الفيديو.";
+                btn.innerText = "إعادة المحاولة (اضغط هنا)";
                 btn.style.background = "#ff0000";
                 btn.onclick = function(e) {
                     resetLocker();
@@ -260,3 +260,4 @@
 </script>
 </body>
 </html>
+
