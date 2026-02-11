@@ -57,13 +57,6 @@
 
         .card.new::after { content: "جديد"; position: absolute; top: 10px; right: 10px; background: var(--main-red); color: white; font-size: 10px; font-weight: bold; padding: 3px 10px; border-radius: 20px; z-index: 5; }
 
-        #product-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-page); z-index: 2000; overflow-y: auto; }
-        .slider-container { width: 100%; height: 300px; position: relative; overflow: hidden; background: #eee; }
-        .slider-wrapper { display: flex; transition: transform 0.4s ease-in-out; height: 100%; }
-        .slider-wrapper img { width: 100%; height: 100%; object-fit: contain; flex-shrink: 0; }
-        .slider-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.3); color: white; border: none; padding: 10px; cursor: pointer; z-index: 10; border-radius: 50%; }
-        .prev-btn { left: 10px; } .next-btn { right: 10px; }
-
         #player, #series-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-page); z-index: 3000; flex-direction: column; overflow-y: auto; }
         .video-box { width: 100%; background: #000; position: sticky; top: 0; }
         .close-btn { position: absolute; top: 10px; left: 10px; background: rgba(0,0,0,0.5); color: white; border: none; padding: 8px 15px; border-radius: 20px; z-index: 4000; font-weight: bold; cursor: pointer; }
@@ -91,11 +84,11 @@
     <div class="locker-header">
         <button class="btn-close-red" onclick="closeLocker()">إغلاق X</button>
     </div>
-    <div class="locker-title">تأكيد المشاهدة</div>
-    <div class="locker-desc">
+    <div class="locker-title" id="locker-status">تأكيد المشاهدة</div>
+    <div class="locker-desc" id="locker-message">
         يجب الضغط على الزر أدناه والبقاء في صفحة الإعلان لمدة 10 ثوانٍ لفتح الفيديو
     </div>
-    <a href="https://twigcrucialpal.com/kvwft44afa?key=cb80200a80e072a4d94407f211fa613c" target="_blank" id="smart-link-btn" class="ad-link-btn" onclick="initiateAdProcess()">
+    <a href="https://twigcrucialpal.com/kvwft44afa?key=cb80200a80e072a4d94407f211fa613c" target="_blank" id="smart-link-btn" class="ad-link-btn" onclick="startStrictCheck()">
         شاهد الاعلان لمدة 10 ثواني
     </a>
 </div>
@@ -153,52 +146,75 @@
 
 <script>
     let videoQueue = null;
-    let timerRunning = false;
-    let countdownInterval = null;
+    let startTime = 0;
+    let isWatchingAd = false;
 
-    // وظيفة قفل الفيديو وإعادة التفعيل في كل مرة
     function lockVideo(id, title, url, thumb) {
         videoQueue = {id, title, url, thumb};
-        const btn = document.getElementById('smart-link-btn');
-        
-        // إعادة ضبط الزر للحالة الأصلية في كل مرة يضغط فيها المستخدم
-        btn.innerText = "شاهد الاعلان لمدة 10 ثواني";
-        btn.href = "https://twigcrucialpal.com/kvwft44afa?key=cb80200a80e072a4d94407f211fa613c";
-        btn.onclick = initiateAdProcess;
-        
+        resetLocker();
         document.getElementById('ad-locker').style.display = 'flex';
-        timerRunning = false;
-        if(countdownInterval) clearInterval(countdownInterval);
     }
 
-    function initiateAdProcess() {
-        if(timerRunning) return;
-        timerRunning = true;
-        
-        let sec = 10;
+    function resetLocker() {
+        isWatchingAd = false;
+        startTime = 0;
         const btn = document.getElementById('smart-link-btn');
+        const status = document.getElementById('locker-status');
+        const msg = document.getElementById('locker-message');
         
-        countdownInterval = setInterval(() => {
-            sec--;
-            btn.innerText = `انتظر ${sec} ثانية لفتح المحتوى...`;
-            
-            if(sec <= 0) {
-                clearInterval(countdownInterval);
-                btn.innerText = "✅ اضغط الآن لمشاهدة الفيديو";
-                // تغيير وظيفة الزر لفتح المقطع بدلاً من الرابط الإعلاني
+        status.innerText = "تأكيد المشاهدة";
+        status.style.color = "#ff0000";
+        msg.innerText = "يجب الضغط على الزر أدناه والبقاء في صفحة الإعلان لمدة 10 ثوانٍ لفتح الفيديو";
+        btn.innerText = "شاهد الاعلان لمدة 10 ثواني";
+        btn.style.background = "#28a745";
+        btn.href = "https://twigcrucialpal.com/kvwft44afa?key=cb80200a80e072a4d94407f211fa613c";
+        btn.onclick = startStrictCheck;
+    }
+
+    function startStrictCheck() {
+        startTime = Date.now();
+        isWatchingAd = true;
+        document.getElementById('smart-link-btn').innerText = "جاري التحقق من المشاهدة...";
+    }
+
+    // مراقبة عودة المستخدم للصفحة
+    window.onfocus = function() {
+        if (isWatchingAd) {
+            let duration = (Date.now() - startTime) / 1000;
+            const btn = document.getElementById('smart-link-btn');
+            const status = document.getElementById('locker-status');
+            const msg = document.getElementById('locker-message');
+
+            if (duration >= 10) {
+                // نجاح
+                status.innerText = "تم التحقق بنجاح";
+                status.style.color = "#28a745";
+                msg.innerText = "يمكنك الآن مشاهدة الفيديو بكل حرية";
+                btn.innerText = "✅ اضغط هنا لفتح الفيديو";
+                btn.style.background = "#28a745";
                 btn.onclick = function(e) {
                     e.preventDefault();
                     document.getElementById('ad-locker').style.display = 'none';
                     playMedia(videoQueue.id, videoQueue.title, videoQueue.url, videoQueue.thumb);
                 };
+            } else {
+                // فشل
+                isWatchingAd = false;
+                status.innerText = "فشل فتح الفيديو";
+                status.style.color = "#ff0000";
+                msg.innerText = "لم تقم بمشاهدة الإعلان لمدة 10 ثوانٍ كاملة. يرجى المحاولة مرة أخرى والبقاء داخل صفحة الإعلان.";
+                btn.innerText = "إعادة محاولة المشاهدة";
+                btn.style.background = "#ff0000";
+                btn.onclick = function(e) {
+                    resetLocker();
+                };
             }
-        }, 1000);
-    }
+        }
+    };
 
     function closeLocker() {
         document.getElementById('ad-locker').style.display = 'none';
-        if(countdownInterval) clearInterval(countdownInterval);
-        timerRunning = false;
+        isWatchingAd = false;
     }
 
     function playMedia(id, title, url, thumb) {
@@ -208,7 +224,6 @@
         document.getElementById('video-root').innerHTML = `<video controls autoplay style="width:100%;"><source src="${url}" type="video/mp4"></video>`;
     }
 
-    // الوظائف المساعدة للموقع (بدون تغيير)
     function saveToHistory(id, title, url, thumb) {
         let history = JSON.parse(localStorage.getItem('user_history') || '[]');
         history = history.filter(item => item.id !== id);
