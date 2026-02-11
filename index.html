@@ -19,6 +19,8 @@
             --text-main: #2b2d42;
             --search-bg: #f1f3f4;
             --gray: #888;
+            --whatsapp: #25d366;
+            --telegram: #0088cc;
         }
 
         body.dark-theme { 
@@ -30,65 +32,102 @@
 
         body { 
             background-color: var(--bg-page); color: var(--text-main); 
-            font-family: 'Segoe UI', sans-serif; margin: 0; padding: 0; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 0; 
             transition: 0.3s; overflow-x: hidden;
         }
 
-        .app-header { background: var(--card-bg); padding: 15px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 1000; }
-        .header-icons { display: flex; gap: 18px; align-items: center; }
-        .app-title { font-size: 19px; font-weight: bold; color: var(--main-red); margin: 0; }
-        .search-wrapper { padding: 5px 15px 15px 15px; background: var(--card-bg); }
-        .search-input { width: 100%; padding: 12px 20px; border-radius: 25px; border: none; background: var(--search-bg); color: var(--text-main); outline: none; box-sizing: border-box; font-size: 14px; }
+        /* الهيدر المحترف */
+        .app-header { background: var(--card-bg); padding: 15px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+        .header-icons { display: flex; gap: 20px; font-size: 20px; cursor: pointer; }
+        .app-title { font-size: 20px; font-weight: 800; color: var(--main-red); margin: 0; letter-spacing: -0.5px; }
 
-        .tabs { display: flex; background: var(--card-bg); margin: 15px; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
-        .tab-btn { flex: 1; padding: 15px; border: none; background: none; color: var(--gray); font-weight: bold; cursor: pointer; font-size: 12px; }
+        .search-wrapper { padding: 10px 15px; background: var(--card-bg); }
+        .search-input { width: 100%; padding: 12px 20px; border-radius: 12px; border: none; background: var(--search-bg); color: var(--text-main); outline: none; box-sizing: border-box; font-size: 15px; transition: 0.3s; }
+        .search-input:focus { box-shadow: 0 0 0 2px var(--main-red); }
+
+        .tabs { display: flex; background: var(--card-bg); margin: 15px; border-radius: 15px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border: 1px solid rgba(0,0,0,0.05); }
+        .tab-btn { flex: 1; padding: 14px; border: none; background: none; color: var(--gray); font-weight: bold; cursor: pointer; font-size: 13px; transition: 0.3s; }
         .tab-btn.active { background: var(--main-red); color: white; }
 
-        .grid { display: none; padding: 0 15px 15px 15px; grid-template-columns: repeat(2, 1fr); gap: 15px; }
+        /* الشبكة والبطاقات العصرية */
+        .grid { display: none; padding: 0 15px 20px 15px; grid-template-columns: repeat(2, 1fr); gap: 15px; }
         .grid.active { display: grid; }
         
-        .section-title { grid-column: 1 / span 2; font-size: 16px; font-weight: bold; color: var(--main-red); margin: 10px 0 5px 0; border-right: 4px solid var(--main-red); padding-right: 10px; }
+        .section-title { grid-column: 1 / span 2; font-size: 17px; font-weight: bold; color: var(--main-red); margin: 15px 0 5px 0; padding-right: 10px; border-right: 4px solid var(--main-red); }
 
-        .card { background: var(--card-bg); border-radius: 15px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.08); transition: 0.2s; position: relative; }
-        .card img { width: 100%; height: 135px; object-fit: cover; border-bottom: 3px solid var(--main-red); }
-        .card-info { padding: 10px; font-size: 12px; text-align: center; font-weight: bold; }
+        .card { background: var(--card-bg); border-radius: 18px; overflow: hidden; box-shadow: 0 6px 15px rgba(0,0,0,0.06); transition: 0.3s; position: relative; border: 1px solid rgba(0,0,0,0.02); }
+        .card:active { transform: scale(0.97); }
+        .card img { width: 100%; height: 145px; object-fit: cover; }
+        .card-info { padding: 12px; text-align: center; border-top: 1.5px solid rgba(230, 57, 70, 0.1); }
+        .card-name { font-size: 13px; font-weight: 700; display: block; height: 36px; overflow: hidden; margin-bottom: 4px; line-height: 1.4; }
+        .card-price { color: var(--main-red); font-size: 14px; font-weight: 800; }
+
+        .card.new::after { content: "جديد"; position: absolute; top: 10px; right: 10px; background: var(--main-red); color: white; font-size: 10px; font-weight: bold; padding: 4px 10px; border-radius: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+
+        /* نافذة المنتج المحاكاة للصور */
+        #product-overlay {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--bg-page); z-index: 5000; flex-direction: column;
+        }
+        .p-img-container { position: relative; width: 100%; height: 45vh; background: #fff; display: flex; align-items: center; justify-content: center; }
+        .p-img-container img { max-width: 100%; max-height: 100%; object-fit: contain; }
+        .p-back-btn { position: absolute; top: 20px; right: 20px; background: rgba(0,0,0,0.5); color: white; border: none; padding: 10px 18px; border-radius: 12px; font-weight: bold; cursor: pointer; backdrop-filter: blur(5px); z-index: 10; }
         
-        .card-price { display: block; color: var(--main-red); font-size: 11px; margin-top: 4px; font-weight: bold; }
+        .p-content { 
+            flex: 1; background: var(--card-bg); margin-top: -30px; border-radius: 30px 30px 0 0; 
+            padding: 30px 20px; box-shadow: 0 -10px 30px rgba(0,0,0,0.08); overflow-y: auto;
+        }
+        .p-title { font-size: 20px; font-weight: 800; margin-bottom: 8px; color: var(--text-main); }
+        .p-price-tag { font-size: 22px; color: var(--main-red); font-weight: 900; margin-bottom: 15px; }
+        .p-desc { color: var(--gray); font-size: 15px; line-height: 1.6; margin-bottom: 25px; }
+        
+        .p-order-btns { display: flex; flex-direction: column; gap: 12px; }
+        .order-btn { width: 100%; padding: 16px; border-radius: 14px; text-decoration: none; color: white; text-align: center; font-weight: 800; font-size: 16px; transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 10px; }
+        .order-btn-wa { background: var(--whatsapp); box-shadow: 0 4px 12px rgba(37, 211, 102, 0.2); }
+        .order-btn-tg { background: var(--telegram); box-shadow: 0 4px 12px rgba(0, 136, 204, 0.2); }
 
-        .card.new::after { content: "جديد"; position: absolute; top: 10px; right: 10px; background: var(--main-red); color: white; font-size: 10px; font-weight: bold; padding: 3px 10px; border-radius: 20px; z-index: 5; }
-
-        #player, #series-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-page); z-index: 3000; flex-direction: column; overflow-y: auto; }
-        .video-box { width: 100%; background: #000; position: sticky; top: 0; }
-        .close-btn { position: absolute; top: 10px; left: 10px; background: rgba(0,0,0,0.5); color: white; border: none; padding: 8px 15px; border-radius: 20px; z-index: 4000; font-weight: bold; cursor: pointer; }
-
-        /* ستايل قفل الإعلانات المحدث */
+        /* قفل الإعلانات المطور بعداد ثواني */
         #ad-locker {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: #000000; z-index: 9999; flex-direction: column;
-            align-items: center; justify-content: center; color: white; text-align: center;
+            background: #000; z-index: 9999; flex-direction: column; align-items: center; justify-content: center; text-align: center;
         }
-        .locker-header { position: absolute; top: 20px; right: 20px; }
-        .btn-close-red { background: #ff0000; color: white; border: none; padding: 10px 20px; font-weight: bold; border-radius: 5px; cursor: pointer; }
-        .locker-title { color: #ff0000; font-size: 28px; font-weight: bold; margin-bottom: 30px; }
-        .locker-desc { font-size: 18px; margin: 0 40px 40px 40px; line-height: 1.6; }
-        .ad-link-btn { 
-            background: #28a745; color: white; padding: 20px; width: 85%; max-width: 400px;
-            text-decoration: none; border-radius: 12px; font-size: 20px; font-weight: bold;
-            display: block; transition: 0.3s;
-        }
+        .locker-close-btn { position: absolute; top: 25px; right: 25px; background: #ff0000; color: white; border: none; padding: 10px 20px; border-radius: 10px; font-weight: bold; }
+        .locker-icon { font-size: 60px; margin-bottom: 20px; }
+        .locker-title { color: #ff0000; font-size: 28px; font-weight: 900; margin-bottom: 15px; }
+        .locker-msg { color: #ccc; font-size: 16px; padding: 0 40px; line-height: 1.6; margin-bottom: 35px; }
+        .btn-ad-timer { background: #28a745; color: white; padding: 20px; width: 85%; max-width: 400px; text-decoration: none; border-radius: 15px; font-size: 18px; font-weight: bold; transition: 0.3s; }
+
+        #player { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 8000; }
+        .video-container { width: 100%; height: 100%; display: flex; align-items: center; }
     </style>
 </head>
 <body id="main-body">
 
+<div id="product-overlay">
+    <div class="p-img-container">
+        <button class="p-back-btn" onclick="closeProduct()">رجوع</button>
+        <img id="p-img" src="">
+    </div>
+    <div class="p-content">
+        <div class="p-title" id="p-name">اسم المنتج</div>
+        <div class="p-price-tag" id="p-price">0 د.ع</div>
+        <div class="p-desc" id="p-description">وصف المنتج يظهر هنا...</div>
+        
+        <div class="p-order-btns">
+            <a href="#" id="wa-btn" target="_blank" class="order-btn order-btn-wa">اطلب عبر واتساب</a>
+            <a href="#" id="tg-btn" target="_blank" class="order-btn order-btn-tg">اطلب عبر تليجرام</a>
+        </div>
+    </div>
+</div>
+
 <div id="ad-locker">
-    <div class="locker-header">
-        <button class="btn-close-red" onclick="closeLocker()">إغلاق X</button>
-    </div>
+    <button class="locker-close-btn" onclick="closeLocker()">إغلاق X</button>
+    <div class="locker-icon">🔒</div>
     <div class="locker-title" id="locker-status">تأكيد المشاهدة</div>
-    <div class="locker-desc" id="locker-message">
-        يجب الضغط على الزر أدناه والبقاء في صفحة الإعلان لمدة 10 ثوانٍ لفتح الفيديو
+    <div class="locker-msg" id="locker-message">
+        يجب الضغط على الزر أدناه والبقاء في صفحة الإعلان لمدة 10 ثوانٍ لفتح المحتوى
     </div>
-    <a href="https://twigcrucialpal.com/kvwft44afa?key=cb80200a80e072a4d94407f211fa613c" target="_blank" id="smart-link-btn" class="ad-link-btn" onclick="startStrictCheck()">
+    <a href="https://twigcrucialpal.com/kvwft44afa?key=cb80200a80e072a4d94407f211fa613c" target="_blank" id="smart-link-btn" class="btn-ad-timer" onclick="startStrictCheck()">
         شاهد الاعلان لمدة 10 ثواني
     </a>
 </div>
@@ -110,44 +149,63 @@
 </div>
 
 <div class="grid active" id="watt-grid">
-    <div class="card" data-title="نـهـوة غـظـب الـشيـخ + جـريـئـة كـلـش || الـجـزء الثالث الاخير" onclick="lockVideo('lyla_01', 'نـهـوة غـظـب الـشيـخ + جـريـئـة كـلـش || الـجـزء الثالث الاخير', 'https://pomf2.lain.la/f/9tc3wh3k.mp4', 'https://pomf2.lain.la/f/pdevqs9u.jpg')">
+    <div class="card" data-title="نـهـوة غـظـب الـشيـخ || الـجـزء الثالث" onclick="lockVideo('lyla_01', 'نـهـوة غـظـب الـشيـخ || الـجـزء الثالث', 'https://pomf2.lain.la/f/9tc3wh3k.mp4', 'https://pomf2.lain.la/f/pdevqs9u.jpg')">
         <img src="https://pomf2.lain.la/f/pdevqs9u.jpg">
-        <div class="card-info">نـهـوة غـظـب الـشيـخ + جـريـئـة كـلـش || الـجـزء الثالث الاخير</div>
-    </div>
-    <div class="card" data-title="نـهـوة غـظـب الـشيـخ + جـريـئـة كـلـش || الـجـزء الثاني" onclick="lockVideo('lyla_02', 'نـهـوة غـظـب الـشيـخ + جـريـئـة كـلـش || الـجـزء الثاني', 'https://pomf2.lain.la/f/3f7kq0jf.mp4', 'https://pomf2.lain.la/f/pdevqs9u.jpg')">
-        <img src="https://pomf2.lain.la/f/pdevqs9u.jpg">
-        <div class="card-info">نـهـوة غـظـب الـشيـخ + جـريـئـة كـلـش || الـجـزء الثاني</div>
+        <div class="card-info"><span class="card-name">نـهـوة غـظـب الـشيـخ || الجزء الثالث</span></div>
     </div>
     <div class="card new" data-title="غزالة في عرين الاسد" onclick="lockVideo('gh_1', 'غزالة في عرين الاسد', 'https://pomf2.lain.la/f/asn9tb0.mp4', 'https://pomf2.lain.la/f/odvlatpw.jpg')">
-        <img src="https://pomf2.lain.la/f/odvlatpw.jpg"><div class="card-info">قصة غزالة في عرين الاسد</div>
+        <img src="https://pomf2.lain.la/f/odvlatpw.jpg">
+        <div class="card-info"><span class="card-name">غزالة في عرين الاسد</span></div>
     </div>
 </div>
 
 <div class="grid" id="ser-grid">
-    <div class="card" data-title="هذا البحر سوف يفيض" onclick="openSeries('series_sea', 'هذا البحر سوف يفيض', 'https://pomf2.lain.la/f/2njdz3ym.jpg', ['حلقة 1', 'حلقة 2', 'حلقة 3'])">
-        <img src="https://pomf2.lain.la/f/2njdz3ym.jpg"><div class="card-info">مسلسل هذا البحر سوف يفيض</div>
+    <div class="card" data-title="هذا البحر سوف يفيض" onclick="lockVideo('ser_1', 'هذا البحر سوف يفيض', 'https://pomf2.lain.la/f/9tc3wh3k.mp4', 'https://pomf2.lain.la/f/2njdz3ym.jpg')">
+        <img src="https://pomf2.lain.la/f/2njdz3ym.jpg">
+        <div class="card-info"><span class="card-name">مسلسل هذا البحر سوف يفيض</span></div>
     </div>
 </div>
 
 <div class="grid" id="prod-grid">
-    <div class="section-title">أجهزة المطبخ</div>
-    <div class="card" data-title="كابسة صاج سامكس" onclick="openProduct('كابسة صاج من سامكس', 'كابسة صاج عملية وسريعة من ماركة سامكس الشهيرة.', '25,000 د.ع', ['https://pomf2.lain.la/f/rt8zjh9o.png', 'https://pomf2.lain.la/f/ibc3paos.png', 'https://pomf2.lain.la/f/grwm1uji.png'])">
-        <img src="https://pomf2.lain.la/f/rt8zjh9o.png"><div class="card-info">كابسة صاج سامكس <span class="card-price">25,000 د.ع</span></div>
+    <div class="section-title">أجهزة المطبخ والمنزل</div>
+    <div class="card" data-title="كابسة صاج سامكس" onclick="openProduct('كابسة صاج سامكس', '25,000 د.ع', 'كابسة صاج عملية وسريعة من ماركة سامكس الشهيرة. ضمان حقيقي وكفاءة عالية.', 'https://pomf2.lain.la/f/rt8zjh9o.png')">
+        <img src="https://pomf2.lain.la/f/rt8zjh9o.png">
+        <div class="card-info">
+            <span class="card-name">كابسة صاج سامكس</span>
+            <span class="card-price">25,000 د.ع</span>
+        </div>
     </div>
 </div>
 
 <div class="grid" id="history-grid"></div>
 
 <div id="player">
-    <button class="close-btn" onclick="backToMain('player')">إغلاق</button>
-    <div class="video-box" id="video-root"></div>
-    <div class="product-details"><h2 id="v-title"></h2></div>
+    <button class="locker-close-btn" style="top:10px; left:10px; right:auto;" onclick="backToMain('player')">إغلاق</button>
+    <div class="video-container" id="video-root"></div>
 </div>
 
 <script>
+    // وظائف المنتج المطور
+    function openProduct(name, price, desc, img) {
+        document.getElementById('p-name').innerText = name;
+        document.getElementById('p-price').innerText = price;
+        document.getElementById('p-description').innerText = desc;
+        document.getElementById('p-img').src = img;
+        
+        let msg = encodeURIComponent("مرحباً، أريد طلب منتج: " + name + " بسعر " + price);
+        document.getElementById('wa-btn').href = "https://wa.me/9647860526345?text=" + msg;
+        document.getElementById('tg-btn').href = "https://t.me/Z_U_L_f_I_Q_A";
+        
+        document.getElementById('product-overlay').style.display = 'flex';
+    }
+
+    function closeProduct() { document.getElementById('product-overlay').style.display = 'none'; }
+
+    // نظام الإعلانات مع عداد ثواني حقيقي
     let videoQueue = null;
     let startTime = 0;
     let isWatchingAd = false;
+    let timerInt;
 
     function lockVideo(id, title, url, thumb) {
         videoQueue = {id, title, url, thumb};
@@ -157,70 +215,48 @@
 
     function resetLocker() {
         isWatchingAd = false;
-        startTime = 0;
+        clearInterval(timerInt);
         const btn = document.getElementById('smart-link-btn');
         const status = document.getElementById('locker-status');
-        const msg = document.getElementById('locker-message');
-        
-        status.innerText = "تأكيد المشاهدة";
-        status.style.color = "#ff0000";
-        msg.innerText = "يجب الضغط على الزر أدناه والبقاء في صفحة الإعلان لمدة 10 ثوانٍ لفتح الفيديو";
         btn.innerText = "شاهد الاعلان لمدة 10 ثواني";
         btn.style.background = "#28a745";
-        btn.href = "https://twigcrucialpal.com/kvwft44afa?key=cb80200a80e072a4d94407f211fa613c";
-        btn.onclick = startStrictCheck;
+        status.innerText = "تأكيد المشاهدة";
+        status.style.color = "#ff0000";
     }
 
     function startStrictCheck() {
         startTime = Date.now();
         isWatchingAd = true;
-        document.getElementById('smart-link-btn').innerText = "جاري تتبع المشاهدة...";
+        let sec = 10;
+        
+        timerInt = setInterval(() => {
+            sec--;
+            if(sec > 0) {
+                document.getElementById('smart-link-btn').innerText = "انتظر " + sec + " ثانية...";
+            } else {
+                document.getElementById('smart-link-btn').innerText = "يمكنك العودة الآن لفتح الفيديو";
+                clearInterval(timerInt);
+            }
+        }, 1000);
     }
 
-    // تم تعديل هذا الجزء لمراقبة وقت البقاء الفعلي ومنع العد التنازلي التلقائي
     window.onfocus = function() {
         if (isWatchingAd) {
             let duration = (Date.now() - startTime) / 1000;
-            const btn = document.getElementById('smart-link-btn');
-            const status = document.getElementById('locker-status');
-            const msg = document.getElementById('locker-message');
-
             if (duration >= 10) {
-                // حالة النجاح: أكمل الوقت فعلياً
-                status.innerText = "تم التحقق بنجاح ✅";
-                status.style.color = "#28a745";
-                msg.innerText = "لقد أكملت وقت المشاهدة المطلوب، اضغط على الزر أدناه لفتح الفيديو الآن.";
-                btn.innerText = "فتح الفيديو الآن";
-                btn.style.background = "#28a745";
-                btn.onclick = function(e) {
-                    e.preventDefault();
-                    document.getElementById('ad-locker').style.display = 'none';
-                    playMedia(videoQueue.id, videoQueue.title, videoQueue.url, videoQueue.thumb);
-                };
+                document.getElementById('ad-locker').style.display = 'none';
+                playMedia(videoQueue.id, videoQueue.title, videoQueue.url, videoQueue.thumb);
+                resetLocker();
             } else {
-                // حالة الفشل: عاد قبل انتهاء الوقت
-                isWatchingAd = false;
-                status.innerText = "فشل التحقق ❌";
-                status.style.color = "#ff0000";
-                msg.innerText = "لقد خرجت من الإعلان بسرعة كبيرة! يجب البقاء في صفحة الإعلان لمدة 10 ثوانٍ كاملة لفتح الفيديو.";
-                btn.innerText = "إعادة المحاولة (اضغط هنا)";
-                btn.style.background = "#ff0000";
-                btn.onclick = function(e) {
-                    resetLocker();
-                };
+                alert("يجب البقاء في صفحة الإعلان لمدة 10 ثوانٍ كاملة!");
+                resetLocker();
             }
         }
     };
 
-    function closeLocker() {
-        document.getElementById('ad-locker').style.display = 'none';
-        isWatchingAd = false;
-    }
-
     function playMedia(id, title, url, thumb) {
         saveToHistory(id, title, url, thumb);
-        document.getElementById('player').style.display = 'flex';
-        document.getElementById('v-title').innerText = title;
+        document.getElementById('player').style.display = 'block';
         document.getElementById('video-root').innerHTML = `<video controls autoplay style="width:100%;"><source src="${url}" type="video/mp4"></video>`;
     }
 
@@ -234,7 +270,7 @@
     function updateHistoryUI() {
         const grid = document.getElementById('history-grid');
         const history = JSON.parse(localStorage.getItem('user_history') || '[]');
-        grid.innerHTML = history.length ? history.map(item => `<div class="card" onclick="lockVideo('${item.id}', '${item.title}', '${item.url}', '${item.thumb}')"><img src="${item.thumb}"><div class="card-info">${item.title}</div></div>`).join('') : '<div style="grid-column:1/span 2; text-align:center; padding:20px;">السجل فارغ</div>';
+        grid.innerHTML = history.length ? history.map(item => `<div class="card" onclick="lockVideo('${item.id}', '${item.title}', '${item.url}', '${item.thumb}')"><img src="${item.thumb}"><div class="card-info"><span class="card-name">${item.title}</span></div></div>`).join('') : '<div style="grid-column:1/span 2; text-align:center; padding:50px;">السجل فارغ</div>';
     }
 
     function showTab(evt, id) { 
@@ -257,6 +293,8 @@
         document.getElementById(id).style.display = 'none'; 
         if(id==='player') document.getElementById('video-root').innerHTML=''; 
     }
+    function closeLocker() { document.getElementById('ad-locker').style.display = 'none'; resetLocker(); }
 </script>
 </body>
 </html>
+
