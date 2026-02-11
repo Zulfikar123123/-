@@ -64,16 +64,11 @@
         .slider-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.3); color: white; border: none; padding: 10px; cursor: pointer; z-index: 10; border-radius: 50%; }
         .prev-btn { left: 10px; } .next-btn { right: 10px; }
 
-        .product-details { padding: 20px; position: relative; margin-top: -30px; background: var(--bg-page); border-radius: 30px 30px 0 0; }
-        .price-tag { color: var(--main-red); font-size: 18px; font-weight: bold; display: block; margin: 10px 0; }
-        .contact-btn { display: block; text-align: center; padding: 15px; margin-top: 10px; border-radius: 10px; text-decoration: none; color: white; font-weight: bold; }
-        .whatsapp { background: #25D366; } .telegram { background: #0088cc; }
-
         #player, #series-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-page); z-index: 3000; flex-direction: column; overflow-y: auto; }
         .video-box { width: 100%; background: #000; position: sticky; top: 0; }
         .close-btn { position: absolute; top: 10px; left: 10px; background: rgba(0,0,0,0.5); color: white; border: none; padding: 8px 15px; border-radius: 20px; z-index: 4000; font-weight: bold; cursor: pointer; }
 
-        /* ستايل قفل الإعلانات المحدث ليطابق الصورة */
+        /* ستايل قفل الإعلانات المحدث */
         #ad-locker {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: #000000; z-index: 9999; flex-direction: column;
@@ -88,8 +83,6 @@
             text-decoration: none; border-radius: 12px; font-size: 20px; font-weight: bold;
             display: block; transition: 0.3s;
         }
-        .ad-link-btn.disabled { background: #555; cursor: not-allowed; }
-        .timer-count { font-size: 16px; margin-top: 10px; display: block; opacity: 0.8; }
     </style>
 </head>
 <body id="main-body">
@@ -100,9 +93,9 @@
     </div>
     <div class="locker-title">تأكيد المشاهدة</div>
     <div class="locker-desc">
-        يجب الضغط على الزر أدناه والبقاء في صفحة الإعلان لمدة 10 ثوانٍ
+        يجب الضغط على الزر أدناه والبقاء في صفحة الإعلان لمدة 10 ثوانٍ لفتح الفيديو
     </div>
-    <a href="https://twigcrucialpal.com/kvwft44afa?key=cb80200a80e072a4d94407f211fa613c" target="_blank" id="smart-link-btn" class="ad-link-btn" onclick="startTimer()">
+    <a href="https://twigcrucialpal.com/kvwft44afa?key=cb80200a80e072a4d94407f211fa613c" target="_blank" id="smart-link-btn" class="ad-link-btn" onclick="initiateAdProcess()">
         شاهد الاعلان لمدة 10 ثواني
     </a>
 </div>
@@ -128,7 +121,7 @@
         <img src="https://pomf2.lain.la/f/pdevqs9u.jpg">
         <div class="card-info">نـهـوة غـظـب الـشيـخ + جـريـئـة كـلـش || الـجـزء الثالث الاخير</div>
     </div>
-    <div class="card" data-title="نـهـوة غـظـب الـشيـخ + جـريـئـة كـلـش || الـجـزء الثاني" onclick="lockVideo('lyla_01', 'نـهـوة غـظـب الـشيـخ + جـريـئـة كـلـش || الـجـزء الثاني', 'https://pomf2.lain.la/f/3f7kq0jf.mp4', 'https://pomf2.lain.la/f/pdevqs9u.jpg')">
+    <div class="card" data-title="نـهـوة غـظـب الـشيـخ + جـريـئـة كـلـش || الـجـزء الثاني" onclick="lockVideo('lyla_02', 'نـهـوة غـظـب الـشيـخ + جـريـئـة كـلـش || الـجـزء الثاني', 'https://pomf2.lain.la/f/3f7kq0jf.mp4', 'https://pomf2.lain.la/f/pdevqs9u.jpg')">
         <img src="https://pomf2.lain.la/f/pdevqs9u.jpg">
         <div class="card-info">نـهـوة غـظـب الـشيـخ + جـريـئـة كـلـش || الـجـزء الثاني</div>
     </div>
@@ -152,29 +145,6 @@
 
 <div class="grid" id="history-grid"></div>
 
-<div id="product-overlay">
-    <button class="close-btn" onclick="backToMain('product-overlay')">رجوع</button>
-    <div class="slider-container">
-        <button class="slider-btn prev-btn" onclick="moveSlider(-1)">&#10094;</button>
-        <div class="slider-wrapper" id="slider-wrap"></div>
-        <button class="slider-btn next-btn" onclick="moveSlider(1)">&#10095;</button>
-    </div>
-    <div class="product-details">
-        <h2 id="p-title" style="margin:0;"></h2>
-        <span id="p-price" class="price-tag"></span>
-        <p id="p-desc" style="color:var(--gray); font-size:14px; line-height:1.6; white-space: pre-line;">توصيل لجميع المحافظات: 5 الاف فقط.
-        الدفع عند استلام المنتج</p>
-        <a href="https://wa.me/9647860526345" class="contact-btn whatsapp">اطلب عبر واتساب</a>
-        <a href="https://t.me/Z_U_L_f_I_Q_A" class="contact-btn telegram">اطلب عبر تليجرام</a>
-    </div>
-</div>
-
-<div id="series-overlay">
-    <button class="close-btn" onclick="backToMain('series-overlay')">رجوع</button>
-    <div class="product-details"><h2 id="ser-title"></h2></div>
-    <div class="ep-grid" id="ep-list"></div>
-</div>
-
 <div id="player">
     <button class="close-btn" onclick="backToMain('player')">إغلاق</button>
     <div class="video-box" id="video-root"></div>
@@ -182,30 +152,40 @@
 </div>
 
 <script>
-    let currentSlide = 0; let totalSlides = 0;
     let videoQueue = null;
-    let timerStarted = false;
+    let timerRunning = false;
+    let countdownInterval = null;
 
-    // وظيفة قفل الفيديو
+    // وظيفة قفل الفيديو وإعادة التفعيل في كل مرة
     function lockVideo(id, title, url, thumb) {
         videoQueue = {id, title, url, thumb};
+        const btn = document.getElementById('smart-link-btn');
+        
+        // إعادة ضبط الزر للحالة الأصلية في كل مرة يضغط فيها المستخدم
+        btn.innerText = "شاهد الاعلان لمدة 10 ثواني";
+        btn.href = "https://twigcrucialpal.com/kvwft44afa?key=cb80200a80e072a4d94407f211fa613c";
+        btn.onclick = initiateAdProcess;
+        
         document.getElementById('ad-locker').style.display = 'flex';
-        document.getElementById('smart-link-btn').innerText = "شاهد الاعلان لمدة 10 ثواني";
-        timerStarted = false;
+        timerRunning = false;
+        if(countdownInterval) clearInterval(countdownInterval);
     }
 
-    function startTimer() {
-        if(timerStarted) return;
-        timerStarted = true;
-        let sec = 10;
-        let btn = document.getElementById('smart-link-btn');
+    function initiateAdProcess() {
+        if(timerRunning) return;
+        timerRunning = true;
         
-        let countdown = setInterval(() => {
+        let sec = 10;
+        const btn = document.getElementById('smart-link-btn');
+        
+        countdownInterval = setInterval(() => {
             sec--;
-            btn.innerText = `انتظر ${sec} ثانية...`;
+            btn.innerText = `انتظر ${sec} ثانية لفتح المحتوى...`;
+            
             if(sec <= 0) {
-                clearInterval(countdown);
-                btn.innerText = "تم التحقق! اضغط لفتح المقطع";
+                clearInterval(countdownInterval);
+                btn.innerText = "✅ اضغط الآن لمشاهدة الفيديو";
+                // تغيير وظيفة الزر لفتح المقطع بدلاً من الرابط الإعلاني
                 btn.onclick = function(e) {
                     e.preventDefault();
                     document.getElementById('ad-locker').style.display = 'none';
@@ -217,22 +197,9 @@
 
     function closeLocker() {
         document.getElementById('ad-locker').style.display = 'none';
-        videoQueue = null;
+        if(countdownInterval) clearInterval(countdownInterval);
+        timerRunning = false;
     }
-
-    function openProduct(title, desc, price, images) {
-        document.getElementById('product-overlay').style.display = 'block';
-        document.getElementById('p-title').innerText = title;
-        document.getElementById('p-price').innerText = "السعر: " + price;
-        const wrap = document.getElementById('slider-wrap');
-        wrap.innerHTML = images.map(img => `<img src="${img}">`).join('');
-        currentSlide = 0; totalSlides = images.length;
-        updateSlider();
-    }
-
-    function moveSlider(step) { currentSlide = (currentSlide + step + totalSlides) % totalSlides; updateSlider(); }
-    function updateSlider() { document.getElementById('slider-wrap').style.transform = `translateX(${currentSlide * 100}%)`; }
-    function backToMain(id) { document.getElementById(id).style.display = 'none'; if(id==='player') document.getElementById('video-root').innerHTML=''; }
 
     function playMedia(id, title, url, thumb) {
         saveToHistory(id, title, url, thumb);
@@ -241,6 +208,7 @@
         document.getElementById('video-root').innerHTML = `<video controls autoplay style="width:100%;"><source src="${url}" type="video/mp4"></video>`;
     }
 
+    // الوظائف المساعدة للموقع (بدون تغيير)
     function saveToHistory(id, title, url, thumb) {
         let history = JSON.parse(localStorage.getItem('user_history') || '[]');
         history = history.filter(item => item.id !== id);
@@ -259,13 +227,20 @@
         document.querySelectorAll('.tab-btn').forEach(t => t.classList.remove('active'));
         document.getElementById(id).classList.add('active'); evt.currentTarget.classList.add('active'); 
     }
+    
     function toggleDarkMode() { document.getElementById('main-body').classList.toggle('dark-theme'); }
+    
     function filterNow() {
         let val = document.getElementById('mainSearch').value.toLowerCase();
         document.querySelectorAll('.card').forEach(c => {
             let title = c.getAttribute('data-title') || "";
             c.style.display = title.toLowerCase().includes(val) ? 'block' : 'none';
         });
+    }
+
+    function backToMain(id) { 
+        document.getElementById(id).style.display = 'none'; 
+        if(id==='player') document.getElementById('video-root').innerHTML=''; 
     }
 </script>
 </body>
