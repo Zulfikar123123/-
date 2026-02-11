@@ -17,6 +17,7 @@
             --text-main: #2b2d42;
             --search-bg: #f1f3f4;
             --gray: #888;
+            --border-light: #e0e0e0;
         }
 
         body.dark-theme { 
@@ -24,6 +25,7 @@
             --card-bg: #1e1e1e;
             --text-main: #f1f1f1;
             --search-bg: #2d2d2d;
+            --border-light: #333;
         }
 
         body { 
@@ -32,72 +34,92 @@
             transition: 0.3s; overflow-x: hidden;
         }
 
-        /* الهيدر والبحث */
         .app-header { background: var(--card-bg); padding: 15px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 1000; }
         .header-icons { display: flex; gap: 18px; align-items: center; }
         .app-title { font-size: 19px; font-weight: bold; color: var(--main-red); margin: 0; }
-        .search-wrapper { padding: 5px 15px 15px 15px; background: var(--card-bg); }
+        .search-wrapper { padding: 5px 15px 10px 15px; background: var(--card-bg); }
         .search-input { width: 100%; padding: 12px 20px; border-radius: 25px; border: none; background: var(--search-bg); color: var(--text-main); outline: none; box-sizing: border-box; font-size: 14px; }
 
-        /* التبويبات */
+        .categories-container {
+            display: flex;
+            overflow-x: auto;
+            white-space: nowrap;
+            padding: 10px 15px;
+            background: var(--card-bg);
+            gap: 10px;
+            scrollbar-width: none;
+        }
+        .categories-container::-webkit-scrollbar { display: none; }
+
+        .cat-item {
+            display: inline-flex;
+            align-items: center;
+            padding: 8px 18px;
+            border-radius: 25px;
+            border: 1px solid var(--border-light);
+            background: var(--card-bg);
+            color: var(--text-main);
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .cat-item.active {
+            background: var(--text-main);
+            color: white;
+            border-color: var(--text-main);
+        }
+        .cat-icon { margin-left: 5px; font-size: 16px; }
+
         .tabs { display: flex; background: var(--card-bg); margin: 15px; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
-        .tab-btn { flex: 1; padding: 15px; border: none; background: none; color: var(--gray); font-weight: bold; cursor: pointer; font-size: 13px; }
+        .tab-btn { flex: 1; padding: 15px; border: none; background: none; color: var(--gray); font-weight: bold; cursor: pointer; font-size: 12px; }
         .tab-btn.active { background: var(--main-red); color: white; }
 
-        /* الشبكة والكروت */
         .grid { display: none; padding: 0 15px 15px 15px; grid-template-columns: repeat(2, 1fr); gap: 15px; }
         .grid.active { display: grid; }
+        
+        .section-title { grid-column: 1 / span 2; font-size: 16px; font-weight: bold; color: var(--main-red); margin: 10px 0 5px 0; border-right: 4px solid var(--main-red); padding-right: 10px; }
+
         .card { background: var(--card-bg); border-radius: 15px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.08); transition: 0.2s; position: relative; }
         .card img { width: 100%; height: 135px; object-fit: cover; border-bottom: 3px solid var(--main-red); }
         .card-info { padding: 10px; font-size: 12px; text-align: center; font-weight: bold; }
+        .card-price { display: block; color: var(--main-red); font-size: 11px; margin-top: 4px; font-weight: bold; }
 
-        .card.new::after {
-            content: "جديد";
-            position: absolute;
-            top: 10px; right: 10px;
-            background: var(--main-red); color: white;
-            font-size: 10px; font-weight: bold; padding: 3px 10px;
-            border-radius: 20px; z-index: 5; box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-        }
-
-        /* واجهات العرض */
-        #series-overlay, #product-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-page); z-index: 2000; overflow-y: auto; }
-        
-        /* سلايدر الصور الاحترافي */
+        #product-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-page); z-index: 2000; overflow-y: auto; }
         .slider-container { width: 100%; height: 300px; position: relative; overflow: hidden; background: #eee; }
         .slider-wrapper { display: flex; transition: transform 0.4s ease-in-out; height: 100%; }
         .slider-wrapper img { width: 100%; height: 100%; object-fit: contain; flex-shrink: 0; }
-        .slider-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.3); color: white; border: none; padding: 10px; cursor: pointer; z-index: 10; border-radius: 50%; width: 40px; height: 40px; }
-        .prev-btn { left: 10px; }
-        .next-btn { right: 10px; }
+        .slider-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.3); color: white; border: none; padding: 10px; cursor: pointer; z-index: 10; border-radius: 50%; }
+        .prev-btn { left: 10px; } .next-btn { right: 10px; }
 
-        .series-banner { width: 100%; height: 220px; object-fit: cover; filter: brightness(0.7); }
-        .series-details, .product-details { padding: 20px; position: relative; margin-top: -30px; background: var(--bg-page); border-radius: 30px 30px 0 0; }
+        .product-details { padding: 20px; position: relative; margin-top: -30px; background: var(--bg-page); border-radius: 30px 30px 0 0; }
         .price-tag { color: var(--main-red); font-size: 18px; font-weight: bold; display: block; margin: 10px 0; }
-        
         .contact-btn { display: block; text-align: center; padding: 15px; margin-top: 10px; border-radius: 10px; text-decoration: none; color: white; font-weight: bold; }
-        .whatsapp { background: #25D366; }
-        .telegram { background: #0088cc; }
+        .whatsapp { background: #25D366; } .telegram { background: #0088cc; }
 
-        /* المشغل والسجل */
-        #player { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-page); z-index: 3000; flex-direction: column; overflow-y: auto; }
-        .video-box { width: 100%; background: #000; position: sticky; top: 0; z-index: 3001; }
+        #player, #series-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-page); z-index: 3000; flex-direction: column; overflow-y: auto; }
+        .video-box { width: 100%; background: #000; position: sticky; top: 0; }
         .close-btn { position: absolute; top: 10px; left: 10px; background: rgba(0,0,0,0.5); color: white; border: none; padding: 8px 15px; border-radius: 20px; z-index: 4000; font-weight: bold; cursor: pointer; }
-        .empty-msg { grid-column: 1 / span 2; text-align: center; padding: 40px; color: var(--gray); }
     </style>
 </head>
 <body id="main-body">
 
 <div class="app-header">
-    <div class="header-icons">
-        <span onclick="toggleDarkMode()">🌙</span>
-        <span onclick="document.getElementById('mainSearch').focus()">🔍</span>
-    </div>
+    <div class="header-icons"><span onclick="toggleDarkMode()">🌙</span><span onclick="document.getElementById('mainSearch').focus()">🔍</span></div>
     <div class="app-title">[واتـبـاد الـفـقـراء]</div>
 </div>
 
 <div class="search-wrapper">
-    <input type="text" id="mainSearch" class="search-input" placeholder="ابحث..." onkeyup="filterNow()">
+    <input type="text" id="mainSearch" class="search-input" placeholder="ابحث عن منتج أو قصة..." onkeyup="filterNow()">
+</div>
+
+<div class="categories-container" id="category-bar" style="display: none;">
+    <div class="cat-item active" onclick="filterCategory('all', this)">
+        <span class="cat-icon">🔳</span> الكل
+    </div>
+    <div class="cat-item" onclick="filterCategory('kitchen', this)">
+        <span class="cat-icon">🍳</span> اجهزة المطبخ
+    </div>
 </div>
 
 <div class="tabs">
@@ -108,43 +130,33 @@
 </div>
 
 <div class="grid active" id="watt-grid">
-    <div class="card new" data-title="غزالة في عرين الاسد" onclick="playMedia('gh_1', 'غزالة في عرين الاسد', 'https://pomf2.lain.la/f/asn9tb0.mp4', 'https://pomf2.lain.la/f/odvlatpw.jpg')">
-        <img src="https://pomf2.lain.la/f/odvlatpw.jpg">
-        <div class="card-info">قصة غزالة في عرين الاسد</div>
+    <div class="card" data-title="غزالة في عرين الاسد" onclick="playMedia('gh_1', 'غزالة في عرين الاسد', 'https://pomf2.lain.la/f/asn9tb0.mp4', 'https://pomf2.lain.la/f/odvlatpw.jpg')">
+        <img src="https://pomf2.lain.la/f/odvlatpw.jpg"><div class="card-info">قصة غزالة في عرين الاسد</div>
+    </div>
+    <div class="card" data-title="نـهـوة غـظـب الـشيـخ + جـريـئـة كـلـش || الـجـزء الثاني" onclick="playMedia('nh_1', 'نـهـوة غـظـب الـشيـخ + جـريـئـة كـلـش || الـجـزء الثاني', 'https://pomf2.lain.la/f/3f7kq0jf.mp4', 'https://pomf2.lain.la/f/pdevqs9u.jpg')">
+        <img src="https://pomf2.lain.la/f/pdevqs9u.jpg"><div class="card-info">نـهـوة غـظـب الـشيـخ || ج2 (1)</div>
+    </div>
+    <div class="card" data-title="نـهـوة غـظـب الـشيـخ + جـريـئـة كـلـش || الـجـزء الثاني" onclick="playMedia('nh_2', 'نـهـوة غـظـب الـشيـخ + جـريـئـة كـلـش || الـجـزء الثاني', 'https://pomf2.lain.la/f/9tc3wh3k.mp4', 'https://pomf2.lain.la/f/pdevqs9u.jpg')">
+        <img src="https://pomf2.lain.la/f/pdevqs9u.jpg"><div class="card-info">نـهـوة غـظـب الـشيـخ || ج2 (2)</div>
+    </div>
+    <div class="card" data-title="نـهـوة غـظـب الـشيـخ + جـريـئـة كـلـش || الـجـزء الثاني" onclick="playMedia('nh_3', 'نـهـوة غـظـب الـشيـخ + جـريـئـة كـلـش || الـجـزء الثاني', 'https://pomf2.lain.la/f/pdevqs9u.jpg', 'https://pomf2.lain.la/f/pdevqs9u.jpg')">
+        <img src="https://pomf2.lain.la/f/pdevqs9u.jpg"><div class="card-info">نـهـوة غـظـب الـشيـخ || ج2 (3)</div>
     </div>
 </div>
 
 <div class="grid" id="ser-grid">
     <div class="card" data-title="هذا البحر سوف يفيض" onclick="openSeries('series_sea', 'هذا البحر سوف يفيض', 'https://pomf2.lain.la/f/2njdz3ym.jpg', ['حلقة 1', 'حلقة 2', 'حلقة 3'])">
-        <img src="https://pomf2.lain.la/f/2njdz3ym.jpg">
-        <div class="card-info">مسلسل هذا البحر سوف يفيض</div>
+        <img src="https://pomf2.lain.la/f/2njdz3ym.jpg"><div class="card-info">مسلسل هذا البحر سوف يفيض</div>
     </div>
 </div>
 
 <div class="grid" id="prod-grid">
-    <div class="card" data-title="كابسة صاج LIBRONC" onclick="openProduct('كابسة صاج ماركة LIBRONC', 'كابسة صاج أصلية ماركة ليبرونك، جودة عالية وسهلة التنظيف. \n\n سعر التوصيل لجميع المحافظات: 5 الاف فقط.', '22,000 د.ع', ['https://pomf2.lain.la/f/czxdmilv.png', 'https://pomf2.lain.la/f/vnd67vz.png', 'https://pomf2.lain.la/f/rywgy0r7.png'])">
-        <img src="https://pomf2.lain.la/f/czxdmilv.png">
-        <div class="card-info">كابسة صاج LIBRONC</div>
+    <div class="section-title">أجهزة المطبخ</div>
+    <div class="card p-item" data-cat="kitchen" data-title="كابسة صاج سامكس" onclick="openProduct('كابسة صاج من سامكس', 'كابسة صاج عملية وسريعة.', '25,000 د.ع', ['https://pomf2.lain.la/f/rt8zjh9o.png'])">
+        <img src="https://pomf2.lain.la/f/rt8zjh9o.png"><div class="card-info">كابسة صاج سامكس <span class="card-price">25,000 د.ع</span></div>
     </div>
-
-    <div class="card" data-title="قدر ضغط" onclick="openProduct('قدر ضغط أصلي', 'قدر ضغط عالي الجودة لطهي الطعام بسرعة فائقة وسهولة تامة. \n\n سعر التوصيل لجميع المحافظات: 5 الاف فقط.', '32,000 د.ع', ['https://pomf2.lain.la/f/9pu8smcg.png', 'https://pomf2.lain.la/f/74pdzad.png', 'https://pomf2.lain.la/f/kv7x8x9x.png'])">
-        <img src="https://pomf2.lain.la/f/9pu8smcg.png">
-        <div class="card-info">قدر ضغط</div>
-    </div>
-
-    <div class="card" data-title="فرن بيتزا وسمك اوفن" onclick="openProduct('فرن بيتزا وسمك (اوفن)', 'فرن متعدد الاستخدامات للبيتزا والسمك والمعجنات، أداء قوي وتوزيع حراري ممتاز. \n\n سعر التوصيل لجميع المحافظات: 5 الاف فقط.', '35,000 د.ع', ['https://pomf2.lain.la/f/dgbwcb7b.png', 'https://pomf2.lain.la/f/bz8mmmp3.png', 'https://pomf2.lain.la/f/u5hcp7ux.png'])">
-        <img src="https://pomf2.lain.la/f/dgbwcb7b.png">
-        <div class="card-info">فرن بيتزا وسمك اوفن</div>
-    </div>
-
-    <div class="card" data-title="مثرامة لحم من ليبرونيك" onclick="openProduct('مثرامة لحم ماركة ليبرونيك', 'مثرامة لحم قوية وشفرات حادة من الفولاذ المقاوم للصدأ، مثالية للاستخدام المنزلي الشاق. \n\n سعر التوصيل لجميع المحافظات: 5 الاف فقط.', '50,000 د.ع', ['https://pomf2.lain.la/f/7cov26ex.png', 'https://pomf2.lain.la/f/qzt4cjpc.png', 'https://pomf2.lain.la/f/5285de9e.png'])">
-        <img src="https://pomf2.lain.la/f/7cov26ex.png">
-        <div class="card-info">مثرامة لحم ليبرونيك</div>
-    </div>
-
-    <div class="card" data-title="معصارة فواكة من ليبرونيك" onclick="openProduct('معصارة فواكة ماركة ليبرونيك', 'عصارة فواكه احترافية لاستخلاص العصير الطازج والحفاظ على الفيتامينات، سهلة الفك والتركيب. \n\n سعر التوصيل لجميع المحافظات: 5 الاف فقط.', '38,000 د.ع', ['https://pomf2.lain.la/f/kocg7qxh.png', 'https://pomf2.lain.la/f/hdyk2wmp.png', 'https://pomf2.lain.la/f/5b1y1dcw.png'])">
-        <img src="https://pomf2.lain.la/f/kocg7qxh.png">
-        <div class="card-info">معصارة فواكة ليبرونيك</div>
+    <div class="card p-item" data-cat="kitchen" data-title="معصارة سامكس" onclick="openProduct('معصارة فواكة سامكس', 'عصارة قوية.', '50,000 د.ع', ['https://pomf2.lain.la/f/pe4zwmm5.png'])">
+        <img src="https://pomf2.lain.la/f/pe4zwmm5.png"><div class="card-info">معصارة سامكس <span class="card-price">50,000 د.ع</span></div>
     </div>
 </div>
 
@@ -160,59 +172,33 @@
     <div class="product-details">
         <h2 id="p-title" style="margin:0;"></h2>
         <span id="p-price" class="price-tag"></span>
-        <p id="p-desc" style="color:var(--gray); font-size:14px; line-height:1.6; white-space: pre-line;"></p>
+        <p id="p-desc" style="color:var(--gray); font-size:14px; line-height:1.6; white-space: pre-line;">توصيل لجميع المحافظات: 5 الاف فقط.
+        الدفع عند استلام المنتج</p>
         <a href="https://wa.me/9647860526345" class="contact-btn whatsapp">اطلب عبر واتساب</a>
-        <a href="https://t.me/Z_U_L_f_I_Q_A" class="contact-btn telegram">اطلب عبر تليجرام</a>
     </div>
-</div>
-
-<div id="series-overlay">
-    <button class="close-btn" onclick="backToMain('series-overlay')">رجوع</button>
-    <img id="ser-img" class="series-banner">
-    <div class="series-details"><h2 id="ser-title" style="margin:0;"></h2><p>اختر الحلقة</p></div>
-    <div class="ep-grid" id="ep-list"></div>
 </div>
 
 <div id="player">
     <button class="close-btn" onclick="backToMain('player')">إغلاق</button>
     <div class="video-box" id="video-root"></div>
-    <div class="v-details"><div id="v-title" style="font-weight:bold;"></div></div>
+    <div class="product-details"><h2 id="v-title"></h2></div>
 </div>
 
 <script>
-    let currentSlide = 0;
-    let totalSlides = 0;
-
-    function openProduct(title, desc, price, images) {
-        document.getElementById('product-overlay').style.display = 'block';
-        document.getElementById('p-title').innerText = title;
-        document.getElementById('p-desc').innerText = desc;
-        document.getElementById('p-price').innerText = "السعر: " + price;
-        
-        const wrap = document.getElementById('slider-wrap');
-        wrap.innerHTML = images.map(img => `<img src="${img}">`).join('');
-        currentSlide = 0;
-        totalSlides = images.length;
-        updateSlider();
+    function showTab(evt, id) { 
+        document.querySelectorAll('.grid').forEach(g => g.classList.remove('active')); 
+        document.querySelectorAll('.tab-btn').forEach(t => t.classList.remove('active'));
+        document.getElementById(id).classList.add('active'); evt.currentTarget.classList.add('active'); 
+        document.getElementById('category-bar').style.display = (id === 'prod-grid') ? 'flex' : 'none';
     }
 
-    function moveSlider(step) {
-        currentSlide = (currentSlide + step + totalSlides) % totalSlides;
-        updateSlider();
-    }
-
-    function updateSlider() {
-        const wrap = document.getElementById('slider-wrap');
-        wrap.style.transform = `translateX(${currentSlide * 100}%)`;
-    }
-
-    function backToMain(id) { document.getElementById(id).style.display = 'none'; if(id==='player') document.getElementById('video-root').innerHTML=''; }
-
-    function openSeries(id, title, img, eps) {
-        document.getElementById('series-overlay').style.display = 'block';
-        document.getElementById('ser-img').src = img;
-        document.getElementById('ser-title').innerText = title;
-        document.getElementById('ep-list').innerHTML = eps.map((e, i) => `<div class="ep-card" onclick="playMedia('${id}_${i}', '${title} - ${e}', '#', '${img}')">${e}</div>`).join('');
+    function filterCategory(cat, el) {
+        document.querySelectorAll('.cat-item').forEach(i => i.classList.remove('active'));
+        el.classList.add('active');
+        document.querySelectorAll('.p-item').forEach(item => {
+            if (cat === 'all' || item.getAttribute('data-cat') === cat) item.style.display = 'block';
+            else item.style.display = 'none';
+        });
     }
 
     function playMedia(id, title, url, thumb) {
@@ -232,19 +218,29 @@
     function updateHistoryUI() {
         const grid = document.getElementById('history-grid');
         const history = JSON.parse(localStorage.getItem('user_history') || '[]');
-        grid.innerHTML = history.length ? history.map(item => `<div class="card" onclick="playMedia('${item.id}', '${item.title}', '${item.url}', '${item.thumb}')"><img src="${item.thumb}"><div class="card-info">${item.title}</div></div>`).join('') : '<div class="empty-msg">السجل فارغ</div>';
+        grid.innerHTML = history.length ? history.map(item => `<div class="card" onclick="playMedia('${item.id}', '${item.title}', '${item.url}', '${item.thumb}')"><img src="${item.thumb}"><div class="card-info">${item.title}</div></div>`).join('') : '<div style="grid-column:1/span 2; text-align:center; padding:20px;">السجل فارغ</div>';
     }
 
-    function showTab(evt, id) { 
-        document.querySelectorAll('.grid').forEach(g => g.classList.remove('active')); 
-        document.querySelectorAll('.tab-btn').forEach(t => t.classList.remove('active'));
-        document.getElementById(id).classList.add('active'); evt.currentTarget.classList.add('active'); 
-    }
-    function toggleDarkMode() { document.getElementById('main-body').classList.toggle('dark-theme'); }
     function filterNow() {
         let val = document.getElementById('mainSearch').value.toLowerCase();
         document.querySelectorAll('.card').forEach(c => c.style.display = c.getAttribute('data-title').toLowerCase().includes(val) ? 'block' : 'none');
     }
+
+    function openProduct(title, desc, price, images) {
+        document.getElementById('product-overlay').style.display = 'block';
+        document.getElementById('p-title').innerText = title;
+        document.getElementById('p-price').innerText = "السعر: " + price;
+        const wrap = document.getElementById('slider-wrap');
+        wrap.innerHTML = images.map(img => `<img src="${img}">`).join('');
+        currentSlide = 0; totalSlides = images.length;
+        updateSlider();
+    }
+
+    let currentSlide = 0; let totalSlides = 0;
+    function moveSlider(step) { currentSlide = (currentSlide + step + totalSlides) % totalSlides; updateSlider(); }
+    function updateSlider() { document.getElementById('slider-wrap').style.transform = `translateX(${currentSlide * 100}%)`; }
+    function backToMain(id) { document.getElementById(id).style.display = 'none'; if(id==='player') document.getElementById('video-root').innerHTML=''; }
+    function toggleDarkMode() { document.getElementById('main-body').classList.toggle('dark-theme'); }
 </script>
 </body>
 </html>
