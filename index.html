@@ -17,7 +17,6 @@
             --text-main: #2b2d42;
             --search-bg: #f1f3f4;
             --gray: #888;
-            --border-light: #e0e0e0;
         }
 
         body.dark-theme { 
@@ -25,7 +24,6 @@
             --card-bg: #1e1e1e;
             --text-main: #f1f1f1;
             --search-bg: #2d2d2d;
-            --border-light: #333;
         }
 
         body { 
@@ -37,39 +35,8 @@
         .app-header { background: var(--card-bg); padding: 15px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 1000; }
         .header-icons { display: flex; gap: 18px; align-items: center; }
         .app-title { font-size: 19px; font-weight: bold; color: var(--main-red); margin: 0; }
-        .search-wrapper { padding: 5px 15px 10px 15px; background: var(--card-bg); }
+        .search-wrapper { padding: 5px 15px 15px 15px; background: var(--card-bg); }
         .search-input { width: 100%; padding: 12px 20px; border-radius: 25px; border: none; background: var(--search-bg); color: var(--text-main); outline: none; box-sizing: border-box; font-size: 14px; }
-
-        .categories-container {
-            display: flex;
-            overflow-x: auto;
-            white-space: nowrap;
-            padding: 10px 15px;
-            background: var(--card-bg);
-            gap: 10px;
-            scrollbar-width: none;
-        }
-        .categories-container::-webkit-scrollbar { display: none; }
-
-        .cat-item {
-            display: inline-flex;
-            align-items: center;
-            padding: 8px 18px;
-            border-radius: 25px;
-            border: 1px solid var(--border-light);
-            background: var(--card-bg);
-            color: var(--text-main);
-            font-size: 13px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-        .cat-item.active {
-            background: var(--text-main);
-            color: white;
-            border-color: var(--text-main);
-        }
-        .cat-icon { margin-left: 5px; font-size: 16px; }
 
         .tabs { display: flex; background: var(--card-bg); margin: 15px; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
         .tab-btn { flex: 1; padding: 15px; border: none; background: none; color: var(--gray); font-weight: bold; cursor: pointer; font-size: 12px; }
@@ -83,7 +50,10 @@
         .card { background: var(--card-bg); border-radius: 15px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.08); transition: 0.2s; position: relative; }
         .card img { width: 100%; height: 135px; object-fit: cover; border-bottom: 3px solid var(--main-red); }
         .card-info { padding: 10px; font-size: 12px; text-align: center; font-weight: bold; }
+        
         .card-price { display: block; color: var(--main-red); font-size: 11px; margin-top: 4px; font-weight: bold; }
+
+        .card.new::after { content: "جديد"; position: absolute; top: 10px; right: 10px; background: var(--main-red); color: white; font-size: 10px; font-weight: bold; padding: 3px 10px; border-radius: 20px; z-index: 5; }
 
         #product-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-page); z-index: 2000; overflow-y: auto; }
         .slider-container { width: 100%; height: 300px; position: relative; overflow: hidden; background: #eee; }
@@ -113,15 +83,6 @@
     <input type="text" id="mainSearch" class="search-input" placeholder="ابحث عن منتج أو قصة..." onkeyup="filterNow()">
 </div>
 
-<div class="categories-container" id="category-bar" style="display: none;">
-    <div class="cat-item active" onclick="filterCategory('all', this)">
-        <span class="cat-icon">🔳</span> الكل
-    </div>
-    <div class="cat-item" onclick="filterCategory('kitchen', this)">
-        <span class="cat-icon">🍳</span> اجهزة المطبخ
-    </div>
-</div>
-
 <div class="tabs">
     <button class="tab-btn active" onclick="showTab(event, 'watt-grid')">📖 القصص</button>
     <button class="tab-btn" onclick="showTab(event, 'ser-grid')">🎬 المسلسلات</button>
@@ -130,12 +91,23 @@
 </div>
 
 <div class="grid active" id="watt-grid">
-  
+
+
+    <div class="card" data-title="نـهـوة غـظـب الـشيـخ + جـريـئـة كـلـش || الـجـزء الثالث الاخير" onclick="playMedia('lyla_01', 'نـهـوة غـظـب الـشيـخ + جـريـئـة كـلـش || الـجـزء الثالث الاخير', 'https://pomf2.lain.la/f/9tc3wh3k.mp4', 'https://pomf2.lain.la/f/pdevqs9u.jpg')">
+        <img src="https://pomf2.lain.la/f/pdevqs9u.jpg">
+        <div class="card-info">نـهـوة غـظـب الـشيـخ + جـريـئـة كـلـش || الـجـزء الثالث الاخير</div>
+    </div>
+
+
     <div class="card" data-title="نـهـوة غـظـب الـشيـخ + جـريـئـة كـلـش || الـجـزء الثاني" onclick="playMedia('lyla_01', 'نـهـوة غـظـب الـشيـخ + جـريـئـة كـلـش || الـجـزء الثاني', 'https://pomf2.lain.la/f/3f7kq0jf.mp4', 'https://pomf2.lain.la/f/pdevqs9u.jpg')">
         <img src="https://pomf2.lain.la/f/pdevqs9u.jpg">
         <div class="card-info">نـهـوة غـظـب الـشيـخ + جـريـئـة كـلـش || الـجـزء الثاني</div>
     </div>
 
+    <div class="card new" data-title="غزالة في عرين الاسد" onclick="playMedia('gh_1', 'غزالة في عرين الاسد', 'https://pomf2.lain.la/f/asn9tb0.mp4', 'https://pomf2.lain.la/f/odvlatpw.jpg')">
+        <img src="https://pomf2.lain.la/f/odvlatpw.jpg"><div class="card-info">قصة غزالة في عرين الاسد</div>
+    </div>
+</div>
 
 <div class="grid" id="ser-grid">
     <div class="card" data-title="هذا البحر سوف يفيض" onclick="openSeries('series_sea', 'هذا البحر سوف يفيض', 'https://pomf2.lain.la/f/2njdz3ym.jpg', ['حلقة 1', 'حلقة 2', 'حلقة 3'])">
@@ -145,11 +117,85 @@
 
 <div class="grid" id="prod-grid">
     <div class="section-title">أجهزة المطبخ</div>
-    <div class="card p-item" data-cat="kitchen" data-title="كابسة صاج سامكس" onclick="openProduct('كابسة صاج من سامكس', 'كابسة صاج عملية وسريعة.', '25,000 د.ع', ['https://pomf2.lain.la/f/rt8zjh9o.png'])">
+
+    <div class="card" data-title="كابسة صاج سامكس" onclick="openProduct('كابسة صاج من سامكس', 'كابسة صاج عملية وسريعة من ماركة سامكس الشهيرة.', '25,000 د.ع', ['https://pomf2.lain.la/f/rt8zjh9o.png', 'https://pomf2.lain.la/f/ibc3paos.png', 'https://pomf2.lain.la/f/grwm1uji.png'])">
         <img src="https://pomf2.lain.la/f/rt8zjh9o.png"><div class="card-info">كابسة صاج سامكس <span class="card-price">25,000 د.ع</span></div>
     </div>
-    <div class="card p-item" data-cat="kitchen" data-title="معصارة سامكس" onclick="openProduct('معصارة فواكة ماركة سامكس', 'عصارة قوية.', '50,000 د.ع', ['https://pomf2.lain.la/f/pe4zwmm5.png'])">
+
+    <div class="card" data-title="معصارة فواكة سامكس" onclick="openProduct('معصارة فواكة ماركة سامكس', 'عصارة فواكه قوية لاستخلاص العصير الطازج يومياً.', '50,000 د.ع', ['https://pomf2.lain.la/f/pe4zwmm5.png', 'https://pomf2.lain.la/f/qfoay45d.png', 'https://pomf2.lain.la/f/pe4zwmm5.png'])">
         <img src="https://pomf2.lain.la/f/pe4zwmm5.png"><div class="card-info">معصارة سامكس <span class="card-price">50,000 د.ع</span></div>
+    </div>
+
+    <div class="card" data-title="شيش شواء للقلايات" onclick="openProduct('شيش شواء للقلايات', 'طقم شيش شواء مخصص للقلايات الهوائية.', '10,000 د.ع', ['https://pomf2.lain.la/f/tvok04eu.png', 'https://pomf2.lain.la/f/0oef9b3o.png', 'https://pomf2.lain.la/f/cqy51p1v.png'])">
+        <img src="https://pomf2.lain.la/f/tvok04eu.png"><div class="card-info">شيش شواء <span class="card-price">10,000 د.ع</span></div>
+    </div>
+
+    <div class="card" data-title="صانع اللبنة" onclick="openProduct('صانع اللبنة', 'جهاز منزلي سهل الاستخدام لتحضير اللبنة الطازجة.', '16,000 د.ع', ['https://pomf2.lain.la/f/9y35e680.png', 'https://pomf2.lain.la/f/5gkcwrfo.png', 'https://pomf2.lain.la/f/ftgosc2.png'])">
+        <img src="https://pomf2.lain.la/f/9y35e680.png"><div class="card-info">صانع اللبنة <span class="card-price">16,000 د.ع</span></div>
+    </div>
+
+    <div class="card" data-title="كسارة جوز ومكسرات" onclick="openProduct('كسارة جوز ومكسرات', 'أداة قوية لكسر الجوز والمكسرات بسهولة.', '15,000 د.ع', ['https://pomf2.lain.la/f/8q961vyx.png', 'https://pomf2.lain.la/f/dfmbc22k.png', 'https://pomf2.lain.la/f/vh2lcp8.png'])">
+        <img src="https://pomf2.lain.la/f/8q961vyx.png"><div class="card-info">كسارة جوز <span class="card-price">15,000 د.ع</span></div>
+    </div>
+
+    <div class="card" data-title="مثرامة خضروات شحن" onclick="openProduct('مثرامة خضروات كهربائية شحن', 'مثرامة عملية تعمل بالشحن، مثالية للتنقل والاستخدام السريع.', '30,600 د.ع', ['https://pomf2.lain.la/f/1y4b3f04.png', 'https://pomf2.lain.la/f/p2k6zp83.png', 'https://pomf2.lain.la/f/z42wwxfn.png'])">
+        <img src="https://pomf2.lain.la/f/1y4b3f04.png"><div class="card-info">مثرامة خضروات شحن <span class="card-price">30,600 د.ع</span></div>
+    </div>
+
+    <div class="card" data-title="قدر ضغط 5 لتر" onclick="openProduct('قدر ضغط ستانلس ستيل 5 لتر', 'قدر ضغط أصلي متين لتحضير الطعام بسرعة.', '38,000 د.ع', ['https://pomf2.lain.la/f/ucyl2yai.png', 'https://pomf2.lain.la/f/pgywpx8h.png', 'https://pomf2.lain.la/f/zgbu5izm.png'])">
+        <img src="https://pomf2.lain.la/f/ucyl2yai.png"><div class="card-info">قدر ضغط 5 لتر <span class="card-price">38,000 د.ع</span></div>
+    </div>
+
+    <div class="card" data-title="كوب تقليب مغناطيسي" onclick="openProduct('كوب تقليب مغناطيسي تلقائي', 'كوب ذكي يقلب المشروبات تلقائياً.', '14,000 د.ع', ['https://pomf2.lain.la/f/pb38312r.png', 'https://pomf2.lain.la/f/b7emmhal.png', 'https://pomf2.lain.la/f/21qr1wzv.png'])">
+        <img src="https://pomf2.lain.la/f/pb38312r.png"><div class="card-info">كوب تقليب مغناطيسي <span class="card-price">14,000 د.ع</span></div>
+    </div>
+
+    <div class="card" data-title="غلاية شاي 5 لتر" onclick="openProduct('غلاية شاي كهربائية 5 لتر', 'غلاية ضخمة سعة 5 لتر مصنوعة من الستانلس ستيل.', '24,000 د.ع', ['https://pomf2.lain.la/f/1uxssvnm.png', 'https://pomf2.lain.la/f/842j09ca.png', 'https://pomf2.lain.la/f/7x1lk9i9.png'])">
+        <img src="https://pomf2.lain.la/f/1uxssvnm.png"><div class="card-info">غلاية شاي 5 لتر <span class="card-price">24,000 د.ع</span></div>
+    </div>
+
+    <div class="card" data-title="خلاط مع طاحونة سامكس" onclick="openProduct('خلاط مع طاحونة من سامكس', 'خلاط 2 في 1 مثالي للعصائر وطحن التوابل.', '24,000 د.ع', ['https://pomf2.lain.la/f/nl3u487.png', 'https://pomf2.lain.la/f/djcag8xx.png', 'https://pomf2.lain.la/f/8d1sqjgr.png'])">
+        <img src="https://pomf2.lain.la/f/nl3u487.png"><div class="card-info">خلاط سامكس <span class="card-price">24,000 د.ع</span></div>
+    </div>
+
+    <div class="card" data-title="قلاية زيت ريكي" onclick="openProduct('قلاية زيت كهربائية ريكي 6 لتر', 'قلاية ضخمة سعة 6 لتر لتحضير أشهى المأكولات المقلية.', '44,000 د.ع', ['https://pomf2.lain.la/f/o4m8e12g.png', 'https://pomf2.lain.la/f/hef4a39l.png', 'https://pomf2.lain.la/f/2iw3ls0y.png'])">
+        <img src="https://pomf2.lain.la/f/o4m8e12g.png"><div class="card-info">قلاية زيت ريكي <span class="card-price">44,000 د.ع</span></div>
+    </div>
+
+    <div class="card" data-title="عصا ماسكة" onclick="openProduct('عصا ماسكة 2', 'أدوات مساعدة للمطبخ لسهولة التحكم.', '10,000 د.ع', ['https://pomf2.lain.la/f/0157phvg.png', 'https://pomf2.lain.la/f/r37lz1v7.png', 'https://pomf2.lain.la/f/4v4y50e.png'])">
+        <img src="https://pomf2.lain.la/f/0157phvg.png"><div class="card-info">عصا ماسكة <span class="card-price">10,000 د.ع</span></div>
+    </div>
+
+    <div class="card" data-title="طباخ غازي محمول" onclick="openProduct('طباخ غازي محمول', 'طباخ مثالي للرحلات والاستخدام السريع.', '20,000 د.ع', ['https://pomf2.lain.la/f/3f4f5y37.png', 'https://pomf2.lain.la/f/m60f1cs8.png', 'https://pomf2.lain.la/f/mr7hbtth.png'])">
+        <img src="https://pomf2.lain.la/f/3f4f5y37.png"><div class="card-info">طباخ محمول <span class="card-price">20,000 د.ع</span></div>
+    </div>
+
+    <div class="card" data-title="قلاية زيتية emerio" onclick="openProduct('قلاية زيتية 3 لتر emerio', 'قلاية بجودة أوروبية سعة 3 لتر.', '38,000 د.ع', ['https://pomf2.lain.la/f/i0glkykj.png', 'https://pomf2.lain.la/f/yttwvj03.png', 'https://pomf2.lain.la/f/127ubqb2.png'])">
+        <img src="https://pomf2.lain.la/f/i0glkykj.png"><div class="card-info">قلاية emerio <span class="card-price">38,000 د.ع</span></div>
+    </div>
+
+    <div class="card" data-title="جهاز صنع الايس كريم" onclick="openProduct('جهاز صنع الايس كريم', 'حضّر أشهى أنواع الايس كريم الطبيعي في المنزل.', '24,000 د.ع', ['https://pomf2.lain.la/f/5fa43g76.png', 'https://pomf2.lain.la/f/qrl2ljsn.png', 'https://pomf2.lain.la/f/5e5xbqha.png'])">
+        <img src="https://pomf2.lain.la/f/5fa43g76.png"><div class="card-info">جهاز ايس كريم <span class="card-price">24,000 د.ع</span></div>
+    </div>
+
+    <div class="card" data-title="طباخ سلفر شيف منضدي" onclick="openProduct('طباخ سلفر شيف 4 عين', 'طباخ منضدي متين بـ 4 عيون غازية.', '29,000 د.ع', ['https://pomf2.lain.la/f/iyoclpgg.png', 'https://pomf2.lain.la/f/a13a2ro6.png', 'https://pomf2.lain.la/f/ww875sm9.png'])">
+        <img src="https://pomf2.lain.la/f/iyoclpgg.png"><div class="card-info">طباخ سلفر شيف <span class="card-price">29,000 د.ع</span></div>
+    </div>
+
+    <div class="card" data-title="خلاط شحن مع مطارة" onclick="openProduct('خلاط شحن وسط مع مطارة', 'خلاط رياضي محمول لتحضير العصائر فوراً.', '14,000 د.ع', ['https://pomf2.lain.la/f/1xkkr5wp.png', 'https://pomf2.lain.la/f/yefgjv59.png', 'https://pomf2.lain.la/f/xenqctmi.png'])">
+        <img src="https://pomf2.lain.la/f/1xkkr5wp.png"><div class="card-info">خلاط شحن مطارة <span class="card-price">14,000 د.ع</span></div>
+    </div>
+
+    <div class="card" data-title="معصارة فواكة امبليوم" onclick="openProduct('معصارة فواكة ديجتال امبليوم', 'معصارة ديجتال احترافية بأعلى المواصفات.', '70,000 د.ع', ['https://pomf2.lain.la/f/p8q0p7aj.png', 'https://pomf2.lain.la/f/9mi5w69p.png', 'https://pomf2.lain.la/f/lbcfqx2i.png'])">
+        <img src="https://pomf2.lain.la/f/p8q0p7aj.png"><div class="card-info">معصارة امبليوم <span class="card-price">70,000 د.ع</span></div>
+    </div>
+
+    <div class="card" data-title="طباخ غاز 3 عيون" onclick="openProduct('طباخ غاز 3 عيون', 'طباخ غازي عملي للمطابخ الصغيرة.', '22,000 د.ع', ['https://pomf2.lain.la/f/dbw5hqis.png', 'https://pomf2.lain.la/f/v14qulqu.png', 'https://pomf2.lain.la/f/g1kfp08e.png'])">
+        <img src="https://pomf2.lain.la/f/dbw5hqis.png"><div class="card-info">طباخ غاز 3 عيون <span class="card-price">22,000 د.ع</span></div>
+    </div>
+
+    <div class="card" data-title="جهاز تحضير افطار راف" onclick="openProduct('جهاز تحضير افطار 3 في 1', 'فرن، مقلاة، وصانعة قهوة في جهاز واحد من راف.', '40,000 د.ع', ['https://pomf2.lain.la/f/0ynrfgx.png', 'https://pomf2.lain.la/f/wu4yalx5.png', 'https://pomf2.lain.la/f/ap2fa1ab.png'])">
+        <img src="https://pomf2.lain.la/f/0ynrfgx.png"><div class="card-info">جهاز افطار راف <span class="card-price">40,000 د.ع</span></div>
     </div>
 </div>
 
@@ -168,7 +214,14 @@
         <p id="p-desc" style="color:var(--gray); font-size:14px; line-height:1.6; white-space: pre-line;">توصيل لجميع المحافظات: 5 الاف فقط.
         الدفع عند استلام المنتج</p>
         <a href="https://wa.me/9647860526345" class="contact-btn whatsapp">اطلب عبر واتساب</a>
+        <a href="https://t.me/Z_U_L_f_I_Q_A" class="contact-btn telegram">اطلب عبر تليجرام</a>
     </div>
+</div>
+
+<div id="series-overlay">
+    <button class="close-btn" onclick="backToMain('series-overlay')">رجوع</button>
+    <div class="product-details"><h2 id="ser-title"></h2></div>
+    <div class="ep-grid" id="ep-list"></div>
 </div>
 
 <div id="player">
@@ -178,21 +231,21 @@
 </div>
 
 <script>
-    function showTab(evt, id) { 
-        document.querySelectorAll('.grid').forEach(g => g.classList.remove('active')); 
-        document.querySelectorAll('.tab-btn').forEach(t => t.classList.remove('active'));
-        document.getElementById(id).classList.add('active'); evt.currentTarget.classList.add('active'); 
-        document.getElementById('category-bar').style.display = (id === 'prod-grid') ? 'flex' : 'none';
+    let currentSlide = 0; let totalSlides = 0;
+
+    function openProduct(title, desc, price, images) {
+        document.getElementById('product-overlay').style.display = 'block';
+        document.getElementById('p-title').innerText = title;
+        document.getElementById('p-price').innerText = "السعر: " + price;
+        const wrap = document.getElementById('slider-wrap');
+        wrap.innerHTML = images.map(img => `<img src="${img}">`).join('');
+        currentSlide = 0; totalSlides = images.length;
+        updateSlider();
     }
 
-    function filterCategory(cat, el) {
-        document.querySelectorAll('.cat-item').forEach(i => i.classList.remove('active'));
-        el.classList.add('active');
-        document.querySelectorAll('.p-item').forEach(item => {
-            if (cat === 'all' || item.getAttribute('data-cat') === cat) item.style.display = 'block';
-            else item.style.display = 'none';
-        });
-    }
+    function moveSlider(step) { currentSlide = (currentSlide + step + totalSlides) % totalSlides; updateSlider(); }
+    function updateSlider() { document.getElementById('slider-wrap').style.transform = `translateX(${currentSlide * 100}%)`; }
+    function backToMain(id) { document.getElementById(id).style.display = 'none'; if(id==='player') document.getElementById('video-root').innerHTML=''; }
 
     function playMedia(id, title, url, thumb) {
         saveToHistory(id, title, url, thumb);
@@ -214,27 +267,16 @@
         grid.innerHTML = history.length ? history.map(item => `<div class="card" onclick="playMedia('${item.id}', '${item.title}', '${item.url}', '${item.thumb}')"><img src="${item.thumb}"><div class="card-info">${item.title}</div></div>`).join('') : '<div style="grid-column:1/span 2; text-align:center; padding:20px;">السجل فارغ</div>';
     }
 
+    function showTab(evt, id) { 
+        document.querySelectorAll('.grid').forEach(g => g.classList.remove('active')); 
+        document.querySelectorAll('.tab-btn').forEach(t => t.classList.remove('active'));
+        document.getElementById(id).classList.add('active'); evt.currentTarget.classList.add('active'); 
+    }
+    function toggleDarkMode() { document.getElementById('main-body').classList.toggle('dark-theme'); }
     function filterNow() {
         let val = document.getElementById('mainSearch').value.toLowerCase();
         document.querySelectorAll('.card').forEach(c => c.style.display = c.getAttribute('data-title').toLowerCase().includes(val) ? 'block' : 'none');
     }
-
-    function openProduct(title, desc, price, images) {
-        document.getElementById('product-overlay').style.display = 'block';
-        document.getElementById('p-title').innerText = title;
-        document.getElementById('p-price').innerText = "السعر: " + price;
-        const wrap = document.getElementById('slider-wrap');
-        wrap.innerHTML = images.map(img => `<img src="${img}">`).join('');
-        currentSlide = 0; totalSlides = images.length;
-        updateSlider();
-    }
-
-    let currentSlide = 0; let totalSlides = 0;
-    function moveSlider(step) { currentSlide = (currentSlide + step + totalSlides) % totalSlides; updateSlider(); }
-    function updateSlider() { document.getElementById('slider-wrap').style.transform = `translateX(${currentSlide * 100}%)`; }
-    function backToMain(id) { document.getElementById(id).style.display = 'none'; if(id==='player') document.getElementById('video-root').innerHTML=''; }
-    function toggleDarkMode() { document.getElementById('main-body').classList.toggle('dark-theme'); }
 </script>
 </body>
 </html>
-
