@@ -97,6 +97,16 @@
         .ad-btn { background: #28a745; color: white; border: none; padding: 15px 40px; border-radius: 10px; font-size: 18px; font-weight: bold; cursor: pointer; text-decoration: none; }
         .ad-btn:disabled { background: #555; cursor: not-allowed; }
         .close-ad-x { position: absolute; top: 20px; right: 20px; background: red; color: white; border: none; padding: 5px 15px; font-weight: bold; border-radius: 5px; }
+
+        /* تنسيق قائمة الحلقات الاحترافي الجديد */
+        .ep-list-container { padding: 15px; display: flex; flex-direction: column; gap: 8px; background: var(--bg-page); }
+        .ep-item { 
+            display: flex; align-items: center; background: var(--card-bg); 
+            padding: 12px; border-radius: 10px; cursor: pointer; 
+            border-right: 4px solid #ccc; transition: 0.2s;
+        }
+        .ep-item.active-ep { border-right-color: var(--main-red); background: rgba(230, 57, 70, 0.05); }
+        .ep-item-info { font-size: 14px; font-weight: bold; color: var(--text-main); }
     </style>
 </head>
 <body id="main-body">
@@ -251,23 +261,19 @@
     </div>
 </div>
 
-<div id="series-overlay">
-    <button class="close-btn" onclick="backToMain('series-overlay')">رجوع</button>
-    <div class="product-details"><h2 id="ser-title"></h2></div>
-    <div class="ep-grid" id="ep-list"></div>
-</div>
-
 <div id="player">
     <button class="close-btn" onclick="backToMain('player')">إغلاق</button>
     <div class="video-box" id="video-root"></div>
-    <div class="product-details"><h2 id="v-title"></h2></div>
+    <div class="product-details">
+        <h2 id="v-title" style="margin-bottom: 5px;"></h2>
+    </div>
+    <div id="episode-list-area"></div>
 </div>
 
 <script>
     let currentSlide = 0; let totalSlides = 0;
     let pendingMedia = null;
 
-    // وظيفة التحقق من الإعلان قبل التشغيل
     function checkAdBeforePlay(id, title, url, thumb, isSeries = false) {
         pendingMedia = { id, title, url, thumb, isSeries };
         document.getElementById('ad-overlay').style.display = 'flex';
@@ -299,7 +305,13 @@
     function executePlay() {
         document.getElementById('ad-overlay').style.display = 'none';
         if (pendingMedia.isSeries) {
-            openSeries(pendingMedia.id, pendingMedia.title, pendingMedia.thumb, ['حلقة 1', 'حلقة 2', 'حلقة 3']);
+            // بيانات المسلسل وروابط الحلقات
+            const episodes = [
+                { title: 'الحلقة الأولى', url: 'https://pomf2.lain.la/f/2njdz3ym.mp4' },
+                { title: 'الحلقة الثانية', url: 'https://pomf2.lain.la/f/3f7kq0jf.mp4' },
+                { title: 'الحلقة الثالثة', url: 'https://pomf2.lain.la/f/9tc3wh3k.mp4' }
+            ];
+            openSeries(pendingMedia.id, pendingMedia.title, pendingMedia.thumb, episodes);
         } else {
             playMedia(pendingMedia.id, pendingMedia.title, pendingMedia.url, pendingMedia.thumb);
         }
@@ -309,11 +321,36 @@
         document.getElementById('ad-overlay').style.display = 'none';
     }
 
-    function openSeries(id, title, thumb, eps) {
-        document.getElementById('series-overlay').style.display = 'flex';
-        document.getElementById('ser-title').innerText = title;
-        const list = document.getElementById('ep-list');
-        list.innerHTML = eps.map((ep, i) => `<div class="card" style="margin:10px; padding:15px; background:var(--card-bg); border-radius:10px; text-align:center;" onclick="playMedia('${id}_${i}', '${title} - ${ep}', 'https://pomf2.lain.la/f/2njdz3ym.jpg', '${thumb}')">${ep}</div>`).join('');
+    // الدالة المطورة لفتح المسلسل وعرض الحلقات أسفل الفيديو
+    function openSeries(seriesId, seriesTitle, thumb, episodes) {
+        // 1. فتح واجهة المشغل
+        document.getElementById('player').style.display = 'flex';
+        
+        // 2. تشغيل أول حلقة تلقائياً
+        playMedia(seriesId + '_ep0', seriesTitle + ' - ' + episodes[0].title, episodes[0].url, thumb);
+
+        // 3. بناء قائمة الحلقات أسفل الفيديو
+        const listArea = document.getElementById('episode-list-area');
+        let html = '<div class="ep-list-container"><h3 style="margin:0 0 10px 0; font-size:15px; color:var(--main-red);">الحلقات:</h3>';
+        
+        episodes.forEach((ep, index) => {
+            html += `
+                <div class="ep-item ${index === 0 ? 'active-ep' : ''}" id="ep-btn-${index}" onclick="changeEpisode('${seriesId}', '${seriesTitle}', '${ep.title}', '${ep.url}', '${thumb}', ${index})">
+                    <div class="ep-item-info">${ep.title}</div>
+                </div>`;
+        });
+        
+        html += '</div>';
+        listArea.innerHTML = html;
+    }
+
+    // دالة تبديل الحلقة من القائمة
+    function changeEpisode(seriesId, seriesTitle, epTitle, url, thumb, index) {
+        playMedia(seriesId + '_ep' + index, seriesTitle + ' - ' + epTitle, url, thumb);
+        
+        // تحديث شكل الزر المختار
+        document.querySelectorAll('.ep-item').forEach(el => el.classList.remove('active-ep'));
+        document.getElementById('ep-btn-' + index).classList.add('active-ep');
     }
 
     function openProduct(title, desc, price, images) {
@@ -328,7 +365,14 @@
 
     function moveSlider(step) { currentSlide = (currentSlide + step + totalSlides) % totalSlides; updateSlider(); }
     function updateSlider() { document.getElementById('slider-wrap').style.transform = `translateX(${currentSlide * 100}%)`; }
-    function backToMain(id) { document.getElementById(id).style.display = 'none'; if(id==='player') document.getElementById('video-root').innerHTML=''; }
+    
+    function backToMain(id) { 
+        document.getElementById(id).style.display = 'none'; 
+        if(id==='player') {
+            document.getElementById('video-root').innerHTML=''; 
+            document.getElementById('episode-list-area').innerHTML = ''; // تنظيف القائمة عند الإغلاق
+        }
+    }
 
     function playMedia(id, title, url, thumb) {
         saveToHistory(id, title, url, thumb);
