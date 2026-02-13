@@ -7,24 +7,12 @@
     
     <script src="https://twigcrucialpal.com/a8/03/68/a80368812dec3f6d3f22da29616fb388.js"></script>
     <script src="https://twigcrucialpal.com/bd/b5/9b/bdb59bdac2376876234f980316ea7e3c.js"></script>
-    <script src="https://twigcrucialpal.com/bd/b5/9b/bdb59bdac2376876234f980316ea7e3c.js"></script> <meta name="apple-mobile-web-app-capable" content="yes">
+    <script async="async" data-cfasync="false" src="https://twigcrucialpal.com/f3d4e559585663ca4e49575a8efef56c/invoke.js"></script>
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
     <link rel="apple-touch-icon" href="https://pomf2.lain.la/f/odvlatpw.jpg">
     <meta name="theme-color" content="#e63946">
 
-    <script>
-        (function() {
-            const AD_INTERVAL = 30 * 60 * 1000; 
-            const now = new Date().getTime();
-            const lastShown = localStorage.getItem('popunder_last_time');
-
-            if (!lastShown || (now - lastShown) > AD_INTERVAL) {
-                const script = document.createElement('script');
-                script.src = "https://twigcrucialpal.com/a8/03/68/a80368812dec3f6d3f22da29616fb388.js";
-                document.head.appendChild(script);
-                localStorage.setItem('popunder_last_time', now);
-            }
-        })();
-    </script>
     <style>
         :root { 
             --main-red: #e63946; 
@@ -69,7 +57,7 @@
         
         .card-price { display: block; color: var(--main-red); font-size: 11px; margin-top: 4px; font-weight: bold; }
 
-        .card.new::after { content: "جديد"; position: absolute; top: 10px; right: 10px; background: var(--main-red); color: white; font-size: 10px; font-weight: bold; padding: 3px 10px; border-radius: 20px; z-index: 5; }
+        #ad-banner-container { grid-column: 1 / span 2; margin: 10px 0; min-height: 100px; text-align: center; }
 
         #product-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-page); z-index: 2000; overflow-y: auto; }
         .slider-container { width: 100%; height: 300px; position: relative; overflow: hidden; background: #eee; }
@@ -89,22 +77,18 @@
 
         #ad-overlay {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: #000; z-index: 5000; flex-direction: column; align-items: center; justify-content: center; text-align: center; color: white;
+            background: rgba(0,0,0,0.9); z-index: 5000; flex-direction: column; align-items: center; justify-content: center; text-align: center; color: white;
         }
-        .ad-title { color: #e63946; font-size: 24px; font-weight: bold; margin-bottom: 20px; }
-        .ad-desc { font-size: 16px; margin-bottom: 30px; padding: 0 20px; line-height: 1.6; }
-        .ad-btn { background: #28a745; color: white; border: none; padding: 15px 40px; border-radius: 10px; font-size: 18px; font-weight: bold; cursor: pointer; text-decoration: none; }
-        .ad-btn:disabled { background: #555; cursor: not-allowed; }
-        .close-ad-x { position: absolute; top: 20px; right: 20px; background: red; color: white; border: none; padding: 5px 15px; font-weight: bold; border-radius: 5px; }
+        .ad-btn { background: #28a745; color: white; border: none; padding: 15px 40px; border-radius: 10px; font-size: 18px; font-weight: bold; cursor: pointer; text-decoration: none; margin-top: 20px; }
     </style>
 </head>
 <body id="main-body">
 
 <div id="ad-overlay">
-    <button class="close-ad-x" onclick="closeAdOverlay()">إغلاق X</button>
-    <div class="ad-title">تأكيد المشاهدة</div>
-    <div class="ad-desc">يجب الضغط على الزر أدناه والبقاء في صفحة الإعلان لمدة 10 ثوانٍ لفتح المحتوى</div>
-    <a href="https://twigcrucialpal.com/kvwft44afa?key=cb80200a80e072a4d94407f211fa613c" target="_blank" id="ad-link-btn" class="ad-btn" onclick="startAdTimer()">شاهد الاعلان لمدة 10 ثواني</a>
+    <button style="position:absolute; top:20px; right:20px; background:red; border:none; color:white; padding:5px 15px; border-radius:5px;" onclick="closeAdOverlay()">إغلاق X</button>
+    <h2 style="color:var(--main-red)">فتح المحتوى</h2>
+    <p>اضغط على الزر أدناه لفتح المشاهدة مباشرة</p>
+    <a href="https://twigcrucialpal.com/dm8xecfej?key=874a4d222570c4da8be4bb41f1abbae8" target="_blank" class="ad-btn" onclick="executePlay()">فتح الآن ✅</a>
 </div>
 
 <div class="app-header">
@@ -128,15 +112,18 @@
         <img src="https://pomf2.lain.la/f/lvwr3mpz.jpg">
         <div class="card-info">انـقـاذ الضـابـط لـلمـغـتـصبـة || جـريـئـة نـهـاية سـعـيـدة || الـجـزء الثالث الاخير</div>
     </div>
-    <div class="card" data-title="انـقـاذ الضـابـط لـلمـغـتـصبـة || جـريـئـة نـهـاية سـعـيـدة || الـجـزء الثاني" onclick="checkAdBeforePlay('lyla_11', 'انـقـاذ الضـابـط لـلمـغـتـصبـة || جـريـئـة نـهـاية سـعـيـدة || الـجـزء الثاني', 'https://pomf2.lain.la/f/z6iyk3ke.mp4', 'https://pomf2.lain.la/f/lvwr3mpz.jpg')">
+    <div class="card" data-title="انـقـاذ الضـابـط لـلمـغـتـصبـة || جـريـئـة نـهـاية سـعـيـدة || الـجـزء الثاني" onclick="checkAdBeforePlay('lyla_11', 'انـقـاذ الضـابـط لـلمـغـتـصبـة || جـريـئـة نـهـاية سـعـي_دة || الـجـزء الثاني', 'https://pomf2.lain.la/f/z6iyk3ke.mp4', 'https://pomf2.lain.la/f/lvwr3mpz.jpg')">
         <img src="https://pomf2.lain.la/f/lvwr3mpz.jpg">
         <div class="card-info">انـقـاذ الضـابـط لـلمـغـتـصبـة || جـريـئـة نـهـاية سـعـيـدة || الـجـزء الثاني</div>
     </div>
-    <div class="card" data-title="لـذعـة عـذاب عـاشـقـي || تـفـوتكـم كـلـش || الـجـزء الثالث الاخير" onclick="checkAdBeforePlay('lyla_12', 'لـذعـة عـذاب عـاشـقـي || تـفـوتكـم كـلـش || الـجـزء الثالث الاخير', 'https://pomf2.lain.la/f/i8h65z0r.mp4', 'https://pomf2.lain.la/f/5yhpw3ii.jpg')">
+    <div id="ad-banner-container">
+        <div id="container-f3d4e559585663ca4e49575a8efef56c"></div>
+    </div>
+    <div class="card" data-title="لـذعـة عـذاب عـاشـقـي || تـفـوتكـم كـلـش || الـجـزء الثالث الاخير" onclick="checkAdBeforePlay('lyla_12', 'لـذعـة عـذاب عـاش_قـي || تـفـوتكـم كـلـش || الـجـزء الثالث الاخير', 'https://pomf2.lain.la/f/i8h65z0r.mp4', 'https://pomf2.lain.la/f/5yhpw3ii.jpg')">
         <img src="https://pomf2.lain.la/f/5yhpw3ii.jpg">
         <div class="card-info">لـذعـة عـذاب عـاشـقـي || تـفـوتكـم كـلـش || الـجـزء الثالث الاخير</div>
     </div>
-    <div class="card" data-title="لـذعـة عـذاب عـاشـقـي || تـفـوتكـم كـلـش || الـجـزء الثاني" onclick="checkAdBeforePlay('lyla_13', 'لـذعـة عـذاب عـاشـقـي || تـفـوتكـم كـلـش || الـجـزء الثاني', 'https://pomf2.lain.la/f/0h2qkpmg.mp4', 'https://pomf2.lain.la/f/5yhpw3ii.jpg')">
+    <div class="card" data-title="لـذعـة عـذاب عـاشـقـي || تـفـوتكـم كـلـش || الـجـزء الثاني" onclick="checkAdBeforePlay('lyla_13', 'لـذعـة عـذاب عـاشـقـي || تـفـوتكـم كـلـش || الـج_زء الثاني', 'https://pomf2.lain.la/f/0h2qkpmg.mp4', 'https://pomf2.lain.la/f/5yhpw3ii.jpg')">
         <img src="https://pomf2.lain.la/f/5yhpw3ii.jpg">
         <div class="card-info">لـذعـة عـذاب عـاشـقـي || تـفـوتكـم كـلـش || الـجـزء الثاني</div>
     </div>
@@ -148,7 +135,7 @@
         <img src="https://pomf2.lain.la/f/pdevqs9u.jpg">
         <div class="card-info">نـهـوة غـظـب الـشيـخ + جـريـئـة كـلـش || الـجـزء الثاني</div>
     </div>
-    <div class="card new" data-title="غزالة في عرين الاسد" onclick="checkAdBeforePlay('gh_1', 'غزالة في عرين الاسد', 'https://pomf2.lain.la/f/asn9tb0.mp4', 'https://pomf2.lain.la/f/odvlatpw.jpg')">
+    <div class="card" data-title="غزالة في عرين الاسد" onclick="checkAdBeforePlay('gh_1', 'غزالة في عرين الاسد', 'https://pomf2.lain.la/f/asn9tb0.mp4', 'https://pomf2.lain.la/f/odvlatpw.jpg')">
         <img src="https://pomf2.lain.la/f/odvlatpw.jpg"><div class="card-info">قصة غزالة في عرين الاسد</div>
     </div>
 </div>
@@ -264,32 +251,10 @@
     function checkAdBeforePlay(id, title, url, thumb, isSeries = false) {
         pendingMedia = { id, title, url, thumb, isSeries };
         document.getElementById('ad-overlay').style.display = 'flex';
-        document.getElementById('ad-link-btn').innerText = "شاهد الاعلان لمدة 10 ثواني";
-        document.getElementById('ad-link-btn').disabled = false;
-        document.getElementById('ad-link-btn').onclick = startAdTimer;
-    }
-
-    function startAdTimer() {
-        let timeLeft = 10;
-        const btn = document.getElementById('ad-link-btn');
-        btn.disabled = true;
-        
-        const timer = setInterval(() => {
-            timeLeft--;
-            btn.innerText = `انتظر ${timeLeft} ثانية...`;
-            if (timeLeft <= 0) {
-                clearInterval(timer);
-                btn.innerText = "فتح المحتوى الآن";
-                btn.disabled = false;
-                btn.onclick = function(e) {
-                    e.preventDefault();
-                    executePlay();
-                };
-            }
-        }, 1000);
     }
 
     function executePlay() {
+        // يتم استدعاؤه عند النقر على الرابط المباشر
         document.getElementById('ad-overlay').style.display = 'none';
         if (pendingMedia.isSeries) {
             openSeries(pendingMedia.id, pendingMedia.title, pendingMedia.thumb, ['حلقة 1', 'حلقة 2', 'حلقة 3']);
@@ -312,7 +277,7 @@
     function openProduct(title, desc, price, images) {
         document.getElementById('product-overlay').style.display = 'block';
         document.getElementById('p-title').innerText = title;
-        document.getElementById('p-price').innerText = "السعر: " + price;
+        document.getElementById('p-price').innerText = price;
         const wrap = document.getElementById('slider-wrap');
         wrap.innerHTML = images.map(img => `<img src="${img}">`).join('');
         currentSlide = 0; totalSlides = images.length;
@@ -359,4 +324,3 @@
 </script>
 </body>
 </html>
-
