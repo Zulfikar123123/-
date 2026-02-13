@@ -17,7 +17,6 @@
         body.dark-theme { --bg-page: #121212; --card-bg: #1e1e1e; --text-main: #f1f1f1; --search-bg: #2d2d2d; }
         body { background-color: var(--bg-page); color: var(--text-main); font-family: 'Segoe UI', sans-serif; margin: 0; padding: 0; transition: 0.3s; overflow-x: hidden; }
         .app-header { background: var(--card-bg); padding: 15px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 1000; }
-        .header-icons { display: flex; gap: 18px; align-items: center; }
         .app-title { font-size: 19px; font-weight: bold; color: var(--main-red); margin: 0; }
         .search-wrapper { padding: 5px 15px 15px 15px; background: var(--card-bg); }
         .search-input { width: 100%; padding: 12px 20px; border-radius: 25px; border: none; background: var(--search-bg); color: var(--text-main); outline: none; box-sizing: border-box; font-size: 14px; }
@@ -31,21 +30,21 @@
         .card img { width: 100%; height: 135px; object-fit: cover; border-bottom: 3px solid var(--main-red); }
         .card-info { padding: 10px; font-size: 12px; text-align: center; font-weight: bold; }
         .card-price { display: block; color: var(--main-red); font-size: 11px; margin-top: 4px; font-weight: bold; }
-        .ad-container-bottom { grid-column: 1 / span 2; margin-top: 20px; text-align: center; border-top: 1px solid #eee; padding-top: 15px; }
-        #product-overlay, #series-overlay, #player { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-page); z-index: 2000; overflow-y: auto; }
-        .video-box { width: 100%; background: #000; position: sticky; top: 0; }
-        .close-btn { position: absolute; top: 10px; left: 10px; background: rgba(0,0,0,0.5); color: white; border: none; padding: 8px 15px; border-radius: 20px; z-index: 4000; font-weight: bold; cursor: pointer; }
+        .ad-bottom { grid-column: 1 / span 2; margin-top: 20px; text-align: center; padding: 15px; background: var(--card-bg); border-radius: 10px; }
+        #player, #product-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-page); z-index: 3000; overflow-y: auto; }
+        .close-btn { position: absolute; top: 10px; left: 10px; background: rgba(0,0,0,0.5); color: white; border: none; padding: 8px 15px; border-radius: 20px; z-index: 4000; }
     </style>
 </head>
 <body id="main-body">
 
 <div class="app-header">
-    <div class="header-icons"><span onclick="toggleDarkMode()">🌙</span></div>
+    <div onclick="document.body.classList.toggle('dark-theme')">🌙</div>
     <div class="app-title">[واتـبـاد الـفـقـراء]</div>
+    <div>🔍</div>
 </div>
 
 <div class="search-wrapper">
-    <input type="text" id="mainSearch" class="search-input" placeholder="ابحث عن منتج أو قصة..." onkeyup="filterNow()">
+    <input type="text" id="mainSearch" class="search-input" placeholder="ابحث هنا..." onkeyup="filterContent()">
 </div>
 
 <div class="tabs">
@@ -55,34 +54,43 @@
 </div>
 
 <div class="grid active" id="watt-grid">
-    <div class="card" data-title="انقاذ الضابط للمغتصبة 3" onclick="playMedia('w1','انقاذ الضابط للمغتصبة - ج3','https://pomf2.lain.la/f/kdnefa.mp4','https://pomf2.lain.la/f/lvwr3mpz.jpg')">
+    <div class="card" data-title="انقاذ الضابط للمغتصبة 3" onclick="playVid('انقاذ الضابط ج3','https://pomf2.lain.la/f/kdnefa.mp4')">
         <img src="https://pomf2.lain.la/f/lvwr3mpz.jpg"><div class="card-info">انقاذ الضابط للمغتصبة - ج3</div>
     </div>
-    <div class="card" data-title="انقاذ الضابط للمغتصبة 2" onclick="playMedia('w2','انقاذ الضابط للمغتصبة - ج2','https://pomf2.lain.la/f/z6iyk3ke.mp4','https://pomf2.lain.la/f/lvwr3mpz.jpg')">
+    <div class="card" data-title="انقاذ الضابط للمغتصبة 2" onclick="playVid('انقاذ الضابط ج2','https://pomf2.lain.la/f/z6iyk3ke.mp4')">
         <img src="https://pomf2.lain.la/f/lvwr3mpz.jpg"><div class="card-info">انقاذ الضابط للمغتصبة - ج2</div>
     </div>
-    <div class="card" data-title="لذعة عذاب عاشقي 3" onclick="playMedia('w3','لذعة عذاب عاشقي - ج3','https://pomf2.lain.la/f/i8h65z0r.mp4','https://pomf2.lain.la/f/5yhpw3ii.jpg')">
+    <div class="card" data-title="لذعة عذاب عاشقي 3" onclick="playVid('لذعة عذاب ج3','https://pomf2.lain.la/f/i8h65z0r.mp4')">
         <img src="https://pomf2.lain.la/f/5yhpw3ii.jpg"><div class="card-info">لذعة عذاب عاشقي - ج3</div>
     </div>
-    <div class="card" data-title="نهوة غضب الشيخ 3" onclick="playMedia('w4','نهوة غضب الشيخ - ج3','https://pomf2.lain.la/f/9tc3wh3k.mp4','https://pomf2.lain.la/f/pdevqs9u.jpg')">
+    <div class="card" data-title="لذعة عذاب عاشقي 2" onclick="playVid('لذعة عذاب ج2','https://pomf2.lain.la/f/0h2qkpmg.mp4')">
+        <img src="https://pomf2.lain.la/f/5yhpw3ii.jpg"><div class="card-info">لذعة عذاب عاشقي - ج2</div>
+    </div>
+    <div class="card" data-title="نهوة غضب الشيخ 3" onclick="playVid('نهوة غضب ج3','https://pomf2.lain.la/f/9tc3wh3k.mp4')">
         <img src="https://pomf2.lain.la/f/pdevqs9u.jpg"><div class="card-info">نهوة غضب الشيخ - ج3</div>
     </div>
-    <div class="ad-container-bottom">
+    <div class="card" data-title="نهوة غضب الشيخ 2" onclick="playVid('نهوة غضب ج2','https://pomf2.lain.la/f/3f7kq0jf.mp4')">
+        <img src="https://pomf2.lain.la/f/pdevqs9u.jpg"><div class="card-info">نهوة غضب الشيخ - ج2</div>
+    </div>
+    <div class="card" data-title="غزالة في عرين الاسد" onclick="playVid('غزالة في عرين الاسد','https://pomf2.lain.la/f/asn9tb0.mp4')">
+        <img src="https://pomf2.lain.la/f/odvlatpw.jpg"><div class="card-info">غزالة في عرين الاسد</div>
+    </div>
+    <div class="ad-bottom">
         <script async="async" data-cfasync="false" src="https://twigcrucialpal.com/f3d4e559585663ca4e49575a8efef56c/invoke.js"></script>
         <div id="container-f3d4e559585663ca4e49575a8efef56c"></div>
     </div>
 </div>
 
 <div class="grid" id="ser-grid">
-    <div class="card" data-title="هذا البحر سوف يفيض" onclick="openSeries('s1','هذا البحر سوف يفيض')">
+    <div class="card" data-title="هذا البحر سوف يفيض" onclick="playVid('مسلسل هذا البحر','https://pomf2.lain.la/f/2njdz3ym.jpg')">
         <img src="https://pomf2.lain.la/f/2njdz3ym.jpg"><div class="card-info">مسلسل هذا البحر سوف يفيض</div>
     </div>
 </div>
 
 <div class="grid" id="prod-grid">
-    <div class="section-title">قائمة المنتجات الكاملة</div>
+    <div class="section-title">كل المنتجات</div>
     <script>
-        const products = [
+        const prods = [
             {t:"كابسة صاج سامكس", p:"25,000 د.ع", i:"https://pomf2.lain.la/f/rt8zjh9o.png"},
             {t:"معصارة فواكة سامكس", p:"50,000 د.ع", i:"https://pomf2.lain.la/f/pe4zwmm5.png"},
             {t:"شيش شواء للقلايات", p:"10,000 د.ع", i:"https://pomf2.lain.la/f/tvok04eu.png"},
@@ -105,31 +113,43 @@
             {t:"جهاز تحضير افطار راف", p:"40,000 د.ع", i:"https://pomf2.lain.la/f/0ynrfgx.png"},
             {t:"طقم قدور مينا فاخر", p:"30,000 د.ع", i:"https://pomf2.lain.la/f/yajdiwi4.png"}
         ];
-        document.write(products.map(x => `
-            <div class="card" data-title="${x.t}" onclick="alert('فتح تفاصيل: ${x.t}')">
-                <img src="${x.i}"><div class="card-info">${x.t} <span class="card-price">${x.p}</span></div>
+        document.write(prods.map(item => `
+            <div class="card" data-title="${item.t}">
+                <img src="${item.i}">
+                <div class="card-info">${item.t} <span class="card-price">${item.p}</span></div>
             </div>`).join(''));
     </script>
 </div>
 
 <div id="player">
-    <button class="close-btn" onclick="document.getElementById('player').style.display='none';">إغلاق</button>
-    <div class="video-box" id="video-root"></div>
+    <button class="close-btn" onclick="closePlayer()">إغلاق</button>
+    <div id="video-cont" style="width:100%; background:#000;"></div>
+    <div style="padding:20px;"><h2 id="video-t"></h2></div>
 </div>
 
 <script>
-    function showTab(evt, id) {
+    function showTab(e, id) {
         document.querySelectorAll('.grid').forEach(g => g.classList.remove('active'));
-        document.querySelectorAll('.tab-btn').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
         document.getElementById(id).classList.add('active');
-        evt.currentTarget.classList.add('active');
+        e.currentTarget.classList.add('active');
     }
-    function playMedia(id, title, url, thumb) {
+    function playVid(title, url) {
         document.getElementById('player').style.display = 'block';
-        document.getElementById('video-root').innerHTML = `<video controls autoplay style="width:100%;"><source src="${url}" type="video/mp4"></video><h3>${title}</h3>`;
+        document.getElementById('video-t').innerText = title;
+        document.getElementById('video-cont').innerHTML = `<video src="${url}" controls autoplay style="width:100%;"></video>`;
     }
-    function toggleDarkMode() { document.body.classList.toggle('dark-theme'); }
+    function closePlayer() {
+        document.getElementById('player').style.display = 'none';
+        document.getElementById('video-cont').innerHTML = '';
+    }
+    function filterContent() {
+        let query = document.getElementById('mainSearch').value.toLowerCase();
+        document.querySelectorAll('.card').forEach(card => {
+            let txt = card.getAttribute('data-title').toLowerCase();
+            card.style.display = txt.includes(query) ? 'block' : 'none';
+        });
+    }
 </script>
-
 </body>
 </html>
